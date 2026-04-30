@@ -3,11 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light dark">
-
 <title>Dillu Captures</title>
 
-<!-- PREMIUM FONTS -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -17,150 +14,84 @@
   --bg:#ffffff;
   --text:#111;
   --muted:#777;
-  --glass:rgba(255,255,255,0.65);
 }
-
-body.dark{
-  --bg:#0f0f0f;
-  --text:#f5f5f5;
-  --muted:#aaa;
-  --glass:rgba(255,255,255,0.08);
-}
-
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
 
 body{
+  margin:0;
   font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
-  line-height:1.6;
   overflow-x:hidden;
 }
-
-/* ===== INTRO ===== */
-.intro{
-  position:fixed;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--bg);
-  z-index:9999;
-}
-.intro-text{
-  font-family:'Playfair Display';
-  font-size:42px;
-  letter-spacing:2px;
-}
-.intro.hide{opacity:0;visibility:hidden;transition:1s ease;}
 
 /* ===== HEADER ===== */
 header{
   position:fixed;
   width:100%;
   top:0;
-  padding:20px 80px;
+  padding:20px 60px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
   backdrop-filter:blur(20px);
-  background:var(--glass);
+  background:rgba(255,255,255,0.7);
   z-index:1000;
-  transition:.4s;
 }
 
 header h1{
   font-family:'Playfair Display';
-  font-size:20px;
 }
 
-nav a{
-  margin-left:30px;
-  text-decoration:none;
-  color:var(--text);
-  font-size:14px;
-  opacity:.7;
-  transition:.3s;
-}
-
-nav a:hover{
-  opacity:1;
-  transform:translateY(-2px);
-}
-
-/* ===== HERO VIDEO ===== */
+/* ===== HERO PARALLAX ===== */
 .hero{
-  position:relative;
   height:100vh;
-  display:flex;
-  align-items:center;
-  padding:0 80px;
+  position:relative;
   overflow:hidden;
 }
 
 .hero video{
   position:absolute;
-  inset:0;
   width:100%;
-  height:100%;
+  height:120%;
   object-fit:cover;
-  filter:brightness(.6);
+  top:-10%;
+  will-change:transform;
+}
+
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.5),transparent);
 }
 
 .hero-text{
-  position:relative;
-  z-index:2;
-  max-width:600px;
+  position:absolute;
+  bottom:20%;
+  left:60px;
   color:#fff;
+  max-width:500px;
 }
 
 .hero-text h2{
   font-family:'Playfair Display';
-  font-size:64px;
-  line-height:1.2;
-  margin-bottom:20px;
-}
-
-.hero-text p{
-  opacity:.8;
+  font-size:60px;
 }
 
 /* ===== SECTIONS ===== */
 section{
-  padding:140px 80px;
-  max-width:1400px;
-  margin:auto;
+  padding:140px 60px;
 }
 
 /* ===== ABOUT ===== */
 .about{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:80px;
-  align-items:center;
+  gap:60px;
 }
 
 .about img{
   width:100%;
   border-radius:16px;
-  transition:.6s;
-}
-.about img:hover{
-  transform:scale(1.02);
-}
-
-.about p{color:var(--muted);}
-
-/* ===== STORY ===== */
-.story{
-  text-align:center;
-  max-width:700px;
-  margin:auto;
-}
-.story h2{
-  font-family:'Playfair Display';
-  margin-bottom:20px;
-}
-.story p{
-  color:var(--muted);
+  will-change:transform;
 }
 
 /* ===== GALLERY ===== */
@@ -173,8 +104,8 @@ section{
 .gallery img{
   width:100%;
   border-radius:12px;
-  cursor:pointer;
-  transition:.5s ease;
+  transition:.4s;
+  will-change:transform;
 }
 
 .gallery img:hover{
@@ -187,11 +118,11 @@ section{
   inset:0;
   background:rgba(0,0,0,.9);
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   opacity:0;
   pointer-events:none;
-  transition:.4s;
+  transition:.3s;
 }
 .modal.active{
   opacity:1;
@@ -199,28 +130,13 @@ section{
 }
 .modal img{
   max-width:90%;
-  max-height:90%;
 }
 
-/* ===== BUTTON ===== */
-.btn{
-  padding:12px 24px;
-  border-radius:25px;
-  background:var(--glass);
-  text-decoration:none;
-  color:var(--text);
-  margin-right:10px;
-  transition:.3s;
-}
-.btn:hover{
-  transform:translateY(-3px);
-}
-
-/* ===== SCROLL ANIMATION ===== */
+/* ===== REVEAL ===== */
 .reveal{
   opacity:0;
-  transform:translateY(40px);
-  transition:1s ease;
+  transform:translateY(50px);
+  transition:1s;
 }
 .reveal.active{
   opacity:1;
@@ -229,11 +145,8 @@ section{
 
 /* ===== MOBILE ===== */
 @media(max-width:768px){
-  header{padding:15px 20px;}
-  section{padding:100px 20px;}
-  .hero{padding:0 20px;text-align:center;}
-  .hero-text{margin:auto;}
   .about{grid-template-columns:1fr;}
+  .hero-text{left:20px;}
 }
 
 </style>
@@ -241,82 +154,58 @@ section{
 
 <body>
 
-<div class="intro" id="intro">
-  <div class="intro-text">Dillu Captures</div>
-</div>
-
 <header>
   <h1>Dillu Captures</h1>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#about">About</a>
-    <a href="#gallery">Gallery</a>
-    <a href="#contact">Contact</a>
-  </nav>
 </header>
 
-<!-- HERO VIDEO -->
+<!-- HERO -->
 <section class="hero">
-  <video autoplay muted loop playsinline>
+  <video autoplay muted loop playsinline id="heroVideo">
     <source src="Images/video.mp4" type="video/mp4">
   </video>
+  <div class="hero-overlay"></div>
 
-  <div class="hero-text reveal">
+  <div class="hero-text">
     <h2>Capturing Timeless Moments</h2>
-    <p>Luxury photography crafted with emotion.</p>
   </div>
 </section>
 
-<section id="about" class="about reveal">
-  <img src="Images/IMG_1164.webp">
+<!-- ABOUT -->
+<section class="about reveal">
+  <img src="Images/IMG_1164.webp" class="parallax">
   <div>
     <h2>About Me</h2>
     <p>
-      Photography is about capturing emotion, light, and story.
-      My work blends cinematic tones with natural moments to create timeless visuals.
+      Photography is storytelling through light and emotion.
+      Every frame is crafted to feel cinematic and timeless.
     </p>
   </div>
 </section>
 
-<section class="story reveal">
-  <h2>The Art of Photography</h2>
-  <p>
-    Great photography is not staged—it’s felt. Every frame tells a story that lives beyond the moment.
-  </p>
-</section>
-
-<section id="gallery">
-  <h2 style="margin-bottom:40px">Gallery</h2>
+<!-- GALLERY -->
+<section>
+  <h2>Gallery</h2>
 
   <div class="gallery">
 
     <!-- YOUR IMAGES -->
-    <img src="Images/Kids/20240813111900_IMG_0814.webp">
-    <img src="Images/Kids/IMG_1902.webp">
-    <img src="Images/Kids/IMG_5197 (1).webp">
-    <img src="Images/Kids/IMG_5332.webp">
-    <img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp">
-    <img src="Images/Maternity Shoot/IMG_4216.webp">
-    <img src="Images/Maternity Shoot/IMG_4265.webp">
-    <img src="Images/Maternity Shoot/IMG_4363.webp">
-    <img src="Images/Temples & Culture/20230609184601_IMG_7346.webp">
-    <img src="Images/Temples & Culture/20231001121437_IMG_8556.webp">
-    <img src="Images/Temples & Culture/IMG_20251225_093551493.webp">
-    <img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp">
-    <img src="Images/Temples & Culture/IMG_3234.webp">
-    <img src="Images/Temples & Culture/IMG_3390.webp">
-    <img src="Images/Temples & Culture/IMG_3037.webp">
-    <img src="Images/Temples & Culture/IMG_20251225_195802010.webp">
+    <img src="Images/Kids/20240813111900_IMG_0814.webp" class="parallax">
+    <img src="Images/Kids/IMG_1902.webp" class="parallax">
+    <img src="Images/Kids/IMG_5197 (1).webp" class="parallax">
+    <img src="Images/Kids/IMG_5332.webp" class="parallax">
+    <img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp" class="parallax">
+    <img src="Images/Maternity Shoot/IMG_4216.webp" class="parallax">
+    <img src="Images/Maternity Shoot/IMG_4265.webp" class="parallax">
+    <img src="Images/Maternity Shoot/IMG_4363.webp" class="parallax">
+    <img src="Images/Temples & Culture/20230609184601_IMG_7346.webp" class="parallax">
+    <img src="Images/Temples & Culture/20231001121437_IMG_8556.webp" class="parallax">
+    <img src="Images/Temples & Culture/IMG_20251225_093551493.webp" class="parallax">
+    <img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp" class="parallax">
+    <img src="Images/Temples & Culture/IMG_3234.webp" class="parallax">
+    <img src="Images/Temples & Culture/IMG_3390.webp" class="parallax">
+    <img src="Images/Temples & Culture/IMG_3037.webp" class="parallax">
+    <img src="Images/Temples & Culture/IMG_20251225_195802010.webp" class="parallax">
 
-  </div>
-</section>
-
-<section id="contact" class="reveal">
-  <h2>Book a Slot</h2>
-
-  <div style="margin-top:20px">
-    <a class="btn" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
-    <a class="btn" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
   </div>
 </section>
 
@@ -327,12 +216,7 @@ section{
 
 <script>
 
-/* INTRO */
-window.onload=()=>{
-  setTimeout(()=>document.getElementById("intro").classList.add("hide"),1500);
-};
-
-/* MODAL */
+/* ===== MODAL ===== */
 const modal=document.getElementById("modal");
 const modalImg=document.getElementById("modalImg");
 
@@ -342,16 +226,28 @@ document.querySelectorAll(".gallery img").forEach(img=>{
     modalImg.src=img.src;
   }
 });
-
 modal.onclick=()=>modal.classList.remove("active");
 
-/* SCROLL REVEAL */
-const reveals=document.querySelectorAll(".reveal");
+/* ===== PARALLAX ENGINE ===== */
+const parallaxEls=document.querySelectorAll(".parallax");
+const heroVideo=document.getElementById("heroVideo");
 
 window.addEventListener("scroll",()=>{
-  reveals.forEach(el=>{
-    const top=el.getBoundingClientRect().top;
-    if(top < window.innerHeight - 100){
+  const scrollY=window.scrollY;
+
+  // Hero parallax
+  heroVideo.style.transform=`translateY(${scrollY * 0.3}px)`;
+
+  // Image parallax
+  parallaxEls.forEach(el=>{
+    const speed=0.15;
+    const y=el.getBoundingClientRect().top;
+    el.style.transform=`translateY(${y * speed}px)`;
+  });
+
+  // Reveal
+  document.querySelectorAll(".reveal").forEach(el=>{
+    if(el.getBoundingClientRect().top < window.innerHeight - 100){
       el.classList.add("active");
     }
   });
