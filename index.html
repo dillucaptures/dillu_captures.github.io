@@ -8,6 +8,9 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
+<!-- ⚡ PRELOAD HERO IMAGE -->
+<link rel="preload" as="image" href="Images/1776695215852.webp">
+
 <style>
 
 /* ===== ROOT ===== */
@@ -32,6 +35,15 @@ body{
   transition:.4s;
 }
 
+/* IMAGE LOADING EFFECT */
+img{
+  opacity:0;
+  transition:opacity .6s ease;
+}
+img.loaded{
+  opacity:1;
+}
+
 /* ===== INTRO ===== */
 .intro{
   position:fixed;
@@ -46,7 +58,7 @@ body{
   background:var(--accent);
   -webkit-background-clip:text;
   color:transparent;
-  animation:fadeUp 1.5s forwards;
+  animation:fadeUp 1.2s forwards;
 }
 .intro.hide{animation:fadeOut 1s forwards;}
 
@@ -139,7 +151,7 @@ body.dark .toggle-circle{
   right:0;
   width:60%;
   height:100%;
-  background:url('Images/1776695215852.webp') center/cover;
+  background:url('Images/1776695215852.webp') center/cover no-repeat;
 }
 
 .hero-text{
@@ -175,7 +187,6 @@ section{padding:120px 60px;}
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:20px;
 }
-
 .gallery-item{
   position:relative;
   overflow:hidden;
@@ -191,8 +202,6 @@ section{padding:120px 60px;}
 .gallery-item:hover img{
   transform:scale(1.1);
 }
-
-/* overlay shine */
 .gallery-item::after{
   content:"";
   position:absolute;
@@ -290,7 +299,7 @@ section{padding:120px 60px;}
 </section>
 
 <section id="about" class="about">
-  <img src="Images/IMG_1164.webp">
+  <img src="Images/IMG_1164.webp" loading="lazy" decoding="async" onload="this.classList.add('loaded')">
   <div>
     <h2>About Me</h2>
     <p>I am a professional photographer specializing in portraits, weddings, and cinematic storytelling.</p>
@@ -299,30 +308,35 @@ section{padding:120px 60px;}
 
 <section id="gallery">
   <h2 style="margin-bottom:30px">Gallery</h2>
-
   <div class="gallery">
 
-    <!-- KIDS -->
-    <div class="gallery-item"><img src="Images/Kids/20240813111900_IMG_0814.webp"></div>
-    <div class="gallery-item"><img src="Images/Kids/IMG_1902.webp"></div>
-    <div class="gallery-item"><img src="Images/Kids/IMG_5197 (1).webp"></div>
-    <div class="gallery-item"><img src="Images/Kids/IMG_5332.webp"></div>
+    <!-- ALL IMAGES OPTIMIZED -->
+    <script>
+    const images = [
+      "Images/Kids/20240813111900_IMG_0814.webp",
+      "Images/Kids/IMG_1902.webp",
+      "Images/Kids/IMG_5197 (1).webp",
+      "Images/Kids/IMG_5332.webp",
+      "Images/Maternity Shoot/20240719132714_IMG_0511.webp",
+      "Images/Maternity Shoot/IMG_4216.webp",
+      "Images/Maternity Shoot/IMG_4265.webp",
+      "Images/Maternity Shoot/IMG_4363.webp",
+      "Images/Temples & Culture/20230609184601_IMG_7346.webp",
+      "Images/Temples & Culture/20231001121437_IMG_8556.webp",
+      "Images/Temples & Culture/IMG_20251225_093551493.webp",
+      "Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp",
+      "Images/Temples & Culture/IMG_3234.webp",
+      "Images/Temples & Culture/IMG_3390.webp",
+      "Images/Temples & Culture/IMG_3037.webp",
+      "Images/Temples & Culture/IMG_20251225_195802010.webp"
+    ];
 
-    <!-- MATERNITY -->
-    <div class="gallery-item"><img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp"></div>
-    <div class="gallery-item"><img src="Images/Maternity Shoot/IMG_4216.webp"></div>
-    <div class="gallery-item"><img src="Images/Maternity Shoot/IMG_4265.webp"></div>
-    <div class="gallery-item"><img src="Images/Maternity Shoot/IMG_4363.webp"></div>
-
-    <!-- CULTURE -->
-    <div class="gallery-item"><img src="Images/Temples & Culture/20230609184601_IMG_7346.webp"></div>
-    <div class="gallery-item"><img src="Images/Temples & Culture/20231001121437_IMG_8556.webp"></div>
-    <div class="gallery-item"><img src="Images/Temples & Culture/IMG_20251225_093551493.webp"></div>
-    <div class="gallery-item"><img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp"></div>
-    <div class="gallery-item"><img src="Images/Temples & Culture/IMG_3234.webp"></div>
-    <div class="gallery-item"><img src="Images/Temples & Culture/IMG_3390.webp"></div>
-    <div class="gallery-item"><img src="Images/Temples & Culture/IMG_3037.webp"></div>
-    <div class="gallery-item"><img src="Images/Temples & Culture/IMG_20251225_195802010.webp"></div>
+    document.write(images.map(src => `
+      <div class="gallery-item">
+        <img src="${src}" loading="lazy" decoding="async" onload="this.classList.add('loaded')">
+      </div>
+    `).join(""));
+    </script>
 
   </div>
 </section>
@@ -338,13 +352,14 @@ section{padding:120px 60px;}
   </div>
 </section>
 
-<!-- IMAGE MODAL -->
+<!-- MODAL -->
 <div class="modal" id="modal">
   <img id="modalImg">
 </div>
 
 <script>
 
+/* INTRO */
 window.onload=()=>{
   setTimeout(()=>document.getElementById("intro").classList.add("hide"),1800);
 };
@@ -369,14 +384,19 @@ for(let i=1;i<=30;i++){
 const modal=document.getElementById("modal");
 const modalImg=document.getElementById("modalImg");
 
-document.querySelectorAll(".gallery img").forEach(img=>{
-  img.onclick=()=>{
+document.addEventListener("click",(e)=>{
+  if(e.target.tagName==="IMG" && e.target.closest(".gallery")){
     modal.classList.add("active");
-    modalImg.src=img.src;
+    modalImg.src=e.target.src;
   }
 });
 
 modal.onclick=()=>modal.classList.remove("active");
+
+/* FORCE LOAD STATE */
+document.querySelectorAll("img").forEach(img=>{
+  if(img.complete) img.classList.add("loaded");
+});
 
 </script>
 
