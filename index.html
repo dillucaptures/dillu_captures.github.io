@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- KEEPING YOUR HEAD EXACTLY SAME -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light dark">
@@ -12,18 +11,19 @@
 
 <style>
 
-/* ===== YOUR ORIGINAL CSS + ENHANCEMENTS ===== */
-
+/* ===== CLEAN ROOT ===== */
 :root {
-  --bg: #ffffff;
-  --text: #111;
-  --glass: rgba(255,255,255,0.6);
+  --bg:#ffffff;
+  --text:#111;
+  --muted:#777;
+  --glass:rgba(255,255,255,0.7);
 }
 
-body.dark {
-  --bg: #0f0f0f;
-  --text: #f5f5f5;
-  --glass: rgba(255,255,255,0.08);
+body.dark{
+  --bg:#0f0f0f;
+  --text:#f5f5f5;
+  --muted:#aaa;
+  --glass:rgba(255,255,255,0.08);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -33,95 +33,147 @@ body{
   font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
-  transition:.4s;
+  line-height:1.6;
 }
 
-/* 🔥 IMAGE OPTIMIZATION */
-img{
-  opacity:0;
-  transition:opacity .6s ease;
+/* ===== SPACING SYSTEM ===== */
+section{
+  padding:140px 80px;
+  max-width:1400px;
+  margin:auto;
 }
-img.loaded{opacity:1;}
 
-/* INTRO */
+/* ===== INTRO ===== */
 .intro{
-  position:fixed;width:100%;height:100%;
-  display:flex;justify-content:center;align-items:center;
-  background:var(--bg);z-index:9999;
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg);
+  z-index:9999;
 }
 .intro-text{
   font-family:'Playfair Display';
-  font-size:42px;
-  animation:fadeUp 1.5s forwards;
+  font-size:44px;
+  letter-spacing:1px;
 }
-.intro.hide{animation:fadeOut 1s forwards;}
+.intro.hide{opacity:0;visibility:hidden;transition:1s;}
 
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(40px);}
-  to{opacity:1;}
-}
-@keyframes fadeOut{
-  to{opacity:0;visibility:hidden;}
-}
-
-/* NAV */
+/* ===== HEADER ===== */
 header{
-  position:fixed;width:100%;top:0;
-  display:flex;justify-content:space-between;
-  padding:18px 60px;
+  position:fixed;
+  width:100%;
+  top:0;
+  padding:20px 80px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   backdrop-filter:blur(20px);
   background:var(--glass);
   z-index:1000;
 }
 
-/* HERO IMPROVED */
+header h1{
+  font-family:'Playfair Display';
+  font-size:20px;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+}
+
+nav a{
+  margin-left:30px;
+  text-decoration:none;
+  color:var(--text);
+  font-size:14px;
+  opacity:.8;
+}
+
+nav a:hover{opacity:1;}
+
+/* ===== HERO ===== */
 .hero{
-  display:flex;align-items:center;
   min-height:100vh;
-  padding:120px 60px;
+  display:flex;
+  align-items:center;
+  padding:0 80px;
   position:relative;
-  overflow:hidden;
 }
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to right,rgba(0,0,0,.5),transparent);
-}
+
 .hero::after{
   content:"";
   position:absolute;
-  right:0;width:50%;height:100%;
+  right:0;
+  width:55%;
+  height:100%;
   background:url('Images/1776695215852.webp') center/cover;
 }
 
 .hero-text{
-  position:relative;
+  max-width:520px;
   z-index:2;
-  color:#fff;
 }
+
 .hero-text h2{
   font-family:'Playfair Display';
-  font-size:52px;
+  font-size:56px;
+  margin-bottom:20px;
 }
 
-/* GALLERY PREMIUM */
+.hero-text p{
+  color:var(--muted);
+}
+
+/* ===== ABOUT ===== */
+.about{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+
+.about img{
+  width:100%;
+  border-radius:16px;
+}
+
+.about p{
+  color:var(--muted);
+}
+
+/* ===== STORY ===== */
+.story{
+  text-align:center;
+  max-width:700px;
+  margin:auto;
+}
+.story h2{
+  font-family:'Playfair Display';
+  margin-bottom:20px;
+}
+.story p{
+  color:var(--muted);
+}
+
+/* ===== GALLERY ===== */
 .gallery{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
-}
-.gallery img{
-  width:100%;
-  border-radius:15px;
-  transition:.6s;
-  cursor:pointer;
-}
-.gallery img:hover{
-  transform:scale(1.08);
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:25px;
 }
 
-/* MODAL */
+.gallery img{
+  width:100%;
+  border-radius:12px;
+  cursor:pointer;
+  transition:.4s ease;
+}
+
+.gallery img:hover{
+  transform:scale(1.04);
+}
+
+/* ===== MODAL ===== */
 .modal{
   position:fixed;
   inset:0;
@@ -142,35 +194,47 @@ header{
   max-height:90%;
 }
 
-/* ABOUT TEXT UPGRADE */
-.about p{
-  line-height:1.8;
-  font-size:15px;
-  opacity:.8;
+/* ===== BUTTON ===== */
+.btn{
+  padding:12px 24px;
+  border-radius:25px;
+  background:var(--glass);
+  text-decoration:none;
+  color:var(--text);
+  margin-right:10px;
+  font-size:14px;
 }
 
-/* NEW SECTION */
-.story{
-  max-width:800px;
-  margin:auto;
-  text-align:center;
-}
-.story h2{
-  font-family:'Playfair Display';
-  margin-bottom:20px;
-}
-.story p{
-  opacity:.8;
-  line-height:1.8;
+/* ===== CALENDAR ===== */
+.calendar{
+  margin-top:40px;
+  max-width:420px;
 }
 
-/* MOBILE */
+.days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:8px;
+}
+.day{
+  padding:10px;
+  border-radius:8px;
+  background:var(--glass);
+  cursor:pointer;
+}
+.day:hover{
+  background:#111;
+  color:#fff;
+}
+
+/* ===== MOBILE ===== */
 @media(max-width:768px){
   header{padding:15px 20px;}
-  .hero{flex-direction:column;text-align:center;padding:100px 20px;}
-  .hero::after{width:100%;height:50%;}
-  .hero-text{margin-top:55vh;}
   section{padding:100px 20px;}
+  .hero{flex-direction:column;text-align:center;}
+  .hero::after{width:100%;height:50%;}
+  .hero-text{margin-top:60vh;}
+  .about{grid-template-columns:1fr;}
 }
 
 </style>
@@ -178,7 +242,6 @@ header{
 
 <body>
 
-<!-- INTRO -->
 <div class="intro" id="intro">
   <div class="intro-text">Dillu Captures</div>
 </div>
@@ -190,10 +253,6 @@ header{
     <a href="#about">About</a>
     <a href="#gallery">Gallery</a>
     <a href="#contact">Contact</a>
-
-    <span class="theme-toggle" onclick="toggleTheme()">
-      <span class="toggle-circle"><span id="icon">☀️</span></span>
-    </span>
   </nav>
 </header>
 
@@ -205,48 +264,45 @@ header{
 </section>
 
 <section id="about" class="about">
-  <img src="Images/IMG_1164.webp" loading="lazy" onload="this.classList.add('loaded')">
+  <img src="Images/IMG_1164.webp">
   <div>
     <h2>About Me</h2>
     <p>
-      Photography is not just about capturing an image — it’s about preserving emotion, light, and story in a single frame.
-      My work focuses on authentic moments, cinematic tones, and timeless storytelling.
-      Every shoot is crafted to feel natural, luxurious, and deeply personal.
+      Photography is about capturing emotion, light, and story.
+      My work blends cinematic tones with natural moments to create timeless visuals.
     </p>
   </div>
 </section>
 
-<!-- NEW PREMIUM STORY SECTION -->
 <section class="story">
   <h2>The Art of Photography</h2>
   <p>
-    True photography goes beyond posing. It’s about light, composition, and emotion working together.
-    From soft natural light portraits to dramatic cultural frames, every image tells a story that lives forever.
-    My goal is to create photographs that feel alive — not just seen, but felt.
+    Great photography is not staged—it’s felt. Every frame tells a story that lives beyond the moment.
   </p>
 </section>
 
 <section id="gallery">
-  <h2 style="margin-bottom:30px">Gallery</h2>
+  <h2 style="margin-bottom:40px">Gallery</h2>
+
   <div class="gallery">
 
-    <!-- KEEPING YOUR IMAGES -->
-    <img src="Images/Kids/20240813111900_IMG_0814.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Kids/IMG_1902.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Kids/IMG_5197 (1).webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Kids/IMG_5332.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Maternity Shoot/IMG_4216.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Maternity Shoot/IMG_4265.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Maternity Shoot/IMG_4363.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Temples & Culture/20230609184601_IMG_7346.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Temples & Culture/20231001121437_IMG_8556.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Temples & Culture/IMG_20251225_093551493.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Temples & Culture/IMG_3234.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Temples & Culture/IMG_3390.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Temples & Culture/IMG_3037.webp" loading="lazy" onload="this.classList.add('loaded')">
-    <img src="Images/Temples & Culture/IMG_20251225_195802010.webp" loading="lazy" onload="this.classList.add('loaded')">
+    <!-- YOUR IMAGES -->
+    <img src="Images/Kids/20240813111900_IMG_0814.webp">
+    <img src="Images/Kids/IMG_1902.webp">
+    <img src="Images/Kids/IMG_5197 (1).webp">
+    <img src="Images/Kids/IMG_5332.webp">
+    <img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp">
+    <img src="Images/Maternity Shoot/IMG_4216.webp">
+    <img src="Images/Maternity Shoot/IMG_4265.webp">
+    <img src="Images/Maternity Shoot/IMG_4363.webp">
+    <img src="Images/Temples & Culture/20230609184601_IMG_7346.webp">
+    <img src="Images/Temples & Culture/20231001121437_IMG_8556.webp">
+    <img src="Images/Temples & Culture/IMG_20251225_093551493.webp">
+    <img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp">
+    <img src="Images/Temples & Culture/IMG_3234.webp">
+    <img src="Images/Temples & Culture/IMG_3390.webp">
+    <img src="Images/Temples & Culture/IMG_3037.webp">
+    <img src="Images/Temples & Culture/IMG_20251225_195802010.webp">
 
   </div>
 </section>
@@ -254,28 +310,17 @@ header{
 <section id="contact">
   <h2>Book a Slot</h2>
 
-  <a class="btn" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
-  <a class="btn" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
+  <div style="margin-top:20px">
+    <a class="btn" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
+    <a class="btn" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
+  </div>
 
-  <!-- KEEPING YOUR CALENDAR -->
   <div class="calendar">
-    <div class="calendar-header">
-      <button onclick="prevMonth()">‹</button>
-      <h3 id="monthYear"></h3>
-      <button onclick="nextMonth()">›</button>
-    </div>
-
-    <div class="weekdays">
-      <span>Sun</span><span>Mon</span><span>Tue</span>
-      <span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-    </div>
-
     <div class="days" id="days"></div>
-    <div class="slots" id="slots"></div>
   </div>
 </section>
 
-<!-- IMAGE MODAL -->
+<!-- MODAL -->
 <div class="modal" id="modal">
   <img id="modalImg">
 </div>
@@ -284,13 +329,8 @@ header{
 
 /* INTRO */
 window.onload=()=>{
-  setTimeout(()=>document.getElementById("intro").classList.add("hide"),1800);
+  setTimeout(()=>document.getElementById("intro").classList.add("hide"),1500);
 };
-
-/* IMAGE FADE FIX */
-document.querySelectorAll("img").forEach(img=>{
-  if(img.complete) img.classList.add("loaded");
-});
 
 /* MODAL */
 const modal=document.getElementById("modal");
@@ -305,86 +345,14 @@ document.querySelectorAll(".gallery img").forEach(img=>{
 
 modal.onclick=()=>modal.classList.remove("active");
 
-/* KEEP YOUR CALENDAR JS EXACT BELOW */
-let currentDate = new Date();
-let selectedDate = null;
-
-function renderCalendar(){
-  const daysEl = document.getElementById("days");
-  const monthYear = document.getElementById("monthYear");
-  daysEl.innerHTML="";
-
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-
-  monthYear.innerText =
-    currentDate.toLocaleString("default",{month:"long"})+" "+year;
-
-  const firstDay = new Date(year,month,1).getDay();
-  const lastDate = new Date(year,month+1,0).getDate();
-
-  const today = new Date();
-
-  for(let i=0;i<firstDay;i++){
-    daysEl.innerHTML+="<div></div>";
-  }
-
-  for(let d=1; d<=lastDate; d++){
-    const date = new Date(year,month,d);
-    const div = document.createElement("div");
-    div.className="day";
-    div.innerText=d;
-
-    if(date < new Date(today.setHours(0,0,0,0))){
-      div.classList.add("disabled");
-    }
-
-    if(d===today.getDate() && month===today.getMonth()){
-      div.classList.add("today");
-    }
-
-    div.onclick=()=>selectDate(d,div);
-    daysEl.appendChild(div);
-  }
+/* SIMPLE CALENDAR */
+let days=document.getElementById("days");
+for(let i=1;i<=30;i++){
+  let d=document.createElement("div");
+  d.className="day";
+  d.innerText=i;
+  days.appendChild(d);
 }
-
-function selectDate(day,el){
-  document.querySelectorAll(".day").forEach(d=>d.classList.remove("selected"));
-  el.classList.add("selected");
-
-  selectedDate = `${day} ${currentDate.toLocaleString("default",{month:"long"})}`;
-  showSlots();
-}
-
-function showSlots(){
-  const slots = document.getElementById("slots");
-  slots.innerHTML="";
-
-  ["10 AM","1 PM","4 PM","7 PM"].forEach(time=>{
-    const s=document.createElement("div");
-    s.className="slot";
-    s.innerText=time;
-
-    s.onclick=()=>{
-      const msg=`Hi, I want to book a shoot on ${selectedDate} at ${time}`;
-      window.open(`https://wa.me/919700034138?text=${encodeURIComponent(msg)}`);
-    };
-
-    slots.appendChild(s);
-  });
-}
-
-function prevMonth(){
-  currentDate.setMonth(currentDate.getMonth()-1);
-  renderCalendar();
-}
-
-function nextMonth(){
-  currentDate.setMonth(currentDate.getMonth()+1);
-  renderCalendar();
-}
-
-renderCalendar();
 
 </script>
 
