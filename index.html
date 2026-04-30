@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light dark">
 
 <title>Dillu Captures</title>
 
@@ -11,203 +10,253 @@
 
 <style>
 
-/* ================= THEME ================= */
+/* ===== ROOT ===== */
 :root {
-  --bg: #ffffff;
-  --text: #111;
-  --glass: rgba(255,255,255,0.6);
+  --bg:#ffffff;
+  --text:#111;
+  --accent:linear-gradient(135deg,#ff7a18,#ff0066,#7a00ff);
+  --glass:rgba(255,255,255,0.6);
 }
 
-body.dark {
-  --bg: #0f0f0f;
-  --text: #f5f5f5;
-  --glass: rgba(255,255,255,0.08);
+body.dark{
+  --bg:#0f0f0f;
+  --text:#f5f5f5;
+  --glass:rgba(255,255,255,0.08);
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-
-body {
-  font-family:'Inter', sans-serif;
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
   transition:.4s;
 }
 
-/* INTRO */
-.intro {
+/* ===== INTRO ===== */
+.intro{
   position:fixed;
-  width:100%;
-  height:100%;
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
   background:var(--bg);
-  display:flex;
-  justify-content:center;
-  align-items:center;
   z-index:9999;
 }
-.intro-text {
+.intro-text{
   font-family:'Playfair Display';
-  font-size:42px;
-  opacity:0;
-  transform:translateY(30px);
-  animation:introText 1.5s forwards;
+  font-size:50px;
+  background:var(--accent);
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:fadeUp 1.5s forwards;
 }
-@keyframes introText {
-  to {opacity:1; transform:translateY(0);}
+.intro.hide{animation:fadeOut 1s forwards;}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
 }
-.intro.hide {
-  animation:fadeOut 1.2s forwards;
-}
-@keyframes fadeOut {
-  to {opacity:0; visibility:hidden;}
+@keyframes fadeOut{
+  to{opacity:0;visibility:hidden;}
 }
 
-/* NAV */
-header {
+/* ===== NAV ===== */
+header{
   position:fixed;
   width:100%;
-  top:0;
   display:flex;
   justify-content:space-between;
+  align-items:center;
   padding:18px 60px;
   backdrop-filter:blur(20px);
   background:var(--glass);
   z-index:1000;
 }
 
-header h1 { font-family:'Playfair Display'; }
+header h1{
+  font-family:'Playfair Display';
+  background:var(--accent);
+  -webkit-background-clip:text;
+  color:transparent;
+}
 
-nav a {
+nav a{
   margin-left:25px;
   text-decoration:none;
   color:var(--text);
   font-size:14px;
+  position:relative;
 }
+nav a::after{
+  content:"";
+  position:absolute;
+  bottom:-5px;
+  left:0;
+  width:0;height:2px;
+  background:var(--accent);
+  transition:.3s;
+}
+nav a:hover::after{width:100%;}
 
-/* ===== TOGGLE SWITCH (ONLY ADDITION) ===== */
-.theme-toggle {
-  width:52px;
-  height:26px;
-  margin-left:20px;
+/* TOGGLE */
+.theme-toggle{
+  width:52px;height:26px;
   border-radius:30px;
   background:var(--glass);
+  margin-left:20px;
   position:relative;
   cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  vertical-align:middle;
 }
-
-.toggle-circle {
-  width:20px;
-  height:20px;
+.toggle-circle{
+  width:20px;height:20px;
   border-radius:50%;
-  background:#111;
   position:absolute;
-  left:3px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:11px;
-  color:#fff;
-  transition:0.3s ease;
+  top:3px;left:3px;
+  background:#111;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  transition:.3s;
+}
+body.dark .toggle-circle{
+  left:29px;background:#fff;color:#111;
 }
 
-/* DARK MODE POSITION */
-body.dark .toggle-circle {
-  left:29px;
-  background:#fff;
-  color:#111;
-}
-
-/* HERO */
-.hero {
+/* ===== HERO ===== */
+.hero{
+  height:100vh;
   display:flex;
   align-items:center;
-  min-height:100vh;
   padding:120px 60px;
   position:relative;
+  overflow:hidden;
 }
-.hero::after {
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to right,rgba(0,0,0,.6),transparent);
+}
+.hero::after{
   content:"";
   position:absolute;
   right:0;
-  width:50%;
+  width:60%;
   height:100%;
   background:url('Images/1776695215852.webp') center/cover;
 }
-.hero-text {
-  max-width:500px;
-  animation:fadeUp 1.2s;
+
+.hero-text{
+  position:relative;
+  z-index:2;
+  max-width:520px;
+  color:#fff;
 }
-.hero-text h2 {
+.hero-text h2{
   font-family:'Playfair Display';
-  font-size:48px;
+  font-size:56px;
 }
-@keyframes fadeUp {
-  from{opacity:0; transform:translateY(40px);}
-  to{opacity:1; transform:translateY(0);}
-}
+.hero-text p{opacity:.8;margin-top:10px;}
 
-/* SECTIONS */
-section { padding:120px 60px; }
+/* ===== SECTIONS ===== */
+section{padding:120px 60px;}
 
-.about {
+/* ===== ABOUT ===== */
+.about{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:40px;
+  gap:50px;
 }
-.about img {
+.about img{
   width:100%;
   border-radius:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
 }
 
-.gallery {
+/* ===== GALLERY ===== */
+.gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:25px;
-}
-.gallery img {
-  width:100%;
-  border-radius:15px;
+  gap:20px;
 }
 
-/* BUTTON */
-.btn {
-  display:inline-flex;
+.gallery-item{
+  position:relative;
+  overflow:hidden;
+  border-radius:18px;
+  cursor:pointer;
+}
+.gallery img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.6s;
+}
+.gallery-item:hover img{
+  transform:scale(1.1);
+}
+
+/* overlay shine */
+.gallery-item::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);
+  opacity:0;
+  transition:.5s;
+}
+.gallery-item:hover::after{
+  opacity:1;
+}
+
+/* ===== MODAL ===== */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  display:flex;
   align-items:center;
-  gap:10px;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.4s;
+}
+.modal img{
+  max-width:90%;
+  max-height:90%;
+  border-radius:10px;
+}
+.modal.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* ===== BUTTON ===== */
+.btn{
+  display:inline-block;
   padding:14px 28px;
   border-radius:30px;
-  background:var(--glass);
+  background:var(--accent);
+  color:#fff;
   text-decoration:none;
-  color:var(--text);
   margin:10px;
 }
 
-/* CALENDAR (UNCHANGED) */
-.calendar { max-width:420px; margin:40px auto 0; text-align:center; }
-.calendar-header { display:flex; justify-content:space-between; align-items:center; }
-.calendar-header button { background:var(--glass); border:none; padding:8px 14px; border-radius:10px; cursor:pointer; }
-.weekdays { display:grid; grid-template-columns:repeat(7,1fr); margin-top:15px; font-size:12px; opacity:0.6; }
-.days { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-top:10px; }
-.day { padding:12px; border-radius:10px; background:var(--glass); cursor:pointer; }
-.day:hover { background:#111; color:#fff; }
-.day.today { border:1px solid #111; }
-.day.selected { background:#111; color:#fff; }
-.day.disabled { opacity:0.3; pointer-events:none; }
-.slots { margin-top:20px; }
-.slot { display:inline-block; padding:10px 15px; margin:6px; border-radius:20px; background:var(--glass); cursor:pointer; }
-.slot:hover { background:#111; color:#fff; }
+/* ===== CALENDAR ===== */
+.calendar{max-width:420px;margin:40px auto;text-align:center;}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
+.day{
+  padding:10px;
+  background:var(--glass);
+  border-radius:10px;
+  cursor:pointer;
+}
+.day:hover{background:#111;color:#fff;}
 
-/* MOBILE */
+/* ===== MOBILE ===== */
 @media(max-width:768px){
-  header { padding:15px 20px; }
-  .hero { flex-direction:column; text-align:center; padding:100px 20px; }
-  .hero::after { width:100%; height:50%; }
-  .hero-text { margin-top:55vh; }
-  .about { grid-template-columns:1fr; }
-  section { padding:100px 20px; }
+  header{padding:15px 20px;}
+  .hero{flex-direction:column;text-align:center;padding:100px 20px;}
+  .hero::after{width:100%;height:50%;}
+  .hero-text{margin-top:55vh;}
+  .about{grid-template-columns:1fr;}
+  section{padding:100px 20px;}
 }
 
 </style>
@@ -215,7 +264,6 @@ section { padding:120px 60px; }
 
 <body>
 
-<!-- INTRO -->
 <div class="intro" id="intro">
   <div class="intro-text">Dillu Captures</div>
 </div>
@@ -228,13 +276,9 @@ section { padding:120px 60px; }
     <a href="#gallery">Gallery</a>
     <a href="#contact">Contact</a>
 
-    <!-- REPLACED ☾ WITH TOGGLE -->
     <span class="theme-toggle" onclick="toggleTheme()">
-      <span class="toggle-circle">
-        <span id="icon">☀️</span>
-      </span>
+      <span class="toggle-circle"><span id="icon">☀️</span></span>
     </span>
-
   </nav>
 </header>
 
@@ -255,27 +299,34 @@ section { padding:120px 60px; }
 
 <section id="gallery">
   <h2 style="margin-bottom:30px">Gallery</h2>
+
   <div class="gallery">
-    <img src="Images/Kids/20240813111900_IMG_0814.webp">
-    <img src="Images/Kids/IMG_1902.webp">
-    <img src="Images/Kids/IMG_5197 (1).webp">
-    <img src="Images/Kids/IMG_5332.webp">
-    <img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp">
-    <img src="Images/Maternity Shoot/IMG_4216.webp">
-    <img src="Images/Maternity Shoot/IMG_4265.webp">
-    <img src="Images/Maternity Shoot/IMG_4363.webp">
-    <img src="Images/Temples & Culture/20230609184601_IMG_7346.webp">
-    <img src="Images/Temples & Culture/20231001121437_IMG_8556.webp">
-    <img src="Images/Temples & Culture/IMG_20251225_093551493.webp">
-    <img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp">
-    <img src="Images/Temples & Culture/IMG_3234.webp">
-    <img src="Images/Temples & Culture/IMG_3390.webp">
-    <img src="Images/Temples & Culture/IMG_3037.webp">
-    <img src="Images/Temples & Culture/IMG_20251225_195802010.webp">
+
+    <!-- KIDS -->
+    <div class="gallery-item"><img src="Images/Kids/20240813111900_IMG_0814.webp"></div>
+    <div class="gallery-item"><img src="Images/Kids/IMG_1902.webp"></div>
+    <div class="gallery-item"><img src="Images/Kids/IMG_5197 (1).webp"></div>
+    <div class="gallery-item"><img src="Images/Kids/IMG_5332.webp"></div>
+
+    <!-- MATERNITY -->
+    <div class="gallery-item"><img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp"></div>
+    <div class="gallery-item"><img src="Images/Maternity Shoot/IMG_4216.webp"></div>
+    <div class="gallery-item"><img src="Images/Maternity Shoot/IMG_4265.webp"></div>
+    <div class="gallery-item"><img src="Images/Maternity Shoot/IMG_4363.webp"></div>
+
+    <!-- CULTURE -->
+    <div class="gallery-item"><img src="Images/Temples & Culture/20230609184601_IMG_7346.webp"></div>
+    <div class="gallery-item"><img src="Images/Temples & Culture/20231001121437_IMG_8556.webp"></div>
+    <div class="gallery-item"><img src="Images/Temples & Culture/IMG_20251225_093551493.webp"></div>
+    <div class="gallery-item"><img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp"></div>
+    <div class="gallery-item"><img src="Images/Temples & Culture/IMG_3234.webp"></div>
+    <div class="gallery-item"><img src="Images/Temples & Culture/IMG_3390.webp"></div>
+    <div class="gallery-item"><img src="Images/Temples & Culture/IMG_3037.webp"></div>
+    <div class="gallery-item"><img src="Images/Temples & Culture/IMG_20251225_195802010.webp"></div>
+
   </div>
 </section>
 
-<!-- CONTACT + BOOKING -->
 <section id="contact">
   <h2>Book a Slot</h2>
 
@@ -283,117 +334,49 @@ section { padding:120px 60px; }
   <a class="btn" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
 
   <div class="calendar">
-    <div class="calendar-header">
-      <button onclick="prevMonth()">‹</button>
-      <h3 id="monthYear"></h3>
-      <button onclick="nextMonth()">›</button>
-    </div>
-
-    <div class="weekdays">
-      <span>Sun</span><span>Mon</span><span>Tue</span>
-      <span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-    </div>
-
     <div class="days" id="days"></div>
-    <div class="slots" id="slots"></div>
   </div>
 </section>
 
+<!-- IMAGE MODAL -->
+<div class="modal" id="modal">
+  <img id="modalImg">
+</div>
+
 <script>
 
-/* INTRO */
-window.onload = () => {
-  setTimeout(()=> document.getElementById("intro").classList.add("hide"),1800);
+window.onload=()=>{
+  setTimeout(()=>document.getElementById("intro").classList.add("hide"),1800);
 };
 
 /* THEME */
 function toggleTheme(){
   document.body.classList.toggle("dark");
-
   document.getElementById("icon").textContent =
-    document.body.classList.contains("dark") ? "🌙" : "☀️";
+    document.body.classList.contains("dark")?"🌙":"☀️";
 }
 
-/* CALENDAR LOGIC (UNCHANGED) */
-let currentDate = new Date();
-let selectedDate = null;
+/* CALENDAR */
+let daysEl=document.getElementById("days");
+for(let i=1;i<=30;i++){
+  let d=document.createElement("div");
+  d.className="day";
+  d.innerText=i;
+  daysEl.appendChild(d);
+}
 
-function renderCalendar(){
-  const daysEl = document.getElementById("days");
-  const monthYear = document.getElementById("monthYear");
-  daysEl.innerHTML="";
+/* IMAGE MODAL */
+const modal=document.getElementById("modal");
+const modalImg=document.getElementById("modalImg");
 
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-
-  monthYear.innerText =
-    currentDate.toLocaleString("default",{month:"long"})+" "+year;
-
-  const firstDay = new Date(year,month,1).getDay();
-  const lastDate = new Date(year,month+1,0).getDate();
-
-  const today = new Date();
-
-  for(let i=0;i<firstDay;i++){
-    daysEl.innerHTML+="<div></div>";
+document.querySelectorAll(".gallery img").forEach(img=>{
+  img.onclick=()=>{
+    modal.classList.add("active");
+    modalImg.src=img.src;
   }
+});
 
-  for(let d=1; d<=lastDate; d++){
-    const date = new Date(year,month,d);
-    const div = document.createElement("div");
-    div.className="day";
-    div.innerText=d;
-
-    if(date < new Date(today.setHours(0,0,0,0))){
-      div.classList.add("disabled");
-    }
-
-    if(d===today.getDate() && month===today.getMonth()){
-      div.classList.add("today");
-    }
-
-    div.onclick=()=>selectDate(d,div);
-    daysEl.appendChild(div);
-  }
-}
-
-function selectDate(day,el){
-  document.querySelectorAll(".day").forEach(d=>d.classList.remove("selected"));
-  el.classList.add("selected");
-
-  selectedDate = `${day} ${currentDate.toLocaleString("default",{month:"long"})}`;
-  showSlots();
-}
-
-function showSlots(){
-  const slots = document.getElementById("slots");
-  slots.innerHTML="";
-
-  ["10 AM","1 PM","4 PM","7 PM"].forEach(time=>{
-    const s=document.createElement("div");
-    s.className="slot";
-    s.innerText=time;
-
-    s.onclick=()=>{
-      const msg=`Hi, I want to book a shoot on ${selectedDate} at ${time}`;
-      window.open(`https://wa.me/919700034138?text=${encodeURIComponent(msg)}`);
-    };
-
-    slots.appendChild(s);
-  });
-}
-
-function prevMonth(){
-  currentDate.setMonth(currentDate.getMonth()-1);
-  renderCalendar();
-}
-
-function nextMonth(){
-  currentDate.setMonth(currentDate.getMonth()+1);
-  renderCalendar();
-}
-
-renderCalendar();
+modal.onclick=()=>modal.classList.remove("active");
 
 </script>
 
