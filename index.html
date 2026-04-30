@@ -3,34 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
 
 <title>Dillu Captures</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
-/* ===== ROOT ===== */
+/* ===== BASE ===== */
 :root {
   --bg:#ffffff;
   --text:#111;
-  --muted:#777;
+  --glass:rgba(255,255,255,0.6);
 }
 
+body.dark {
+  --bg:#0f0f0f;
+  --text:#f5f5f5;
+  --glass:rgba(255,255,255,0.08);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
-  margin:0;
   font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
+  line-height:1.6;
 }
 
-/* ===== SCROLL STORY ===== */
-.story-section{
-  height:200vh;
+/* ===== HEADER ===== */
+header{
+  position:fixed;
+  width:100%;
+  top:0;
+  padding:20px 60px;
+  display:flex;
+  justify-content:space-between;
+  backdrop-filter:blur(20px);
+  background:var(--glass);
+  z-index:1000;
+}
+
+/* ===== HERO ===== */
+.hero{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  padding:120px 60px;
   position:relative;
 }
 
-.story-content{
+.hero::after{
+  content:"";
+  position:absolute;
+  right:0;
+  width:50%;
+  height:100%;
+  background:url('Images/1776695215852.webp') center/cover;
+}
+
+.hero-text{
+  max-width:500px;
+}
+
+/* ===== STORY (APPLE STYLE) ===== */
+.story{
+  height:180vh;
+  position:relative;
+}
+
+.story-inner{
   position:sticky;
   top:0;
   height:100vh;
@@ -40,24 +83,74 @@ body{
   text-align:center;
 }
 
-.story-content h2{
+.story-inner h2{
   font-family:'Playfair Display';
-  font-size:48px;
-  max-width:700px;
-  transition:opacity .6s;
+  font-size:42px;
+  max-width:600px;
+}
+
+/* ===== ABOUT ===== */
+section{padding:120px 60px;}
+
+.about{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:50px;
+}
+
+.about img{
+  width:100%;
+  border-radius:20px;
+}
+
+/* ===== GALLERY ===== */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+}
+
+.gallery img{
+  width:100%;
+  border-radius:15px;
+  cursor:pointer;
+  transition:.4s;
+}
+
+.gallery img:hover{
+  transform:scale(1.05);
+}
+
+/* ===== MODAL ===== */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+}
+
+.modal.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.modal img{
+  max-width:90%;
 }
 
 /* ===== BEFORE AFTER ===== */
 .compare{
+  max-width:700px;
+  margin:80px auto;
   position:relative;
-  max-width:800px;
-  margin:100px auto;
 }
 
-.compare img{
-  width:100%;
-  display:block;
-}
+.compare img{width:100%;}
 
 .after{
   position:absolute;
@@ -77,45 +170,16 @@ body{
   cursor:ew-resize;
 }
 
-/* ===== INSTAGRAM GRID ===== */
-.insta{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:10px;
-  padding:60px;
-}
-
-.insta img{
-  width:100%;
-  border-radius:10px;
-}
-
 /* ===== BOOKING ===== */
-.booking{
-  padding:100px;
-  max-width:600px;
-  margin:auto;
+.calendar{
+  max-width:420px;
+  margin:40px auto;
 }
 
-.booking input, .booking button{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-}
-
-/* ===== HERO ===== */
-.hero{
-  height:100vh;
-  background:url('Images/1776695215852.webp') center/cover;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#fff;
-}
-
-.hero h1{
-  font-size:60px;
-  font-family:'Playfair Display';
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  header{padding:15px 20px;}
+  .about{grid-template-columns:1fr;}
 }
 
 </style>
@@ -123,21 +187,39 @@ body{
 
 <body>
 
+<header>
+  <h1>Dillu Captures</h1>
+</header>
+
 <!-- HERO -->
 <section class="hero">
-  <h1>Dillu Captures</h1>
+  <div class="hero-text">
+    <h2>Capturing Timeless Moments</h2>
+  </div>
 </section>
 
-<!-- APPLE STORY -->
-<section class="story-section">
-  <div class="story-content">
+<!-- STORY -->
+<section class="story">
+  <div class="story-inner">
     <h2 id="storyText">Every photo begins with a story.</h2>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <img src="Images/IMG_1164.webp" loading="lazy">
+  <div>
+    <h2>About Me</h2>
+    <p>
+      Photography is storytelling through light and emotion. 
+      Every frame is crafted to feel cinematic and timeless.
+    </p>
   </div>
 </section>
 
 <!-- BEFORE AFTER -->
 <section>
-  <div class="compare" id="compare">
+  <div class="compare">
     <img src="Images/Kids/IMG_1902.webp">
     <div class="after" id="after">
       <img src="Images/Kids/IMG_5332.webp">
@@ -146,75 +228,81 @@ body{
   </div>
 </section>
 
-<!-- INSTAGRAM -->
+<!-- GALLERY -->
 <section>
-  <h2 style="text-align:center">Latest Instagram</h2>
-  <div class="insta" id="instaFeed"></div>
+  <h2>Gallery</h2>
+  <div class="gallery">
+
+<img src="Images/Kids/20240813111900_IMG_0814.webp">
+<img src="Images/Kids/IMG_1902.webp">
+<img src="Images/Kids/IMG_5197 (1).webp">
+<img src="Images/Kids/IMG_5332.webp">
+<img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp">
+<img src="Images/Maternity Shoot/IMG_4216.webp">
+<img src="Images/Maternity Shoot/IMG_4265.webp">
+<img src="Images/Maternity Shoot/IMG_4363.webp">
+<img src="Images/Temples & Culture/20230609184601_IMG_7346.webp">
+<img src="Images/Temples & Culture/20231001121437_IMG_8556.webp">
+<img src="Images/Temples & Culture/IMG_20251225_093551493.webp">
+<img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp">
+<img src="Images/Temples & Culture/IMG_3234.webp">
+<img src="Images/Temples & Culture/IMG_3390.webp">
+<img src="Images/Temples & Culture/IMG_3037.webp">
+<img src="Images/Temples & Culture/IMG_20251225_195802010.webp">
+
+  </div>
 </section>
 
-<!-- BOOKING -->
-<section class="booking">
-  <h2>Book a Shoot</h2>
+<!-- CONTACT -->
+<section>
+  <h2>Book a Slot</h2>
 
-  <input type="date" id="date">
-  <input type="time" id="time">
-
-  <button onclick="book()">Book Now</button>
+  <a href="https://wa.me/919700034138">WhatsApp</a>
 </section>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <img id="modalImg">
+</div>
 
 <script>
 
-/* ===== STORY TEXT CHANGE ===== */
-const storyText=document.getElementById("storyText");
-
+/* STORY TEXT */
 window.addEventListener("scroll",()=>{
-  const scroll=window.scrollY;
+  const y=window.scrollY;
+  const text=document.getElementById("storyText");
 
-  if(scroll<500){
-    storyText.innerText="Every photo begins with a story.";
-  }else if(scroll<1000){
-    storyText.innerText="Light creates emotion.";
-  }else{
-    storyText.innerText="Emotion creates timeless memories.";
+  if(y<500) text.innerText="Every photo begins with a story.";
+  else if(y<1000) text.innerText="Light creates emotion.";
+  else text.innerText="Emotion creates timeless memories.";
+});
+
+/* MODAL */
+const modal=document.getElementById("modal");
+const modalImg=document.getElementById("modalImg");
+
+document.querySelectorAll(".gallery img").forEach(img=>{
+  img.onclick=()=>{
+    modal.classList.add("active");
+    modalImg.src=img.src;
   }
 });
 
-/* ===== BEFORE AFTER SLIDER ===== */
+modal.onclick=()=>modal.classList.remove("active");
+
+/* BEFORE AFTER */
 const slider=document.getElementById("slider");
 const after=document.getElementById("after");
 
-slider.onmousedown=(e)=>{
+slider.onmousedown=()=>{
   document.onmousemove=(e)=>{
     let rect=slider.parentElement.getBoundingClientRect();
-    let x=e.clientX - rect.left;
-
+    let x=e.clientX-rect.left;
     after.style.width=x+"px";
     slider.style.left=x+"px";
-  }
+  };
   document.onmouseup=()=>document.onmousemove=null;
 };
-
-/* ===== INSTAGRAM AUTO SYNC ===== */
-/* Replace YOUR_TOKEN */
-fetch("https://graph.instagram.com/me/media?fields=id,media_url&access_token=YOUR_TOKEN")
-.then(res=>res.json())
-.then(data=>{
-  let html="";
-  data.data.slice(0,6).forEach(post=>{
-    html+=`<img src="${post.media_url}">`;
-  });
-  document.getElementById("instaFeed").innerHTML=html;
-});
-
-/* ===== BOOKING ===== */
-function book(){
-  const date=document.getElementById("date").value;
-  const time=document.getElementById("time").value;
-
-  alert("Booking request sent for "+date+" at "+time);
-
-  /* Later connect to backend */
-}
 
 </script>
 
