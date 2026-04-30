@@ -7,16 +7,17 @@
 
 <title>Dillu Captures</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- PREMIUM FONTS -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
-/* ===== CLEAN ROOT ===== */
+/* ===== ROOT ===== */
 :root {
   --bg:#ffffff;
   --text:#111;
   --muted:#777;
-  --glass:rgba(255,255,255,0.7);
+  --glass:rgba(255,255,255,0.65);
 }
 
 body.dark{
@@ -34,13 +35,7 @@ body{
   background:var(--bg);
   color:var(--text);
   line-height:1.6;
-}
-
-/* ===== SPACING SYSTEM ===== */
-section{
-  padding:140px 80px;
-  max-width:1400px;
-  margin:auto;
+  overflow-x:hidden;
 }
 
 /* ===== INTRO ===== */
@@ -52,10 +47,10 @@ section{
 }
 .intro-text{
   font-family:'Playfair Display';
-  font-size:44px;
-  letter-spacing:1px;
+  font-size:42px;
+  letter-spacing:2px;
 }
-.intro.hide{opacity:0;visibility:hidden;transition:1s;}
+.intro.hide{opacity:0;visibility:hidden;transition:1s ease;}
 
 /* ===== HEADER ===== */
 header{
@@ -69,6 +64,7 @@ header{
   backdrop-filter:blur(20px);
   background:var(--glass);
   z-index:1000;
+  transition:.4s;
 }
 
 header h1{
@@ -76,52 +72,62 @@ header h1{
   font-size:20px;
 }
 
-nav{
-  display:flex;
-  align-items:center;
-}
-
 nav a{
   margin-left:30px;
   text-decoration:none;
   color:var(--text);
   font-size:14px;
-  opacity:.8;
+  opacity:.7;
+  transition:.3s;
 }
 
-nav a:hover{opacity:1;}
+nav a:hover{
+  opacity:1;
+  transform:translateY(-2px);
+}
 
-/* ===== HERO ===== */
+/* ===== HERO VIDEO ===== */
 .hero{
-  min-height:100vh;
+  position:relative;
+  height:100vh;
   display:flex;
   align-items:center;
   padding:0 80px;
-  position:relative;
+  overflow:hidden;
 }
 
-.hero::after{
-  content:"";
+.hero video{
   position:absolute;
-  right:0;
-  width:55%;
+  inset:0;
+  width:100%;
   height:100%;
-  background:url('Images/1776695215852.webp') center/cover;
+  object-fit:cover;
+  filter:brightness(.6);
 }
 
 .hero-text{
-  max-width:520px;
+  position:relative;
   z-index:2;
+  max-width:600px;
+  color:#fff;
 }
 
 .hero-text h2{
   font-family:'Playfair Display';
-  font-size:56px;
+  font-size:64px;
+  line-height:1.2;
   margin-bottom:20px;
 }
 
 .hero-text p{
-  color:var(--muted);
+  opacity:.8;
+}
+
+/* ===== SECTIONS ===== */
+section{
+  padding:140px 80px;
+  max-width:1400px;
+  margin:auto;
 }
 
 /* ===== ABOUT ===== */
@@ -135,11 +141,13 @@ nav a:hover{opacity:1;}
 .about img{
   width:100%;
   border-radius:16px;
+  transition:.6s;
+}
+.about img:hover{
+  transform:scale(1.02);
 }
 
-.about p{
-  color:var(--muted);
-}
+.about p{color:var(--muted);}
 
 /* ===== STORY ===== */
 .story{
@@ -166,11 +174,11 @@ nav a:hover{opacity:1;}
   width:100%;
   border-radius:12px;
   cursor:pointer;
-  transition:.4s ease;
+  transition:.5s ease;
 }
 
 .gallery img:hover{
-  transform:scale(1.04);
+  transform:scale(1.05);
 }
 
 /* ===== MODAL ===== */
@@ -202,38 +210,29 @@ nav a:hover{opacity:1;}
   text-decoration:none;
   color:var(--text);
   margin-right:10px;
-  font-size:14px;
+  transition:.3s;
+}
+.btn:hover{
+  transform:translateY(-3px);
 }
 
-/* ===== CALENDAR ===== */
-.calendar{
-  margin-top:40px;
-  max-width:420px;
+/* ===== SCROLL ANIMATION ===== */
+.reveal{
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s ease;
 }
-
-.days{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:8px;
-}
-.day{
-  padding:10px;
-  border-radius:8px;
-  background:var(--glass);
-  cursor:pointer;
-}
-.day:hover{
-  background:#111;
-  color:#fff;
+.reveal.active{
+  opacity:1;
+  transform:translateY(0);
 }
 
 /* ===== MOBILE ===== */
 @media(max-width:768px){
   header{padding:15px 20px;}
   section{padding:100px 20px;}
-  .hero{flex-direction:column;text-align:center;}
-  .hero::after{width:100%;height:50%;}
-  .hero-text{margin-top:60vh;}
+  .hero{padding:0 20px;text-align:center;}
+  .hero-text{margin:auto;}
   .about{grid-template-columns:1fr;}
 }
 
@@ -256,14 +255,19 @@ nav a:hover{opacity:1;}
   </nav>
 </header>
 
+<!-- HERO VIDEO -->
 <section class="hero">
-  <div class="hero-text">
+  <video autoplay muted loop playsinline>
+    <source src="Images/video.mp4" type="video/mp4">
+  </video>
+
+  <div class="hero-text reveal">
     <h2>Capturing Timeless Moments</h2>
     <p>Luxury photography crafted with emotion.</p>
   </div>
 </section>
 
-<section id="about" class="about">
+<section id="about" class="about reveal">
   <img src="Images/IMG_1164.webp">
   <div>
     <h2>About Me</h2>
@@ -274,7 +278,7 @@ nav a:hover{opacity:1;}
   </div>
 </section>
 
-<section class="story">
+<section class="story reveal">
   <h2>The Art of Photography</h2>
   <p>
     Great photography is not staged—it’s felt. Every frame tells a story that lives beyond the moment.
@@ -307,16 +311,12 @@ nav a:hover{opacity:1;}
   </div>
 </section>
 
-<section id="contact">
+<section id="contact" class="reveal">
   <h2>Book a Slot</h2>
 
   <div style="margin-top:20px">
     <a class="btn" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
     <a class="btn" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
-  </div>
-
-  <div class="calendar">
-    <div class="days" id="days"></div>
   </div>
 </section>
 
@@ -345,14 +345,17 @@ document.querySelectorAll(".gallery img").forEach(img=>{
 
 modal.onclick=()=>modal.classList.remove("active");
 
-/* SIMPLE CALENDAR */
-let days=document.getElementById("days");
-for(let i=1;i<=30;i++){
-  let d=document.createElement("div");
-  d.className="day";
-  d.innerText=i;
-  days.appendChild(d);
-}
+/* SCROLL REVEAL */
+const reveals=document.querySelectorAll(".reveal");
+
+window.addEventListener("scroll",()=>{
+  reveals.forEach(el=>{
+    const top=el.getBoundingClientRect().top;
+    if(top < window.innerHeight - 100){
+      el.classList.add("active");
+    }
+  });
+});
 
 </script>
 
