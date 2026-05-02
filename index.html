@@ -3,246 +3,175 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dillu Captures — Story</title>
+<title>Dillu Cinematic</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
 
 <style>
-/* ===== BASE ===== */
-:root{
-  --bg:#000;
-  --text:#fff;
-}
-*{box-sizing:border-box;margin:0;padding:0}
 body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter;
+  margin:0;
   overflow-x:hidden;
-}
-
-/* ===== CANVAS (SEQUENCE) ===== */
-#seq{
-  position:fixed;
-  inset:0;
-  width:100vw;
-  height:100vh;
-  z-index:1;
-}
-
-/* ===== SCENES ===== */
-.scene{
-  position:relative;
-  height:200vh; /* gives room for scroll */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.content{
-  position:sticky;
-  top:0;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  pointer-events:none;
-}
-
-/* ===== TEXT ===== */
-.title{
-  font-family:Playfair Display;
-  font-size:56px;
-  opacity:0;
-  transform:translateY(60px) scale(.95);
-  transition:all .6s ease;
-}
-.title.show{
-  opacity:1;
-  transform:translateY(0) scale(1);
-}
-
-/* ===== PARALLAX LAYERS ===== */
-.layer{
-  position:absolute;
-  width:120%;
-  height:120%;
-  top:-10%;
-  left:-10%;
-  background-size:cover;
-  background-position:center;
-  will-change:transform;
-}
-
-/* depth levels */
-.layer.back{ z-index:0; opacity:.25; }
-.layer.mid{ z-index:2; opacity:.4; }
-.layer.front{ z-index:3; opacity:.7; }
-
-/* ===== FINAL GALLERY ===== */
-.gallery{
-  padding:80px 40px;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
   background:#000;
+  color:#fff;
+  font-family:Inter;
 }
-.gallery img{
+
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+}
+
+/* TEXT */
+.text{
+  position:fixed;
   width:100%;
-  border-radius:14px;
-  transition:.4s;
+  top:40%;
+  text-align:center;
+  font-size:40px;
+  opacity:0;
+  transition:1s;
 }
-.gallery img:hover{
-  transform:scale(1.05);
+.text.show{ opacity:1; }
+
+.spacer{
+  height:300vh;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ===== SCENE 1 ===== -->
-<section class="scene" id="scene1">
-  <div class="layer back" style="background-image:url('Images/Temples & Culture/IMG_3390.webp')"></div>
-  <div class="layer mid" style="background-image:url('Images/Kids/IMG_1902.webp')"></div>
-  <div class="layer front" style="background-image:url('Images/Maternity Shoot/IMG_4216.webp')"></div>
-
-  <div class="content">
-    <h1 class="title">Dillu Captures</h1>
-  </div>
-</section>
-
-<!-- ===== SCENE 2 (IMAGE SEQUENCE) ===== -->
-<section class="scene" id="scene2">
-  <div class="content">
-    <h1 class="title">Every Frame Tells a Story</h1>
-  </div>
-</section>
-
-<!-- ===== SCENE 3 ===== -->
-<section class="scene" id="scene3">
-  <div class="content">
-    <h1 class="title">Luxury. Emotion. Precision.</h1>
-  </div>
-</section>
-
-<!-- ===== CANVAS FOR SEQUENCE ===== -->
-<canvas id="seq"></canvas>
-
-<!-- ===== GALLERY ===== -->
-<section class="gallery">
-  <img src="Images/Kids/IMG_5332.webp">
-  <img src="Images/Maternity Shoot/IMG_4265.webp">
-  <img src="Images/Temples & Culture/IMG_3037.webp">
-</section>
+<div class="text" id="title">Dillu Captures</div>
+<div class="spacer"></div>
 
 <script>
 
 /* ================================
-   SCROLL ENGINE (CORE)
+   THREE JS SETUP
 ================================ */
-let scrollY = 0;
-let targetScroll = 0;
+const scene = new THREE.Scene();
 
-window.addEventListener("scroll", () => {
-  targetScroll = window.scrollY;
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth/window.innerHeight,
+  0.1,
+  1000
+);
+camera.position.z = 5;
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth,window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+/* ================================
+   DEPTH LAYERS
+================================ */
+const textures = [
+  "Images/Kids/IMG_1902.webp",
+  "Images/Maternity Shoot/IMG_4216.webp",
+  "Images/Temples & Culture/IMG_3390.webp"
+];
+
+const loader = new THREE.TextureLoader();
+const planes = [];
+
+textures.forEach((src,i)=>{
+  const tex = loader.load(src);
+
+  const geo = new THREE.PlaneGeometry(4,3);
+  const mat = new THREE.MeshBasicMaterial({map:tex});
+
+  const mesh = new THREE.Mesh(geo,mat);
+  mesh.position.z = -i*3; // depth layers
+  scene.add(mesh);
+
+  planes.push(mesh);
 });
 
-/* smooth interpolation */
-function lerp(a,b,t){ return a + (b-a)*t }
-
 /* ================================
-   PARALLAX DEPTH
+   SCROLL → CAMERA
 ================================ */
-function updateParallax(){
-  document.querySelectorAll(".scene").forEach(scene=>{
-    const rect = scene.getBoundingClientRect();
-    const progress = rect.top / window.innerHeight;
+let scrollY = 0;
 
-    scene.querySelectorAll(".layer").forEach(layer=>{
-      let depth = layer.classList.contains("back") ? 20 :
-                  layer.classList.contains("mid") ? 40 : 70;
+window.addEventListener("scroll",()=>{
+  scrollY = window.scrollY;
+});
 
-      layer.style.transform = `translateY(${progress * depth}px) scale(1.1)`;
-    });
+function animate(){
+  requestAnimationFrame(animate);
 
-    const title = scene.querySelector(".title");
-    if(rect.top < window.innerHeight*0.6 && rect.bottom > 0){
-      title.classList.add("show");
-    } else {
-      title.classList.remove("show");
-    }
+  const progress = scrollY / window.innerHeight;
+
+  /* camera movement */
+  camera.position.z = 5 - progress * 6;
+
+  /* subtle parallax */
+  planes.forEach((p,i)=>{
+    p.position.y = Math.sin(progress + i)*0.3;
   });
+
+  renderer.render(scene,camera);
 }
+animate();
 
 /* ================================
-   IMAGE SEQUENCE (APPLE STYLE)
+   AI IMAGE DETECTION
 ================================ */
-const canvas = document.getElementById("seq");
-const ctx = canvas.getContext("2d");
+let model;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+async function loadAI(){
+  model = await mobilenet.load();
 
-const frameCount = 60;
-const images = [];
-let loaded = 0;
-
-for(let i=1;i<=frameCount;i++){
   const img = new Image();
-  img.src = `Images/sequence/frame_${String(i).padStart(4,'0')}.webp`;
-  img.onload = ()=>{ loaded++; if(loaded===frameCount) drawFrame(0); }
-  images.push(img);
-}
+  img.src = textures[0];
 
-function drawFrame(index){
-  const img = images[index];
-  if(!img) return;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  const scale = Math.max(canvas.width/img.width, canvas.height/img.height);
-  const x = (canvas.width/2) - (img.width/2)*scale;
-  const y = (canvas.height/2) - (img.height/2)*scale;
-
-  ctx.drawImage(img,x,y,img.width*scale,img.height*scale);
-}
-
-/* ================================
-   SCROLL → FRAME CONTROL
-================================ */
-function updateSequence(){
-  const scene = document.getElementById("scene2");
-  const rect = scene.getBoundingClientRect();
-
-  if(rect.top <= 0 && rect.bottom >= 0){
-    const progress = Math.abs(rect.top) / (rect.height - window.innerHeight);
-    const frame = Math.min(frameCount-1, Math.floor(progress * frameCount));
-    drawFrame(frame);
-    canvas.style.opacity = 1;
-  } else {
-    canvas.style.opacity = 0;
+  img.onload = async ()=>{
+    const predictions = await model.classify(img);
+    applyAIStyle(predictions);
   }
 }
 
-/* ================================
-   MAIN LOOP
-================================ */
-function animate(){
-  scrollY = lerp(scrollY, targetScroll, 0.08);
+function applyAIStyle(predictions){
+  const label = predictions[0].className;
 
-  updateParallax();
-  updateSequence();
+  console.log("AI detected:", label);
 
-  requestAnimationFrame(animate);
+  if(label.includes("person")){
+    document.body.style.background = "#111";
+  }
+  else if(label.includes("nature")){
+    document.body.style.background = "#020617";
+  }
+  else{
+    document.body.style.background = "#000";
+  }
 }
-animate();
+
+loadAI();
+
+/* ================================
+   TEXT TIMING
+================================ */
+window.addEventListener("scroll",()=>{
+  const title = document.getElementById("title");
+
+  if(scrollY > 100){
+    title.classList.add("show");
+  } else {
+    title.classList.remove("show");
+  }
+});
 
 /* ================================
    RESIZE
 ================================ */
 window.addEventListener("resize",()=>{
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
 });
 
 </script>
