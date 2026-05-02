@@ -5,17 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dillu Captures</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter&family=Playfair+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
 /* ===== BASE ===== */
+:root{
+  --bg:#0f0f0f;
+  --text:#fff;
+  --glass:rgba(255,255,255,0.08);
+}
+
 body{
   margin:0;
   font-family:Inter;
-  background:#000;
-  color:#fff;
+  background:var(--bg);
+  color:var(--text);
   overflow-x:hidden;
+}
+
+/* ===== CINEMATIC INTRO ===== */
+.intro{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  animation:fadeOut 1.5s ease 2s forwards;
+}
+.intro h1{
+  font-family:Playfair Display;
+  font-size:50px;
+  letter-spacing:3px;
+  animation:zoomIn 2s ease forwards;
+}
+
+@keyframes zoomIn{
+  from{opacity:0; transform:scale(0.8);}
+  to{opacity:1; transform:scale(1);}
+}
+
+@keyframes fadeOut{
+  to{opacity:0; visibility:hidden;}
+}
+
+/* ===== NAV ===== */
+header{
+  position:fixed;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  padding:20px 60px;
+  backdrop-filter:blur(20px);
+  background:var(--glass);
+  z-index:1000;
+}
+
+nav a{
+  margin-left:20px;
+  color:#fff;
+  text-decoration:none;
 }
 
 /* ===== HERO ===== */
@@ -23,73 +74,96 @@ body{
   height:100vh;
   display:flex;
   align-items:center;
-  justify-content:center;
+  padding:60px;
+  position:relative;
 }
-.hero h1{
+
+.hero::after{
+  content:"";
+  position:absolute;
+  right:0;
+  width:50%;
+  height:100%;
+  background:url('Images/1776695215852.webp') center/cover;
+  opacity:0.7;
+}
+
+.hero-text{
+  max-width:500px;
+  z-index:2;
+}
+
+.hero h2{
+  font-size:52px;
   font-family:Playfair Display;
-  font-size:50px;
-  opacity:0;
-  transform:translateY(30px);
-  animation:fadeUp 1s forwards;
 }
-@keyframes fadeUp{
-  to{opacity:1;transform:translateY(0);}
+
+/* ===== SCROLL ANIMATION ===== */
+.fade{
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s;
+}
+.fade.show{
+  opacity:1;
+  transform:translateY(0);
 }
 
 /* ===== GALLERY ===== */
 .gallery{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:6px;
-  padding:8px;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  padding:40px;
 }
+
 .gallery img{
   width:100%;
-  border-radius:12px;
+  border-radius:15px;
+  transition:.4s;
   cursor:pointer;
+}
+
+.gallery img:hover{
+  transform:scale(1.05);
 }
 
 /* ===== VIEWER ===== */
 .viewer{
   position:fixed;
   inset:0;
+  background:#000;
   display:none;
   justify-content:center;
   align-items:center;
-  overflow:hidden;
 }
 
-/* ===== LIVE BLUR BACKGROUND ===== */
-.bg-blur{
-  position:absolute;
-  inset:0;
-  background-size:cover;
-  background-position:center;
-  filter:blur(40px) brightness(0.4);
-  transform:scale(1.2);
-  transition:.6s;
-}
-
-/* ===== IMAGE ===== */
 .viewer img{
-  position:relative;
   max-width:90%;
   max-height:90%;
-  z-index:2;
-  transition:transform .2s ease;
 }
 
-/* ===== GLASS BAR ===== */
-.topbar{
-  position:absolute;
-  top:15px;
-  left:50%;
-  transform:translateX(-50%);
-  padding:10px 20px;
-  border-radius:20px;
-  backdrop-filter:blur(20px);
-  background:rgba(255,255,255,0.1);
-  transition:.3s;
+/* ===== BUTTON ===== */
+.btn{
+  padding:14px 28px;
+  border-radius:30px;
+  background:var(--glass);
+  color:#fff;
+  text-decoration:none;
+  display:inline-block;
+  margin:10px;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  .hero{
+    flex-direction:column;
+    text-align:center;
+  }
+  .hero::after{
+    width:100%;
+    height:50%;
+  }
 }
 
 </style>
@@ -97,124 +171,77 @@ body{
 
 <body>
 
-<div class="hero">
+<div class="intro">
   <h1>Dillu Captures</h1>
 </div>
 
-<div class="gallery" id="gallery"></div>
+<header>
+  <h2>Dillu</h2>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-text fade">
+    <h2>Capturing Timeless Luxury</h2>
+    <p>Premium storytelling through photography.</p>
+  </div>
+</section>
+
+<section id="gallery">
+  <h2 style="text-align:center">Gallery</h2>
+  <div class="gallery fade">
+
+    <img src="Images/Kids/IMG_1902.webp">
+    <img src="Images/Kids/IMG_5332.webp">
+    <img src="Images/Maternity Shoot/IMG_4216.webp">
+    <img src="Images/Maternity Shoot/IMG_4265.webp">
+    <img src="Images/Temples & Culture/IMG_3390.webp">
+    <img src="Images/Temples & Culture/IMG_3037.webp">
+
+  </div>
+</section>
+
+<section id="contact" class="fade" style="text-align:center">
+  <h2>Book a Session</h2>
+  <a class="btn" href="https://wa.me/919700034138">WhatsApp</a>
+  <a class="btn" href="https://www.instagram.com/dillu_captures/">Instagram</a>
+</section>
 
 <div class="viewer" id="viewer">
-  <div class="bg-blur" id="bg"></div>
-  <div class="topbar" id="bar">Swipe • Drag • Tap</div>
-  <img id="img">
+  <img id="viewerImg">
 </div>
 
 <script>
 
-/* ===== IMAGES ===== */
-const images=[
-"Images/Kids/IMG_1902.webp",
-"Images/Kids/IMG_5332.webp",
-"Images/Maternity Shoot/IMG_4216.webp",
-"Images/Maternity Shoot/IMG_4265.webp",
-"Images/Temples & Culture/IMG_3390.webp",
-"Images/Temples & Culture/IMG_3037.webp"
-];
-
-const gallery=document.getElementById("gallery");
-
-/* ===== LOAD GRID ===== */
-images.forEach((src,i)=>{
-  const img=document.createElement("img");
-  img.src=src;
-  img.onclick=()=>openViewer(i);
-  gallery.appendChild(img);
+/* ===== SCROLL ANIMATION ===== */
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add("show");
+    }
+  });
 });
 
-/* ===== VIEWER ===== */
-let current=0;
+document.querySelectorAll(".fade").forEach(el=>{
+  observer.observe(el);
+});
+
+/* ===== IMAGE VIEWER ===== */
 const viewer=document.getElementById("viewer");
-const viewerImg=document.getElementById("img");
-const bg=document.getElementById("bg");
+const viewerImg=document.getElementById("viewerImg");
 
-function openViewer(i){
-  current=i;
-  viewer.style.display="flex";
-  update();
-
-  viewerImg.style.transform="scale(0.9)";
-  setTimeout(()=>viewerImg.style.transform="scale(1)",50);
-
-  vibrate(10);
-}
-
-function update(){
-  viewerImg.src=images[current];
-  bg.style.backgroundImage=`url(${images[current]})`;
-}
-
-/* ===== HAPTIC ===== */
-function vibrate(ms){
-  if(navigator.vibrate) navigator.vibrate(ms);
-}
-
-/* ===== SWIPE PHYSICS ===== */
-let startX=0, velocity=0, lastX=0, time=0;
-
-viewer.addEventListener("touchstart",e=>{
-  startX=e.touches[0].clientX;
-  lastX=startX;
-  time=Date.now();
+document.querySelectorAll(".gallery img").forEach(img=>{
+  img.onclick=()=>{
+    viewer.style.display="flex";
+    viewerImg.src=img.src;
+  };
 });
 
-viewer.addEventListener("touchmove",e=>{
-  let x=e.touches[0].clientX;
-  let dx=x-startX;
-
-  let now=Date.now();
-  velocity=(x-lastX)/(now-time);
-
-  lastX=x;
-  time=now;
-
-  viewerImg.style.transform=`translateX(${dx}px) scale(0.95)`;
-});
-
-viewer.addEventListener("touchend",()=>{
-  let momentum=velocity*300;
-
-  if(momentum<-50){
-    next();
-  } else if(momentum>50){
-    prev();
-  }
-
-  viewerImg.style.transform="";
-});
-
-/* ===== NAV ===== */
-function next(){
-  current=(current+1)%images.length;
-  update();
-  vibrate(5);
-}
-function prev(){
-  current=(current-1+images.length)%images.length;
-  update();
-  vibrate(5);
-}
-
-/* ===== TAP CLOSE ===== */
-viewer.addEventListener("click",()=>{
-  viewer.style.display="none";
-});
-
-/* ===== SCROLL GLASS EFFECT ===== */
-window.addEventListener("scroll",()=>{
-  const bar=document.getElementById("bar");
-  let blur=Math.min(window.scrollY/50,20);
-  bar.style.backdropFilter=`blur(${blur}px)`;
-});
+viewer.onclick=()=>viewer.style.display="none";
 
 </script>
 
