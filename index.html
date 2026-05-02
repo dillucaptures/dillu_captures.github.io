@@ -3,146 +3,246 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dillu Captures</title>
+<title>Dillu Captures — Story</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
 
-<!-- THREE JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-
 <style>
-
 /* ===== BASE ===== */
+:root{
+  --bg:#000;
+  --text:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
 body{
-  margin:0;
+  background:var(--bg);
+  color:var(--text);
   font-family:Inter;
-  background:#000;
-  color:#fff;
   overflow-x:hidden;
 }
 
-/* ===== WEBGL CANVAS ===== */
-canvas{
+/* ===== CANVAS (SEQUENCE) ===== */
+#seq{
   position:fixed;
-  top:0;
-  left:0;
-  z-index:-1;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  z-index:1;
 }
 
-/* ===== SECTION ===== */
-.section{
+/* ===== SCENES ===== */
+.scene{
+  position:relative;
+  height:200vh; /* gives room for scroll */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.content{
+  position:sticky;
+  top:0;
   height:100vh;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   text-align:center;
-  padding:40px;
+  pointer-events:none;
 }
 
-/* ===== TEXT ANIMATION ===== */
-.text{
+/* ===== TEXT ===== */
+.title{
+  font-family:Playfair Display;
+  font-size:56px;
   opacity:0;
-  transform:translateY(50px) scale(0.95);
-  transition:all 1s ease;
+  transform:translateY(60px) scale(.95);
+  transition:all .6s ease;
 }
-.text.show{
+.title.show{
   opacity:1;
   transform:translateY(0) scale(1);
 }
 
-h1{
-  font-family:Playfair Display;
-  font-size:50px;
+/* ===== PARALLAX LAYERS ===== */
+.layer{
+  position:absolute;
+  width:120%;
+  height:120%;
+  top:-10%;
+  left:-10%;
+  background-size:cover;
+  background-position:center;
+  will-change:transform;
 }
 
-/* ===== GALLERY ===== */
+/* depth levels */
+.layer.back{ z-index:0; opacity:.25; }
+.layer.mid{ z-index:2; opacity:.4; }
+.layer.front{ z-index:3; opacity:.7; }
+
+/* ===== FINAL GALLERY ===== */
 .gallery{
+  padding:80px 40px;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:15px;
-  padding:40px;
+  gap:20px;
+  background:#000;
 }
 .gallery img{
   width:100%;
-  border-radius:12px;
+  border-radius:14px;
   transition:.4s;
 }
 .gallery img:hover{
   transform:scale(1.05);
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- SCROLL STORY -->
-<div class="section"><div class="text"><h1>Dillu Captures</h1></div></div>
-<div class="section"><div class="text"><h1>Luxury Photography</h1></div></div>
-<div class="section"><div class="text"><h1>Every Frame Matters</h1></div></div>
+<!-- ===== SCENE 1 ===== -->
+<section class="scene" id="scene1">
+  <div class="layer back" style="background-image:url('Images/Temples & Culture/IMG_3390.webp')"></div>
+  <div class="layer mid" style="background-image:url('Images/Kids/IMG_1902.webp')"></div>
+  <div class="layer front" style="background-image:url('Images/Maternity Shoot/IMG_4216.webp')"></div>
 
-<!-- GALLERY -->
-<div class="gallery">
-  <img src="Images/Kids/IMG_1902.webp">
+  <div class="content">
+    <h1 class="title">Dillu Captures</h1>
+  </div>
+</section>
+
+<!-- ===== SCENE 2 (IMAGE SEQUENCE) ===== -->
+<section class="scene" id="scene2">
+  <div class="content">
+    <h1 class="title">Every Frame Tells a Story</h1>
+  </div>
+</section>
+
+<!-- ===== SCENE 3 ===== -->
+<section class="scene" id="scene3">
+  <div class="content">
+    <h1 class="title">Luxury. Emotion. Precision.</h1>
+  </div>
+</section>
+
+<!-- ===== CANVAS FOR SEQUENCE ===== -->
+<canvas id="seq"></canvas>
+
+<!-- ===== GALLERY ===== -->
+<section class="gallery">
   <img src="Images/Kids/IMG_5332.webp">
-  <img src="Images/Maternity Shoot/IMG_4216.webp">
   <img src="Images/Maternity Shoot/IMG_4265.webp">
-  <img src="Images/Temples & Culture/IMG_3390.webp">
   <img src="Images/Temples & Culture/IMG_3037.webp">
-</div>
+</section>
 
 <script>
 
-/* ===== SCROLL STORY ANIMATION ===== */
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add("show");
+/* ================================
+   SCROLL ENGINE (CORE)
+================================ */
+let scrollY = 0;
+let targetScroll = 0;
+
+window.addEventListener("scroll", () => {
+  targetScroll = window.scrollY;
+});
+
+/* smooth interpolation */
+function lerp(a,b,t){ return a + (b-a)*t }
+
+/* ================================
+   PARALLAX DEPTH
+================================ */
+function updateParallax(){
+  document.querySelectorAll(".scene").forEach(scene=>{
+    const rect = scene.getBoundingClientRect();
+    const progress = rect.top / window.innerHeight;
+
+    scene.querySelectorAll(".layer").forEach(layer=>{
+      let depth = layer.classList.contains("back") ? 20 :
+                  layer.classList.contains("mid") ? 40 : 70;
+
+      layer.style.transform = `translateY(${progress * depth}px) scale(1.1)`;
+    });
+
+    const title = scene.querySelector(".title");
+    if(rect.top < window.innerHeight*0.6 && rect.bottom > 0){
+      title.classList.add("show");
+    } else {
+      title.classList.remove("show");
     }
   });
-},{threshold:0.5});
+}
 
-document.querySelectorAll(".text").forEach(el=>{
-  observer.observe(el);
-});
+/* ================================
+   IMAGE SEQUENCE (APPLE STYLE)
+================================ */
+const canvas = document.getElementById("seq");
+const ctx = canvas.getContext("2d");
 
-/* ===== THREE JS BACKGROUND ===== */
-const scene = new THREE.Scene();
-const camera = new THREE.Camera();
-const renderer = new THREE.WebGLRenderer({alpha:true});
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+const frameCount = 60;
+const images = [];
+let loaded = 0;
 
-const geometry = new THREE.PlaneGeometry(2,2);
+for(let i=1;i<=frameCount;i++){
+  const img = new Image();
+  img.src = `Images/sequence/frame_${String(i).padStart(4,'0')}.webp`;
+  img.onload = ()=>{ loaded++; if(loaded===frameCount) drawFrame(0); }
+  images.push(img);
+}
 
-const material = new THREE.ShaderMaterial({
-  uniforms:{
-    time:{value:0}
-  },
-  fragmentShader:`
-    uniform float time;
-    void main(){
-      vec2 uv = gl_FragCoord.xy / vec2(800.0,600.0);
-      float color = 0.5 + 0.5*sin(time + uv.x*5.0);
-      gl_FragColor = vec4(vec3(color*0.2, color*0.3, color*0.5),1.0);
-    }
-  `
-});
+function drawFrame(index){
+  const img = images[index];
+  if(!img) return;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+  const scale = Math.max(canvas.width/img.width, canvas.height/img.height);
+  const x = (canvas.width/2) - (img.width/2)*scale;
+  const y = (canvas.height/2) - (img.height/2)*scale;
 
+  ctx.drawImage(img,x,y,img.width*scale,img.height*scale);
+}
+
+/* ================================
+   SCROLL → FRAME CONTROL
+================================ */
+function updateSequence(){
+  const scene = document.getElementById("scene2");
+  const rect = scene.getBoundingClientRect();
+
+  if(rect.top <= 0 && rect.bottom >= 0){
+    const progress = Math.abs(rect.top) / (rect.height - window.innerHeight);
+    const frame = Math.min(frameCount-1, Math.floor(progress * frameCount));
+    drawFrame(frame);
+    canvas.style.opacity = 1;
+  } else {
+    canvas.style.opacity = 0;
+  }
+}
+
+/* ================================
+   MAIN LOOP
+================================ */
 function animate(){
-  material.uniforms.time.value += 0.01;
-  renderer.render(scene, camera);
+  scrollY = lerp(scrollY, targetScroll, 0.08);
+
+  updateParallax();
+  updateSequence();
+
   requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== RESPONSIVE ===== */
+/* ================================
+   RESIZE
+================================ */
 window.addEventListener("resize",()=>{
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 });
 
 </script>
