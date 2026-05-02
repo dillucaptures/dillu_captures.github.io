@@ -3,124 +3,229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dillu Captures — Cinematic</title>
+<title>Dillu Captures</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
-<!-- GSAP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
-/* ================= BASE ================= */
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:Inter;
-  background:#000;
-  color:#fff;
-  overflow-x:hidden;
+/* ===== ROOT ===== */
+:root {
+  --bg: #ffffff;
+  --text: #111;
+  --accent: #d4af37;
+  --glass: rgba(255,255,255,0.6);
 }
 
-/* ================= NAV ================= */
-header{
+body.dark {
+  --bg: #0f0f0f;
+  --text: #f5f5f5;
+  --glass: rgba(255,255,255,0.08);
+}
+
+/* GLOBAL */
+* {margin:0; padding:0; box-sizing:border-box;}
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: .4s;
+}
+
+/* ===== INTRO ===== */
+.intro {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:var(--bg);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+.intro-text {
+  font-size:44px;
+  font-family:'Playfair Display';
+  animation:fadeIn 1.5s forwards;
+}
+@keyframes fadeIn {
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1;}
+}
+.intro.hide {
+  animation:fadeOut 1s forwards;
+}
+@keyframes fadeOut {
+  to{opacity:0; visibility:hidden;}
+}
+
+/* ===== NAV ===== */
+header {
   position:fixed;
   width:100%;
   top:0;
-  padding:20px 40px;
+  padding:18px 60px;
   display:flex;
   justify-content:space-between;
-  z-index:1000;
   backdrop-filter:blur(20px);
+  background:var(--glass);
+  z-index:1000;
 }
 
-header h1{
-  font-size:18px;
-  font-weight:500;
-}
-
-nav a{
+nav a {
   margin-left:25px;
-  color:#aaa;
   text-decoration:none;
-  font-size:14px;
+  color:var(--text);
+  position:relative;
 }
 
-nav a:hover{color:#fff}
+nav a::after {
+  content:"";
+  position:absolute;
+  bottom:-5px;
+  left:0;
+  width:0;
+  height:2px;
+  background:var(--accent);
+  transition:.3s;
+}
+nav a:hover::after {
+  width:100%;
+}
 
-/* ================= SECTIONS ================= */
-.section{
-  height:100vh;
+/* THEME SWITCH */
+.theme-toggle {
+  width:52px;
+  height:26px;
+  border-radius:30px;
+  background:var(--glass);
   position:relative;
+  cursor:pointer;
+  margin-left:20px;
+}
+.toggle-circle {
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:#111;
+  position:absolute;
+  top:3px;
+  left:3px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:11px;
+  color:#fff;
+  transition:.3s;
+}
+body.dark .toggle-circle {
+  left:29px;
+  background:#fff;
+  color:#111;
+}
+
+/* ===== HERO ===== */
+.hero {
+  height:100vh;
   display:flex;
   align-items:center;
-  justify-content:center;
+  padding:0 60px;
+  position:relative;
 }
-
-/* ================= HERO ================= */
-.hero{
-  background:#000;
-}
-
-.hero h2{
-  font-size:64px;
-  text-align:center;
-  line-height:1.1;
-}
-
-/* ================= IMAGE STACK ================= */
-.stack{
+.hero::before {
+  content:"";
   position:absolute;
   width:100%;
   height:100%;
-  top:0;
-  left:0;
+  background:linear-gradient(to right, rgba(0,0,0,0.5), transparent),
+             url('Images/1776695215852.webp') center/cover;
+  z-index:-1;
+}
+.hero-text {
+  max-width:500px;
+  color:#fff;
+}
+.hero h2 {
+  font-size:54px;
+  font-family:'Playfair Display';
+}
+.hero p {
+  margin-top:10px;
+  opacity:0.8;
 }
 
-.stack img{
-  position:absolute;
-  width:60%;
-  left:20%;
-  top:20%;
+/* BUTTON */
+.btn {
+  display:inline-block;
+  padding:14px 28px;
+  border-radius:30px;
+  margin-top:20px;
+  background:var(--accent);
+  color:#000;
+  text-decoration:none;
+  transition:.3s;
+}
+.btn:hover {
+  transform:translateY(-3px);
+  box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* ===== SECTIONS ===== */
+section {
+  padding:120px 60px;
+}
+
+.about {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:50px;
+}
+.about img {
+  width:100%;
   border-radius:20px;
-  object-fit:cover;
-  filter:blur(20px);
-  transform:scale(1.2);
-  opacity:0;
 }
 
-/* ================= TEXT STORY ================= */
-.story-text{
-  position:absolute;
-  bottom:20%;
-  font-size:28px;
-  opacity:0;
-  text-align:center;
-}
-
-/* ================= GALLERY ================= */
-.gallery{
-  padding:120px 40px;
+/* ===== GALLERY ===== */
+.gallery {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
+  gap:25px;
 }
-
-.gallery img{
-  width:100%;
+.gallery div {
+  overflow:hidden;
   border-radius:15px;
+  position:relative;
+}
+.gallery img {
+  width:100%;
   transition:.5s;
 }
-
-.gallery img:hover{
-  transform:scale(1.05);
+.gallery div:hover img {
+  transform:scale(1.1);
 }
 
-/* ================= FOOTER ================= */
-footer{
-  padding:80px 40px;
-  text-align:center;
-  color:#aaa;
+/* ===== CONTACT ===== */
+.calendar {
+  max-width:420px;
+  margin:40px auto;
+}
+
+/* ===== ANIMATION ===== */
+.reveal {
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s;
+}
+.reveal.active {
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  header {padding:15px;}
+  .hero {padding:20px;}
+  .about {grid-template-columns:1fr;}
 }
 
 </style>
@@ -128,131 +233,83 @@ footer{
 
 <body>
 
+<div class="intro" id="intro">
+  <div class="intro-text">Dillu Captures</div>
+</div>
+
 <header>
   <h1>Dillu Captures</h1>
   <nav>
     <a href="#">Home</a>
+    <a href="#about">About</a>
     <a href="#gallery">Gallery</a>
+
+    <span class="theme-toggle" onclick="toggleTheme()">
+      <div class="toggle-circle" id="toggleBtn">☀️</div>
+    </span>
   </nav>
 </header>
 
-<!-- ================= HERO ================= -->
-<section class="section hero">
-  <h2 id="heroText">Capturing<br>Emotion</h2>
+<section class="hero">
+  <div class="hero-text reveal">
+    <h2>Capturing Timeless Moments</h2>
+    <p>Luxury photography crafted with emotion.</p>
+    <a class="btn" href="#contact">Book Now</a>
+  </div>
 </section>
 
-<!-- ================= CINEMATIC STORY ================= -->
-<section class="section">
-
-  <div class="stack">
-
-    <!-- KIDS -->
-    <img src="Images/Kids/IMG_1902.webp">
-    <img src="Images/Kids/IMG_5332.webp">
-
-    <!-- MATERNITY -->
-    <img src="Images/Maternity Shoot/IMG_4216.webp">
-    <img src="Images/Maternity Shoot/IMG_4363.webp">
-
-    <!-- CULTURE -->
-    <img src="Images/Temples & Culture/IMG_3390.webp">
-    <img src="Images/Temples & Culture/IMG_3234.webp">
-
+<section id="about" class="about reveal">
+  <img src="Images/IMG_1164.webp">
+  <div>
+    <h2>About Me</h2>
+    <p>Professional photographer creating cinematic memories and emotional storytelling.</p>
   </div>
-
-  <div class="story-text" id="storyText">
-    Every frame tells a story
-  </div>
-
 </section>
 
-<!-- ================= GALLERY ================= -->
 <section id="gallery">
-
-  <div class="gallery">
-
-    <!-- Kids -->
-    <img src="Images/Kids/20240813111900_IMG_0814.webp">
-    <img src="Images/Kids/IMG_1902.webp">
-    <img src="Images/Kids/IMG_5197 (1).webp">
-    <img src="Images/Kids/IMG_5332.webp">
-
-    <!-- Maternity -->
-    <img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp">
-    <img src="Images/Maternity Shoot/IMG_4216.webp">
-    <img src="Images/Maternity Shoot/IMG_4265.webp">
-    <img src="Images/Maternity Shoot/IMG_4363.webp">
-
-    <!-- Culture -->
-    <img src="Images/Temples & Culture/20230609184601_IMG_7346.webp">
-    <img src="Images/Temples & Culture/20231001121437_IMG_8556.webp">
-    <img src="Images/Temples & Culture/IMG_20251225_093551493.webp">
-    <img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp">
-    <img src="Images/Temples & Culture/IMG_3234.webp">
-    <img src="Images/Temples & Culture/IMG_3390.webp">
-    <img src="Images/Temples & Culture/IMG_3037.webp">
-    <img src="Images/Temples & Culture/IMG_20251225_195802010.webp">
-
+  <h2 style="margin-bottom:30px">Gallery</h2>
+  <div class="gallery reveal">
+    <div><img src="Images/Kids/IMG_1902.webp"></div>
+    <div><img src="Images/Maternity Shoot/IMG_4216.webp"></div>
+    <div><img src="Images/Temples & Culture/IMG_3234.webp"></div>
   </div>
-
 </section>
 
-<footer>
-  © 2026 Dillu Captures — Cinematic Experience
-</footer>
+<section id="contact" class="reveal">
+  <h2>Book a Slot</h2>
+  <a class="btn" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
+</section>
 
 <script>
 
-/* ================= GSAP ================= */
-gsap.registerPlugin(ScrollTrigger);
+/* INTRO */
+window.onload = () => {
+  setTimeout(()=> document.getElementById("intro").classList.add("hide"),1500);
 
-/* HERO ANIMATION */
-gsap.from("#heroText",{
-  scale:1.5,
-  opacity:0,
-  duration:2,
-  ease:"power3.out"
-});
+  // load theme
+  if(localStorage.getItem("theme") === "dark"){
+    document.body.classList.add("dark");
+    document.getElementById("toggleBtn").textContent="🌙";
+  }
+};
 
-/* ================= IMAGE STORY ================= */
-const images = document.querySelectorAll(".stack img");
+/* THEME */
+function toggleTheme(){
+  document.body.classList.toggle("dark");
 
-images.forEach((img, i)=>{
-  gsap.to(img,{
-    scrollTrigger:{
-      trigger:".section",
-      start:`top+=${i*150} center`,
-      end:`+=400`,
-      scrub:true
-    },
-    opacity:1,
-    scale:1,
-    filter:"blur(0px)"
+  const isDark = document.body.classList.contains("dark");
+  document.getElementById("toggleBtn").textContent = isDark ? "🌙" : "☀️";
+
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+}
+
+/* SCROLL REVEAL */
+window.addEventListener("scroll", () => {
+  document.querySelectorAll(".reveal").forEach(el=>{
+    if(el.getBoundingClientRect().top < window.innerHeight - 80){
+      el.classList.add("active");
+    }
   });
-
-  gsap.to(img,{
-    scrollTrigger:{
-      trigger:".section",
-      start:`top+=${i*150+200} center`,
-      end:`+=400`,
-      scrub:true
-    },
-    opacity:0,
-    scale:1.2,
-    filter:"blur(20px)"
-  });
-});
-
-/* ================= TEXT STORY ================= */
-gsap.to("#storyText",{
-  scrollTrigger:{
-    trigger:".section",
-    start:"top center",
-    end:"bottom center",
-    scrub:true
-  },
-  opacity:1,
-  y:-50
 });
 
 </script>
