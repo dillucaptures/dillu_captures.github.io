@@ -5,165 +5,70 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dillu Captures</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
+
+<!-- THREE JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 
 <style>
 
 /* ===== BASE ===== */
-:root{
-  --bg:#0f0f0f;
-  --text:#fff;
-  --glass:rgba(255,255,255,0.08);
-}
-
 body{
   margin:0;
   font-family:Inter;
-  background:var(--bg);
-  color:var(--text);
+  background:#000;
+  color:#fff;
   overflow-x:hidden;
 }
 
-/* ===== CINEMATIC INTRO ===== */
-.intro{
+/* ===== WEBGL CANVAS ===== */
+canvas{
   position:fixed;
-  inset:0;
-  background:#000;
+  top:0;
+  left:0;
+  z-index:-1;
+}
+
+/* ===== SECTION ===== */
+.section{
+  height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  z-index:9999;
-  animation:fadeOut 1.5s ease 2s forwards;
+  text-align:center;
+  padding:40px;
 }
-.intro h1{
+
+/* ===== TEXT ANIMATION ===== */
+.text{
+  opacity:0;
+  transform:translateY(50px) scale(0.95);
+  transition:all 1s ease;
+}
+.text.show{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+h1{
   font-family:Playfair Display;
   font-size:50px;
-  letter-spacing:3px;
-  animation:zoomIn 2s ease forwards;
-}
-
-@keyframes zoomIn{
-  from{opacity:0; transform:scale(0.8);}
-  to{opacity:1; transform:scale(1);}
-}
-
-@keyframes fadeOut{
-  to{opacity:0; visibility:hidden;}
-}
-
-/* ===== NAV ===== */
-header{
-  position:fixed;
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  padding:20px 60px;
-  backdrop-filter:blur(20px);
-  background:var(--glass);
-  z-index:1000;
-}
-
-nav a{
-  margin-left:20px;
-  color:#fff;
-  text-decoration:none;
-}
-
-/* ===== HERO ===== */
-.hero{
-  height:100vh;
-  display:flex;
-  align-items:center;
-  padding:60px;
-  position:relative;
-}
-
-.hero::after{
-  content:"";
-  position:absolute;
-  right:0;
-  width:50%;
-  height:100%;
-  background:url('Images/1776695215852.webp') center/cover;
-  opacity:0.7;
-}
-
-.hero-text{
-  max-width:500px;
-  z-index:2;
-}
-
-.hero h2{
-  font-size:52px;
-  font-family:Playfair Display;
-}
-
-/* ===== SCROLL ANIMATION ===== */
-.fade{
-  opacity:0;
-  transform:translateY(40px);
-  transition:1s;
-}
-.fade.show{
-  opacity:1;
-  transform:translateY(0);
 }
 
 /* ===== GALLERY ===== */
 .gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
+  gap:15px;
   padding:40px;
 }
-
 .gallery img{
   width:100%;
-  border-radius:15px;
+  border-radius:12px;
   transition:.4s;
-  cursor:pointer;
 }
-
 .gallery img:hover{
   transform:scale(1.05);
-}
-
-/* ===== VIEWER ===== */
-.viewer{
-  position:fixed;
-  inset:0;
-  background:#000;
-  display:none;
-  justify-content:center;
-  align-items:center;
-}
-
-.viewer img{
-  max-width:90%;
-  max-height:90%;
-}
-
-/* ===== BUTTON ===== */
-.btn{
-  padding:14px 28px;
-  border-radius:30px;
-  background:var(--glass);
-  color:#fff;
-  text-decoration:none;
-  display:inline-block;
-  margin:10px;
-}
-
-/* ===== MOBILE ===== */
-@media(max-width:768px){
-  .hero{
-    flex-direction:column;
-    text-align:center;
-  }
-  .hero::after{
-    width:100%;
-    height:50%;
-  }
 }
 
 </style>
@@ -171,77 +76,74 @@ nav a{
 
 <body>
 
-<div class="intro">
-  <h1>Dillu Captures</h1>
-</div>
+<!-- SCROLL STORY -->
+<div class="section"><div class="text"><h1>Dillu Captures</h1></div></div>
+<div class="section"><div class="text"><h1>Luxury Photography</h1></div></div>
+<div class="section"><div class="text"><h1>Every Frame Matters</h1></div></div>
 
-<header>
-  <h2>Dillu</h2>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#gallery">Gallery</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
-
-<section class="hero">
-  <div class="hero-text fade">
-    <h2>Capturing Timeless Luxury</h2>
-    <p>Premium storytelling through photography.</p>
-  </div>
-</section>
-
-<section id="gallery">
-  <h2 style="text-align:center">Gallery</h2>
-  <div class="gallery fade">
-
-    <img src="Images/Kids/IMG_1902.webp">
-    <img src="Images/Kids/IMG_5332.webp">
-    <img src="Images/Maternity Shoot/IMG_4216.webp">
-    <img src="Images/Maternity Shoot/IMG_4265.webp">
-    <img src="Images/Temples & Culture/IMG_3390.webp">
-    <img src="Images/Temples & Culture/IMG_3037.webp">
-
-  </div>
-</section>
-
-<section id="contact" class="fade" style="text-align:center">
-  <h2>Book a Session</h2>
-  <a class="btn" href="https://wa.me/919700034138">WhatsApp</a>
-  <a class="btn" href="https://www.instagram.com/dillu_captures/">Instagram</a>
-</section>
-
-<div class="viewer" id="viewer">
-  <img id="viewerImg">
+<!-- GALLERY -->
+<div class="gallery">
+  <img src="Images/Kids/IMG_1902.webp">
+  <img src="Images/Kids/IMG_5332.webp">
+  <img src="Images/Maternity Shoot/IMG_4216.webp">
+  <img src="Images/Maternity Shoot/IMG_4265.webp">
+  <img src="Images/Temples & Culture/IMG_3390.webp">
+  <img src="Images/Temples & Culture/IMG_3037.webp">
 </div>
 
 <script>
 
-/* ===== SCROLL ANIMATION ===== */
+/* ===== SCROLL STORY ANIMATION ===== */
 const observer = new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
       e.target.classList.add("show");
     }
   });
-});
+},{threshold:0.5});
 
-document.querySelectorAll(".fade").forEach(el=>{
+document.querySelectorAll(".text").forEach(el=>{
   observer.observe(el);
 });
 
-/* ===== IMAGE VIEWER ===== */
-const viewer=document.getElementById("viewer");
-const viewerImg=document.getElementById("viewerImg");
+/* ===== THREE JS BACKGROUND ===== */
+const scene = new THREE.Scene();
+const camera = new THREE.Camera();
+const renderer = new THREE.WebGLRenderer({alpha:true});
 
-document.querySelectorAll(".gallery img").forEach(img=>{
-  img.onclick=()=>{
-    viewer.style.display="flex";
-    viewerImg.src=img.src;
-  };
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+const geometry = new THREE.PlaneGeometry(2,2);
+
+const material = new THREE.ShaderMaterial({
+  uniforms:{
+    time:{value:0}
+  },
+  fragmentShader:`
+    uniform float time;
+    void main(){
+      vec2 uv = gl_FragCoord.xy / vec2(800.0,600.0);
+      float color = 0.5 + 0.5*sin(time + uv.x*5.0);
+      gl_FragColor = vec4(vec3(color*0.2, color*0.3, color*0.5),1.0);
+    }
+  `
 });
 
-viewer.onclick=()=>viewer.style.display="none";
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+function animate(){
+  material.uniforms.time.value += 0.01;
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* ===== RESPONSIVE ===== */
+window.addEventListener("resize",()=>{
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 </script>
 
