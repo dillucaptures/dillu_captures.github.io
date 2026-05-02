@@ -1,185 +1,314 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dillu Captures SaaS</title>
+<title>Dillu Captures</title>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-body{font-family:Arial;background:#111;color:#fff;text-align:center}
-button{padding:10px 20px;margin:10px;border:none;border-radius:8px;cursor:pointer}
-input{padding:10px;margin:5px;border-radius:6px;border:none}
-#loginPage,#dashboard,#adminPanel{display:none}
-img{width:200px;margin:10px;border-radius:10px}
+
+/* ================= ROOT ================= */
+:root {
+  --bg:#ffffff;
+  --text:#111;
+  --glass:rgba(255,255,255,0.6);
+}
+
+body.dark {
+  --bg:#0f0f0f;
+  --text:#f5f5f5;
+  --glass:rgba(255,255,255,0.08);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.4s;
+  overflow-x:hidden;
+}
+
+/* ================= CURSOR GLOW ================= */
+.cursor{
+  position:fixed;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  z-index:0;
+}
+
+/* ================= NAV ================= */
+header{
+  position:fixed;
+  width:100%;
+  top:0;
+  display:flex;
+  justify-content:space-between;
+  padding:18px 60px;
+  backdrop-filter:blur(20px);
+  background:var(--glass);
+  z-index:1000;
+}
+
+header h1{
+  font-family:'Playfair Display';
+}
+
+nav a{
+  margin-left:25px;
+  text-decoration:none;
+  color:var(--text);
+  position:relative;
+}
+
+nav a::after{
+  content:"";
+  position:absolute;
+  width:0%;
+  height:1px;
+  bottom:-5px;
+  left:0;
+  background:var(--text);
+  transition:.3s;
+}
+nav a:hover::after{width:100%}
+
+/* ================= HERO ================= */
+.hero{
+  display:flex;
+  align-items:center;
+  min-height:100vh;
+  padding:120px 60px;
+  position:relative;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  right:0;
+  width:50%;
+  height:100%;
+  background:url('Images/1776695215852.webp') center/cover;
+  animation:zoomHero 20s infinite alternate ease-in-out;
+}
+
+@keyframes zoomHero{
+  from{transform:scale(1)}
+  to{transform:scale(1.1)}
+}
+
+.hero-text{
+  max-width:500px;
+  animation:fadeUp 1.2s ease;
+}
+
+.hero-text h2{
+  font-family:'Playfair Display';
+  font-size:52px;
+}
+
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(40px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+/* ================= SECTIONS ================= */
+section{padding:120px 60px}
+
+.reveal{
+  opacity:0;
+  transform:translateY(50px);
+  transition:1s ease;
+}
+.reveal.active{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ================= ABOUT ================= */
+.about{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+.about img{
+  width:100%;
+  border-radius:20px;
+  transition:.5s;
+}
+.about img:hover{
+  transform:scale(1.05);
+}
+
+/* ================= GALLERY ================= */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+}
+
+.gallery img{
+  width:100%;
+  border-radius:15px;
+  cursor:pointer;
+  transform:scale(1);
+  transition:.5s;
+  filter:blur(8px);
+}
+.gallery img.loaded{
+  filter:blur(0);
+}
+.gallery img:hover{
+  transform:scale(1.05);
+}
+
+/* ================= VIEWER ================= */
+.viewer{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+}
+.viewer img{
+  max-width:90%;
+  max-height:90%;
+  animation:zoomIn .4s ease;
+}
+@keyframes zoomIn{
+  from{transform:scale(.8);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+/* ================= BUTTON ================= */
+.btn{
+  display:inline-block;
+  padding:14px 28px;
+  border-radius:30px;
+  background:var(--glass);
+  text-decoration:none;
+  color:var(--text);
+  transition:.3s;
+}
+.btn:hover{
+  transform:translateY(-3px);
+}
+
+/* ================= CALENDAR ================= */
+.calendar{max-width:420px;margin:40px auto;text-align:center}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day{
+  padding:12px;
+  border-radius:10px;
+  background:var(--glass);
+  cursor:pointer;
+}
+.day:hover{background:#111;color:#fff}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+  header{padding:15px 20px}
+  .hero{flex-direction:column;text-align:center}
+  .hero::after{width:100%;height:50%}
+  .hero-text{margin-top:55vh}
+  .about{grid-template-columns:1fr}
+  section{padding:100px 20px}
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginPage">
-<h2>Login</h2>
-<button onclick="googleLogin()">Google Login</button>
+<div class="cursor" id="cursor"></div>
 
-<div id="recaptcha"></div>
-<input id="phone" placeholder="+91XXXXXXXXXX">
-<button onclick="sendOTP()">Send OTP</button>
-<input id="otp" placeholder="OTP">
-<button onclick="verifyOTP()">Verify</button>
+<header>
+<h1>Dillu Captures</h1>
+<nav>
+<a href="#">Home</a>
+<a href="#about">About</a>
+<a href="#gallery">Gallery</a>
+<a href="#contact">Contact</a>
+</nav>
+</header>
+
+<section class="hero">
+<div class="hero-text">
+<h2>Capturing Timeless Moments</h2>
+<p>Luxury photography crafted with emotion.</p>
+</div>
+</section>
+
+<section id="about" class="about reveal">
+<img src="Images/IMG_1164.webp">
+<div>
+<h2>About Me</h2>
+<p>I create cinematic and emotional photography experiences.</p>
+</div>
+</section>
+
+<section id="gallery">
+<h2 style="margin-bottom:30px">Gallery</h2>
+<div class="gallery">
+
+<img src="Images/Kids/20240813111900_IMG_0814.webp">
+<img src="Images/Kids/IMG_1902.webp">
+<img src="Images/Kids/IMG_5197 (1).webp">
+<img src="Images/Kids/IMG_5332.webp">
+
+</div>
+</section>
+
+<div class="viewer" id="viewer" onclick="closeViewer()">
+<img id="viewerImg">
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard">
-<h2>Client Dashboard</h2>
-<button onclick="logout()">Logout</button>
-<div id="gallery"></div>
-</div>
-
-<!-- ADMIN PANEL -->
-<div id="adminPanel">
-<h2>Admin Panel</h2>
-<button onclick="logout()">Logout</button>
-
-<input type="file" id="upload" multiple>
-<input id="clientId" placeholder="Client UID">
-<button onclick="uploadPhotos()">Upload</button>
-</div>
+<section id="contact">
+<h2>Book a Slot</h2>
+<a class="btn" href="https://wa.me/919700034138">WhatsApp</a>
+</section>
 
 <script>
 
-// 🔥 FIREBASE CONFIG
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  appId: "YOUR_APP_ID"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
-
-// ================= LOGIN =================
-
-function googleLogin(){
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider);
-}
-
-window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha');
-
-function sendOTP(){
-  const phone = document.getElementById("phone").value;
-
-  auth.signInWithPhoneNumber(phone, recaptchaVerifier)
-    .then(res => window.confirmationResult = res);
-}
-
-function verifyOTP(){
-  const code = document.getElementById("otp").value;
-
-  confirmationResult.confirm(code);
-}
-
-// ================= AUTH STATE =================
-
-auth.onAuthStateChanged(async user => {
-
-  if(!user){
-    show("loginPage");
-    return;
-  }
-
-  // create user if not exists
-  const ref = db.collection("users").doc(user.uid);
-  const doc = await ref.get();
-
-  if(!doc.exists){
-    await ref.set({
-      role: "client" // change manually to admin in Firebase
-    });
-  }
-
-  const role = (await ref.get()).data().role;
-
-  if(role === "admin"){
-    show("adminPanel");
-  } else {
-    show("dashboard");
-    loadGallery();
-  }
-
+/* CURSOR */
+const cursor=document.getElementById("cursor");
+document.addEventListener("mousemove",e=>{
+  cursor.style.left=e.clientX+"px";
+  cursor.style.top=e.clientY+"px";
 });
 
-// ================= SHOW UI =================
-
-function show(id){
-  document.getElementById("loginPage").style.display="none";
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("adminPanel").style.display="none";
-
-  document.getElementById(id).style.display="block";
-}
-
-// ================= ADMIN UPLOAD =================
-
-async function uploadPhotos(){
-
-  const files = document.getElementById("upload").files;
-  const clientId = document.getElementById("clientId").value;
-
-  let urls=[];
-
-  for(let file of files){
-    const ref = storage.ref("photos/"+file.name);
-    await ref.put(file);
-
-    const url = await ref.getDownloadURL();
-    urls.push(url);
-  }
-
-  await db.collection("galleries").add({
-    clientId: clientId,
-    images: urls
+/* REVEAL */
+const reveals=document.querySelectorAll(".reveal");
+window.addEventListener("scroll",()=>{
+  reveals.forEach(el=>{
+    if(el.getBoundingClientRect().top < window.innerHeight-100){
+      el.classList.add("active");
+    }
   });
+});
 
-  alert("Uploaded!");
+/* IMAGE LOAD + VIEWER */
+document.querySelectorAll(".gallery img").forEach(img=>{
+  img.onload=()=>img.classList.add("loaded");
+  img.onclick=()=>openViewer(img.src);
+});
+
+function openViewer(src){
+  document.getElementById("viewer").style.display="flex";
+  document.getElementById("viewerImg").src=src;
 }
-
-// ================= CLIENT LOAD =================
-
-async function loadGallery(){
-
-  const user = auth.currentUser;
-  const snap = await db.collection("galleries")
-    .where("clientId","==",user.uid)
-    .get();
-
-  const gallery = document.getElementById("gallery");
-  gallery.innerHTML="";
-
-  snap.forEach(doc=>{
-    doc.data().images.forEach(img=>{
-      const i = document.createElement("img");
-      i.src = img;
-      gallery.appendChild(i);
-    });
-  });
-
-}
-
-// ================= LOGOUT =================
-
-function logout(){
-  auth.signOut();
+function closeViewer(){
+  document.getElementById("viewer").style.display="none";
 }
 
 </script>
