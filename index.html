@@ -3,177 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dillu Cinematic Ultra</title>
 
-<!-- THREE -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<title>Dillu Captures</title>
 
-<!-- GSAP -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
 <style>
+
+/* ===== BASE ===== */
 body{
   margin:0;
-  overflow-x:hidden;
+  font-family:'Inter',sans-serif;
   background:#000;
-  font-family:Inter;
   color:#fff;
+  overflow-x:hidden;
 }
 
-/* CANVAS */
-canvas{
+section{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+}
+
+/* ===== NAV ===== */
+header{
   position:fixed;
   top:0;
-  left:0;
-}
-
-/* STORY TEXT */
-.story{
-  position:relative;
-  height:300vh;
-}
-
-.text-block{
-  position:absolute;
-  top:40%;
   width:100%;
-  text-align:center;
-  font-size:42px;
-  opacity:0;
-  transform:translateY(50px);
+  padding:18px 40px;
+  display:flex;
+  justify-content:space-between;
+  z-index:1000;
+  backdrop-filter:blur(20px);
+  background:rgba(0,0,0,0.4);
 }
+
+header h1{
+  font-weight:500;
+  font-size:18px;
+}
+
+nav a{
+  color:#aaa;
+  text-decoration:none;
+  margin-left:20px;
+  font-size:14px;
+}
+
+/* ===== HERO ===== */
+.hero{
+  background:url('Images/1776695215852.webp') center/cover no-repeat;
+}
+
+.hero h2{
+  font-size:64px;
+  font-weight:600;
+}
+
+/* ===== IMAGE SECTIONS ===== */
+.panel{
+  background-size:cover;
+  background-position:center;
+}
+
+.overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.3),#000);
+}
+
+.text{
+  position:relative;
+  z-index:2;
+  max-width:700px;
+}
+
+.text h2{
+  font-size:48px;
+  margin-bottom:10px;
+}
+
+.text p{
+  font-size:18px;
+  color:#ccc;
+}
+
+/* ===== GALLERY GRID ===== */
+.gallery{
+  padding:100px 40px;
+  background:#000;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+.grid img{
+  width:100%;
+  border-radius:16px;
+  transition:.5s;
+}
+
+.grid img:hover{
+  transform:scale(1.05);
+}
+
+/* ===== FOOTER ===== */
+footer{
+  padding:80px 20px;
+  text-align:center;
+  color:#888;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .hero h2{ font-size:36px; }
+  .text h2{ font-size:28px; }
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="story">
-  <div class="text-block" id="t1">Every Moment Has a Story</div>
-  <div class="text-block" id="t2" style="top:120%">Captured with Emotion</div>
-  <div class="text-block" id="t3" style="top:200%">Crafted with Light</div>
-</div>
+<header>
+  <h1>Dillu Captures</h1>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h2>Capture Life<br>Beautifully</h2>
+</section>
+
+<!-- STORY PANELS -->
+<section class="panel" style="background-image:url('Images/Kids/IMG_1902.webp')">
+  <div class="overlay"></div>
+  <div class="text">
+    <h2>Pure Moments</h2>
+    <p>Every child tells a story of joy and innocence.</p>
+  </div>
+</section>
+
+<section class="panel" style="background-image:url('Images/Maternity Shoot/IMG_4216.webp')">
+  <div class="overlay"></div>
+  <div class="text">
+    <h2>Timeless Love</h2>
+    <p>Capturing the beauty of motherhood.</p>
+  </div>
+</section>
+
+<section class="panel" style="background-image:url('Images/Temples & Culture/IMG_3390.webp')">
+  <div class="overlay"></div>
+  <div class="text">
+    <h2>Culture & Soul</h2>
+    <p>Where tradition meets visual storytelling.</p>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <h2 style="text-align:center;margin-bottom:40px;">Gallery</h2>
+
+  <div class="grid">
+    <img src="Images/Kids/20240813111900_IMG_0814.webp">
+    <img src="Images/Kids/IMG_1902.webp">
+    <img src="Images/Kids/IMG_5197 (1).webp">
+    <img src="Images/Kids/IMG_5332.webp">
+
+    <img src="Images/Maternity Shoot/IMG_4216.webp">
+    <img src="Images/Maternity Shoot/IMG_4265.webp">
+    <img src="Images/Maternity Shoot/IMG_4363.webp">
+
+    <img src="Images/Temples & Culture/IMG_3234.webp">
+    <img src="Images/Temples & Culture/IMG_3390.webp">
+    <img src="Images/Temples & Culture/IMG_3037.webp">
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <p>© 2026 Dillu Captures</p>
+</footer>
 
 <script>
 
-/* =========================
-   THREE SETUP
-========================= */
-const scene = new THREE.Scene();
-
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth/window.innerHeight,
-  0.1,
-  1000
-);
-camera.position.z = 8;
-
-const renderer = new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(window.innerWidth,window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-/* =========================
-   SHADER MATERIAL (BLUR)
-========================= */
-const material = new THREE.ShaderMaterial({
-  uniforms:{
-    texture1:{value:null},
-    focus:{value:0.0}
-  },
-  vertexShader:`
-    varying vec2 vUv;
-    void main(){
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-    }
-  `,
-  fragmentShader:`
-    uniform sampler2D texture1;
-    uniform float focus;
-    varying vec2 vUv;
-
-    void main(){
-      float blur = abs(vUv.y - focus) * 8.0;
-
-      vec4 color = vec4(0.0);
-      for(float x=-2.0;x<=2.0;x++){
-        for(float y=-2.0;y<=2.0;y++){
-          vec2 offset = vec2(x,y)*0.002*blur;
-          color += texture2D(texture1, vUv + offset);
-        }
-      }
-      color /= 25.0;
-
-      gl_FragColor = color;
-    }
-  `
-});
-
-/* =========================
-   IMAGE
-========================= */
-const loader = new THREE.TextureLoader();
-const tex = loader.load("Images/Kids/IMG_1902.webp");
-
-material.uniforms.texture1.value = tex;
-
-const mesh = new THREE.Mesh(
-  new THREE.PlaneGeometry(5,3),
-  material
-);
-
-scene.add(mesh);
-
-/* =========================
-   GSAP SCROLL
-========================= */
+/* GSAP */
 gsap.registerPlugin(ScrollTrigger);
 
-gsap.to(material.uniforms.focus,{
-  value:1,
-  scrollTrigger:{
-    trigger:".story",
-    start:"top top",
-    end:"bottom bottom",
-    scrub:true
-  }
+/* HERO TEXT */
+gsap.from(".hero h2",{
+  opacity:0,
+  y:80,
+  duration:1.5
 });
 
-/* =========================
-   TEXT ANIMATION
-========================= */
-gsap.utils.toArray(".text-block").forEach((el,i)=>{
-
-  gsap.to(el,{
-    opacity:1,
-    y:0,
+/* PANEL ANIMATION */
+gsap.utils.toArray(".panel").forEach(panel=>{
+  gsap.from(panel.querySelector(".text"),{
+    opacity:0,
+    y:80,
     scrollTrigger:{
-      trigger:el,
-      start:"top 80%",
-      end:"top 40%",
+      trigger:panel,
+      start:"top 70%",
       scrub:true
     }
   });
-
 });
 
-/* =========================
-   RENDER LOOP
-========================= */
-function animate(){
-  requestAnimationFrame(animate);
-  renderer.render(scene,camera);
-}
-animate();
-
-/* =========================
-   RESIZE
-========================= */
-window.addEventListener("resize",()=>{
-  renderer.setSize(window.innerWidth,window.innerHeight);
-  camera.aspect = window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
+/* PARALLAX */
+gsap.utils.toArray(".panel").forEach(panel=>{
+  gsap.to(panel,{
+    backgroundPosition:"50% 60%",
+    ease:"none",
+    scrollTrigger:{
+      trigger:panel,
+      scrub:true
+    }
+  });
 });
 
 </script>
