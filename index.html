@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dillu Captures</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter&family=Playfair+Display&display=swap" rel="stylesheet">
 
 <style>
 
@@ -24,17 +24,14 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  text-align:center;
 }
-
 .hero h1{
   font-family:Playfair Display;
-  font-size:52px;
+  font-size:50px;
   opacity:0;
-  transform:translateY(40px);
-  animation:fadeUp 1s ease forwards;
+  transform:translateY(30px);
+  animation:fadeUp 1s forwards;
 }
-
 @keyframes fadeUp{
   to{opacity:1;transform:translateY(0);}
 }
@@ -42,46 +39,57 @@ body{
 /* ===== GALLERY ===== */
 .gallery{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:8px;
-  padding:10px;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:6px;
+  padding:8px;
 }
-
 .gallery img{
   width:100%;
   border-radius:12px;
   cursor:pointer;
-  transition:.4s;
 }
 
 /* ===== VIEWER ===== */
 .viewer{
   position:fixed;
   inset:0;
-  background:#000;
   display:none;
   justify-content:center;
   align-items:center;
   overflow:hidden;
 }
 
-.viewer img{
-  max-width:100%;
-  max-height:100%;
-  transition:transform .3s ease;
+/* ===== LIVE BLUR BACKGROUND ===== */
+.bg-blur{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  filter:blur(40px) brightness(0.4);
+  transform:scale(1.2);
+  transition:.6s;
 }
 
-/* ===== GLASS UI ===== */
+/* ===== IMAGE ===== */
+.viewer img{
+  position:relative;
+  max-width:90%;
+  max-height:90%;
+  z-index:2;
+  transition:transform .2s ease;
+}
+
+/* ===== GLASS BAR ===== */
 .topbar{
-  position:fixed;
-  top:10px;
+  position:absolute;
+  top:15px;
   left:50%;
   transform:translateX(-50%);
-  backdrop-filter:blur(20px);
-  background:rgba(255,255,255,0.08);
   padding:10px 20px;
   border-radius:20px;
-  z-index:10;
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.1);
+  transition:.3s;
 }
 
 </style>
@@ -96,8 +104,9 @@ body{
 <div class="gallery" id="gallery"></div>
 
 <div class="viewer" id="viewer">
-  <div class="topbar">Swipe • Tap • Drag</div>
-  <img id="viewerImg">
+  <div class="bg-blur" id="bg"></div>
+  <div class="topbar" id="bar">Swipe • Drag • Tap</div>
+  <img id="img">
 </div>
 
 <script>
@@ -114,7 +123,7 @@ const images=[
 
 const gallery=document.getElementById("gallery");
 
-/* ===== LOAD ===== */
+/* ===== LOAD GRID ===== */
 images.forEach((src,i)=>{
   const img=document.createElement("img");
   img.src=src;
@@ -125,51 +134,74 @@ images.forEach((src,i)=>{
 /* ===== VIEWER ===== */
 let current=0;
 const viewer=document.getElementById("viewer");
-const viewerImg=document.getElementById("viewerImg");
+const viewerImg=document.getElementById("img");
+const bg=document.getElementById("bg");
 
 function openViewer(i){
   current=i;
   viewer.style.display="flex";
   update();
+
+  viewerImg.style.transform="scale(0.9)";
+  setTimeout(()=>viewerImg.style.transform="scale(1)",50);
+
+  vibrate(10);
 }
 
 function update(){
   viewerImg.src=images[current];
+  bg.style.backgroundImage=`url(${images[current]})`;
 }
 
-/* ===== TOUCH PHYSICS ===== */
-let startX=0, currentX=0, isDragging=false;
+/* ===== HAPTIC ===== */
+function vibrate(ms){
+  if(navigator.vibrate) navigator.vibrate(ms);
+}
+
+/* ===== SWIPE PHYSICS ===== */
+let startX=0, velocity=0, lastX=0, time=0;
 
 viewer.addEventListener("touchstart",e=>{
   startX=e.touches[0].clientX;
-  isDragging=true;
+  lastX=startX;
+  time=Date.now();
 });
 
 viewer.addEventListener("touchmove",e=>{
-  if(!isDragging) return;
-  currentX=e.touches[0].clientX;
-  let dx=currentX-startX;
+  let x=e.touches[0].clientX;
+  let dx=x-startX;
+
+  let now=Date.now();
+  velocity=(x-lastX)/(now-time);
+
+  lastX=x;
+  time=now;
 
   viewerImg.style.transform=`translateX(${dx}px) scale(0.95)`;
 });
 
 viewer.addEventListener("touchend",()=>{
-  let dx=currentX-startX;
+  let momentum=velocity*300;
 
-  if(dx<-50) next();
-  else if(dx>50) prev();
+  if(momentum<-50){
+    next();
+  } else if(momentum>50){
+    prev();
+  }
 
   viewerImg.style.transform="";
-  isDragging=false;
 });
 
+/* ===== NAV ===== */
 function next(){
   current=(current+1)%images.length;
   update();
+  vibrate(5);
 }
 function prev(){
   current=(current-1+images.length)%images.length;
   update();
+  vibrate(5);
 }
 
 /* ===== TAP CLOSE ===== */
@@ -177,13 +209,11 @@ viewer.addEventListener("click",()=>{
   viewer.style.display="none";
 });
 
-/* ===== KEYBOARD ===== */
-document.addEventListener("keydown",e=>{
-  if(viewer.style.display==="flex"){
-    if(e.key==="ArrowRight") next();
-    if(e.key==="ArrowLeft") prev();
-    if(e.key==="Escape") viewer.style.display="none";
-  }
+/* ===== SCROLL GLASS EFFECT ===== */
+window.addEventListener("scroll",()=>{
+  const bar=document.getElementById("bar");
+  let blur=Math.min(window.scrollY/50,20);
+  bar.style.backdropFilter=`blur(${blur}px)`;
 });
 
 </script>
