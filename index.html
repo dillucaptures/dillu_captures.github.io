@@ -3,8 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light dark">
-
 <title>Dillu Captures</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -17,7 +15,6 @@
   --text: #111;
   --glass: rgba(255,255,255,0.6);
 }
-
 body.dark {
   --bg: #0f0f0f;
   --text: #f5f5f5;
@@ -74,7 +71,6 @@ header {
   background:var(--glass);
   z-index:1000;
 }
-
 header h1 { font-family:'Playfair Display'; }
 
 nav a {
@@ -84,7 +80,7 @@ nav a {
   font-size:14px;
 }
 
-/* ===== TOGGLE SWITCH (ONLY ADDITION) ===== */
+/* TOGGLE */
 .theme-toggle {
   width:52px;
   height:26px;
@@ -95,9 +91,7 @@ nav a {
   cursor:pointer;
   display:inline-flex;
   align-items:center;
-  vertical-align:middle;
 }
-
 .toggle-circle {
   width:20px;
   height:20px;
@@ -112,8 +106,6 @@ nav a {
   color:#fff;
   transition:0.3s ease;
 }
-
-/* DARK MODE POSITION */
 body.dark .toggle-circle {
   left:29px;
   background:#fff;
@@ -138,15 +130,10 @@ body.dark .toggle-circle {
 }
 .hero-text {
   max-width:500px;
-  animation:fadeUp 1.2s;
 }
 .hero-text h2 {
   font-family:'Playfair Display';
   font-size:48px;
-}
-@keyframes fadeUp {
-  from{opacity:0; transform:translateY(40px);}
-  to{opacity:1; transform:translateY(0);}
 }
 
 /* SECTIONS */
@@ -162,21 +149,44 @@ section { padding:120px 60px; }
   border-radius:20px;
 }
 
+/* 🔥 INSTAGRAM STYLE GALLERY */
 .gallery {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:25px;
+  column-count:3;
+  column-gap:15px;
 }
 .gallery img {
   width:100%;
-  border-radius:15px;
+  margin-bottom:15px;
+  border-radius:16px;
+  break-inside:avoid;
+  cursor:pointer;
+
+  opacity:0;
+  transform:translateY(40px);
+  transition: all 0.8s ease, transform 0.4s ease;
+}
+.gallery img:hover {
+  transform:scale(1.05);
+  filter:brightness(1.05);
+}
+
+/* Fade in active */
+.fade-in {
+  opacity:1 !important;
+  transform:translateY(0) !important;
+}
+
+/* Responsive */
+@media(max-width:900px){
+  .gallery { column-count:2; }
+}
+@media(max-width:500px){
+  .gallery { column-count:1; }
 }
 
 /* BUTTON */
 .btn {
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
+  display:inline-block;
   padding:14px 28px;
   border-radius:30px;
   background:var(--glass);
@@ -184,21 +194,6 @@ section { padding:120px 60px; }
   color:var(--text);
   margin:10px;
 }
-
-/* CALENDAR (UNCHANGED) */
-.calendar { max-width:420px; margin:40px auto 0; text-align:center; }
-.calendar-header { display:flex; justify-content:space-between; align-items:center; }
-.calendar-header button { background:var(--glass); border:none; padding:8px 14px; border-radius:10px; cursor:pointer; }
-.weekdays { display:grid; grid-template-columns:repeat(7,1fr); margin-top:15px; font-size:12px; opacity:0.6; }
-.days { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-top:10px; }
-.day { padding:12px; border-radius:10px; background:var(--glass); cursor:pointer; }
-.day:hover { background:#111; color:#fff; }
-.day.today { border:1px solid #111; }
-.day.selected { background:#111; color:#fff; }
-.day.disabled { opacity:0.3; pointer-events:none; }
-.slots { margin-top:20px; }
-.slot { display:inline-block; padding:10px 15px; margin:6px; border-radius:20px; background:var(--glass); cursor:pointer; }
-.slot:hover { background:#111; color:#fff; }
 
 /* MOBILE */
 @media(max-width:768px){
@@ -226,15 +221,12 @@ section { padding:120px 60px; }
     <a href="#">Home</a>
     <a href="#about">About</a>
     <a href="#gallery">Gallery</a>
-    <a href="#contact">Contact</a>
 
-    <!-- REPLACED ☾ WITH TOGGLE -->
     <span class="theme-toggle" onclick="toggleTheme()">
       <span class="toggle-circle">
         <span id="icon">☀️</span>
       </span>
     </span>
-
   </nav>
 </header>
 
@@ -249,7 +241,7 @@ section { padding:120px 60px; }
   <img src="Images/IMG_1164.webp">
   <div>
     <h2>About Me</h2>
-    <p>I am a professional photographer specializing in portraits, weddings, and cinematic storytelling.</p>
+    <p>Professional photographer specializing in cinematic storytelling.</p>
   </div>
 </section>
 
@@ -264,39 +256,13 @@ section { padding:120px 60px; }
     <img src="Images/Maternity Shoot/IMG_4216.webp">
     <img src="Images/Maternity Shoot/IMG_4265.webp">
     <img src="Images/Maternity Shoot/IMG_4363.webp">
-    <img src="Images/Temples & Culture/20230609184601_IMG_7346.webp">
-    <img src="Images/Temples & Culture/20231001121437_IMG_8556.webp">
-    <img src="Images/Temples & Culture/IMG_20251225_093551493.webp">
-    <img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp">
-    <img src="Images/Temples & Culture/IMG_3234.webp">
-    <img src="Images/Temples & Culture/IMG_3390.webp">
-    <img src="Images/Temples & Culture/IMG_3037.webp">
-    <img src="Images/Temples & Culture/IMG_20251225_195802010.webp">
   </div>
 </section>
 
-<!-- CONTACT + BOOKING -->
-<section id="contact">
-  <h2>Book a Slot</h2>
-
+<section>
+  <h2>Book a Shoot</h2>
   <a class="btn" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
-  <a class="btn" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
-
-  <div class="calendar">
-    <div class="calendar-header">
-      <button onclick="prevMonth()">‹</button>
-      <h3 id="monthYear"></h3>
-      <button onclick="nextMonth()">›</button>
-    </div>
-
-    <div class="weekdays">
-      <span>Sun</span><span>Mon</span><span>Tue</span>
-      <span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-    </div>
-
-    <div class="days" id="days"></div>
-    <div class="slots" id="slots"></div>
-  </div>
+  <a class="btn" href="https://instagram.com" target="_blank">Instagram</a>
 </section>
 
 <script>
@@ -309,96 +275,25 @@ window.onload = () => {
 /* THEME */
 function toggleTheme(){
   document.body.classList.toggle("dark");
-
   document.getElementById("icon").textContent =
     document.body.classList.contains("dark") ? "🌙" : "☀️";
 }
 
-/* CALENDAR LOGIC (UNCHANGED) */
-let currentDate = new Date();
-let selectedDate = null;
-
-function renderCalendar(){
-  const daysEl = document.getElementById("days");
-  const monthYear = document.getElementById("monthYear");
-  daysEl.innerHTML="";
-
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-
-  monthYear.innerText =
-    currentDate.toLocaleString("default",{month:"long"})+" "+year;
-
-  const firstDay = new Date(year,month,1).getDay();
-  const lastDate = new Date(year,month+1,0).getDate();
-
-  const today = new Date();
-
-  for(let i=0;i<firstDay;i++){
-    daysEl.innerHTML+="<div></div>";
-  }
-
-  for(let d=1; d<=lastDate; d++){
-    const date = new Date(year,month,d);
-    const div = document.createElement("div");
-    div.className="day";
-    div.innerText=d;
-
-    if(date < new Date(today.setHours(0,0,0,0))){
-      div.classList.add("disabled");
+/* 🔥 SCROLL ANIMATION */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("fade-in");
     }
-
-    if(d===today.getDate() && month===today.getMonth()){
-      div.classList.add("today");
-    }
-
-    div.onclick=()=>selectDate(d,div);
-    daysEl.appendChild(div);
-  }
-}
-
-function selectDate(day,el){
-  document.querySelectorAll(".day").forEach(d=>d.classList.remove("selected"));
-  el.classList.add("selected");
-
-  selectedDate = `${day} ${currentDate.toLocaleString("default",{month:"long"})}`;
-  showSlots();
-}
-
-function showSlots(){
-  const slots = document.getElementById("slots");
-  slots.innerHTML="";
-
-  ["10 AM","1 PM","4 PM","7 PM"].forEach(time=>{
-    const s=document.createElement("div");
-    s.className="slot";
-    s.innerText=time;
-
-    s.onclick=()=>{
-      const msg=`Hi, I want to book a shoot on ${selectedDate} at ${time}`;
-      window.open(`https://wa.me/919700034138?text=${encodeURIComponent(msg)}`);
-    };
-
-    slots.appendChild(s);
   });
-}
+}, { threshold: 0.2 });
 
-function prevMonth(){
-  currentDate.setMonth(currentDate.getMonth()-1);
-  renderCalendar();
-}
-
-function nextMonth(){
-  currentDate.setMonth(currentDate.getMonth()+1);
-  renderCalendar();
-}
-
-renderCalendar();
+document.querySelectorAll(".gallery img").forEach((img, index) => {
+  observer.observe(img);
+  img.style.transitionDelay = (index * 0.05) + "s";
+});
 
 </script>
 
 </body>
 </html>
-
-
-
