@@ -3,174 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dillu Captures</title>
+<title>Dillu Captures Premium</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
-/* ================= ROOT ================= */
-:root {
-  --bg:#ffffff;
-  --text:#111;
-  --glass:rgba(255,255,255,0.6);
-}
-
-body.dark {
+/* ===== GLOBAL ===== */
+:root{
   --bg:#0f0f0f;
-  --text:#f5f5f5;
+  --text:#fff;
   --glass:rgba(255,255,255,0.08);
 }
 
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-
 body{
-  font-family:'Inter',sans-serif;
+  margin:0;
+  font-family:Inter;
   background:var(--bg);
   color:var(--text);
-  transition:.4s;
   overflow-x:hidden;
 }
 
-/* ================= CURSOR GLOW ================= */
+/* ===== CURSOR GLOW ===== */
 .cursor{
-  position:fixed;
-  width:300px;
-  height:300px;
+  width:20px;
+  height:20px;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+  position:fixed;
   pointer-events:none;
-  transform:translate(-50%,-50%);
-  z-index:0;
+  background:rgba(255,255,255,0.3);
+  filter:blur(10px);
+  z-index:9999;
 }
 
-/* ================= NAV ================= */
+/* ===== HEADER ===== */
 header{
   position:fixed;
   width:100%;
-  top:0;
   display:flex;
   justify-content:space-between;
-  padding:18px 60px;
+  padding:20px 60px;
   backdrop-filter:blur(20px);
   background:var(--glass);
   z-index:1000;
 }
 
-header h1{
-  font-family:'Playfair Display';
-}
-
 nav a{
-  margin-left:25px;
+  margin-left:20px;
+  color:#fff;
   text-decoration:none;
-  color:var(--text);
-  position:relative;
 }
 
-nav a::after{
-  content:"";
-  position:absolute;
-  width:0%;
-  height:1px;
-  bottom:-5px;
-  left:0;
-  background:var(--text);
-  transition:.3s;
-}
-nav a:hover::after{width:100%}
-
-/* ================= HERO ================= */
+/* ===== HERO ===== */
 .hero{
+  height:100vh;
   display:flex;
   align-items:center;
-  min-height:100vh;
-  padding:120px 60px;
-  position:relative;
+  padding:0 60px;
 }
 
-.hero::after{
-  content:"";
-  position:absolute;
-  right:0;
-  width:50%;
-  height:100%;
-  background:url('Images/1776695215852.webp') center/cover;
-  animation:zoomHero 20s infinite alternate ease-in-out;
-}
-
-@keyframes zoomHero{
-  from{transform:scale(1)}
-  to{transform:scale(1.1)}
-}
-
-.hero-text{
-  max-width:500px;
-  animation:fadeUp 1.2s ease;
-}
-
-.hero-text h2{
-  font-family:'Playfair Display';
-  font-size:52px;
+.hero h1{
+  font-size:60px;
+  font-family:Playfair Display;
+  opacity:0;
+  transform:translateY(40px);
+  animation:fadeUp 1s forwards;
 }
 
 @keyframes fadeUp{
-  from{opacity:0; transform:translateY(40px)}
-  to{opacity:1; transform:translateY(0)}
+  to{opacity:1;transform:translateY(0);}
 }
 
-/* ================= SECTIONS ================= */
-section{padding:120px 60px}
-
-.reveal{
-  opacity:0;
-  transform:translateY(50px);
-  transition:1s ease;
-}
-.reveal.active{
-  opacity:1;
-  transform:translateY(0);
+/* ===== FILTER TABS ===== */
+.filters{
+  text-align:center;
+  margin:40px 0;
 }
 
-/* ================= ABOUT ================= */
-.about{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-}
-.about img{
-  width:100%;
+.filters button{
+  margin:10px;
+  padding:10px 20px;
+  border:none;
   border-radius:20px;
-  transition:.5s;
+  background:var(--glass);
+  color:#fff;
+  cursor:pointer;
+  transition:.3s;
 }
-.about img:hover{
-  transform:scale(1.05);
+.filters button:hover{
+  transform:scale(1.1);
 }
 
-/* ================= GALLERY ================= */
+/* ===== GALLERY ===== */
 .gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:25px;
+  column-count:3;
+  column-gap:20px;
+  padding:40px;
 }
 
 .gallery img{
   width:100%;
+  margin-bottom:20px;
   border-radius:15px;
   cursor:pointer;
-  transform:scale(1);
-  transition:.5s;
-  filter:blur(8px);
+  transition:.4s;
+  filter:blur(10px);
 }
 .gallery img.loaded{
   filter:blur(0);
 }
 .gallery img:hover{
-  transform:scale(1.05);
+  transform:scale(1.03);
 }
 
-/* ================= VIEWER ================= */
+/* ===== VIEWER ===== */
 .viewer{
   position:fixed;
   inset:0;
@@ -178,51 +124,15 @@ section{padding:120px 60px}
   display:none;
   justify-content:center;
   align-items:center;
-  z-index:2000;
 }
 .viewer img{
   max-width:90%;
   max-height:90%;
-  animation:zoomIn .4s ease;
-}
-@keyframes zoomIn{
-  from{transform:scale(.8);opacity:0}
-  to{transform:scale(1);opacity:1}
 }
 
-/* ================= BUTTON ================= */
-.btn{
-  display:inline-block;
-  padding:14px 28px;
-  border-radius:30px;
-  background:var(--glass);
-  text-decoration:none;
-  color:var(--text);
-  transition:.3s;
-}
-.btn:hover{
-  transform:translateY(-3px);
-}
-
-/* ================= CALENDAR ================= */
-.calendar{max-width:420px;margin:40px auto;text-align:center}
-.days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
-.day{
-  padding:12px;
-  border-radius:10px;
-  background:var(--glass);
-  cursor:pointer;
-}
-.day:hover{background:#111;color:#fff}
-
-/* ================= MOBILE ================= */
+/* ===== MOBILE ===== */
 @media(max-width:768px){
-  header{padding:15px 20px}
-  .hero{flex-direction:column;text-align:center}
-  .hero::after{width:100%;height:50%}
-  .hero-text{margin-top:55vh}
-  .about{grid-template-columns:1fr}
-  section{padding:100px 20px}
+  .gallery{column-count:1;}
 }
 
 </style>
@@ -233,76 +143,102 @@ section{padding:120px 60px}
 <div class="cursor" id="cursor"></div>
 
 <header>
-<h1>Dillu Captures</h1>
-<nav>
-<a href="#">Home</a>
-<a href="#about">About</a>
-<a href="#gallery">Gallery</a>
-<a href="#contact">Contact</a>
-</nav>
+  <h2>Dillu Captures</h2>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#gallery">Gallery</a>
+  </nav>
 </header>
 
 <section class="hero">
-<div class="hero-text">
-<h2>Capturing Timeless Moments</h2>
-<p>Luxury photography crafted with emotion.</p>
-</div>
+  <h1>Capturing Timeless Luxury</h1>
 </section>
 
-<section id="about" class="about reveal">
-<img src="Images/IMG_1164.webp">
-<div>
-<h2>About Me</h2>
-<p>I create cinematic and emotional photography experiences.</p>
-</div>
-</section>
+<div class="filters" id="filters"></div>
 
-<section id="gallery">
-<h2 style="margin-bottom:30px">Gallery</h2>
-<div class="gallery">
-
-<img src="Images/Kids/20240813111900_IMG_0814.webp">
-<img src="Images/Kids/IMG_1902.webp">
-<img src="Images/Kids/IMG_5197 (1).webp">
-<img src="Images/Kids/IMG_5332.webp">
-
-</div>
-</section>
+<div class="gallery" id="gallery"></div>
 
 <div class="viewer" id="viewer" onclick="closeViewer()">
-<img id="viewerImg">
+  <img id="viewerImg">
 </div>
-
-<section id="contact">
-<h2>Book a Slot</h2>
-<a class="btn" href="https://wa.me/919700034138">WhatsApp</a>
-</section>
 
 <script>
 
-/* CURSOR */
-const cursor=document.getElementById("cursor");
-document.addEventListener("mousemove",e=>{
-  cursor.style.left=e.clientX+"px";
-  cursor.style.top=e.clientY+"px";
+/* ===== CURSOR ===== */
+document.addEventListener("mousemove", e=>{
+  const c=document.getElementById("cursor");
+  c.style.left=e.clientX+"px";
+  c.style.top=e.clientY+"px";
 });
 
-/* REVEAL */
-const reveals=document.querySelectorAll(".reveal");
-window.addEventListener("scroll",()=>{
-  reveals.forEach(el=>{
-    if(el.getBoundingClientRect().top < window.innerHeight-100){
-      el.classList.add("active");
+/* ===== IMAGE DATA ===== */
+const images = [
+"Images/Kids/IMG_1902.webp",
+"Images/Kids/IMG_5332.webp",
+"Images/Maternity Shoot/IMG_4216.webp",
+"Images/Maternity Shoot/IMG_4265.webp",
+"Images/Temples & Culture/IMG_3390.webp",
+"Images/Temples & Culture/IMG_3037.webp"
+];
+
+/* ===== AI CATEGORY DETECTION ===== */
+function detectCategory(path){
+  path=path.toLowerCase();
+
+  if(path.includes("kids")) return "Kids";
+  if(path.includes("maternity")) return "Maternity";
+  if(path.includes("culture")) return "Culture";
+  return "Other";
+}
+
+const categorized = {};
+
+images.forEach(img=>{
+  const cat = detectCategory(img);
+  if(!categorized[cat]) categorized[cat]=[];
+  categorized[cat].push(img);
+});
+
+/* ===== CREATE FILTER BUTTONS ===== */
+const filtersDiv = document.getElementById("filters");
+
+Object.keys(categorized).forEach(cat=>{
+  const btn=document.createElement("button");
+  btn.innerText=cat;
+  btn.onclick=()=>loadGallery(cat);
+  filtersDiv.appendChild(btn);
+});
+
+/* ===== LOAD GALLERY ===== */
+function loadGallery(category){
+  const gallery=document.getElementById("gallery");
+  gallery.innerHTML="";
+
+  categorized[category].forEach(src=>{
+    const img=document.createElement("img");
+    img.dataset.src=src;
+
+    img.onclick=()=>openViewer(src);
+
+    img.onload=()=>img.classList.add("loaded");
+
+    observer.observe(img);
+    gallery.appendChild(img);
+  });
+}
+
+/* ===== LAZY LOAD ===== */
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const img = entry.target;
+      img.src = img.dataset.src;
+      observer.unobserve(img);
     }
   });
 });
 
-/* IMAGE LOAD + VIEWER */
-document.querySelectorAll(".gallery img").forEach(img=>{
-  img.onload=()=>img.classList.add("loaded");
-  img.onclick=()=>openViewer(img.src);
-});
-
+/* ===== VIEWER ===== */
 function openViewer(src){
   document.getElementById("viewer").style.display="flex";
   document.getElementById("viewerImg").src=src;
@@ -310,6 +246,9 @@ function openViewer(src){
 function closeViewer(){
   document.getElementById("viewer").style.display="none";
 }
+
+/* INIT */
+loadGallery(Object.keys(categorized)[0]);
 
 </script>
 
