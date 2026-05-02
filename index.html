@@ -1,273 +1,186 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dillu Captures</title>
+<title>Dillu Captures SaaS</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
 
 <style>
-
-/* ================= BASE ================= */
-:root{
-  --bg:#0f0f0f;
-  --text:#fff;
-  --accent:#c9a96e;
-}
-
-body{
-  margin:0;
-  font-family:'Inter';
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-}
-
-/* ================= CURSOR GLOW ================= */
-.cursor{
-  width:300px;
-  height:300px;
-  position:fixed;
-  background:radial-gradient(circle,rgba(255,255,255,0.15),transparent);
-  pointer-events:none;
-  transform:translate(-50%,-50%);
-  z-index:999;
-}
-
-/* ================= HEADER ================= */
-header{
-  position:fixed;
-  width:100%;
-  padding:20px 60px;
-  display:flex;
-  justify-content:space-between;
-  backdrop-filter:blur(20px);
-  z-index:1000;
-}
-
-nav a{
-  margin-left:25px;
-  color:#fff;
-  text-decoration:none;
-}
-
-/* ================= HERO ================= */
-.hero{
-  height:100vh;
-  display:flex;
-  align-items:center;
-  padding:0 60px;
-  position:relative;
-}
-
-.hero::before{
-  content:"";
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:url('Images/1776695215852.webp') center/cover;
-  animation:zoom 15s infinite alternate;
-}
-
-@keyframes zoom{
-  from{transform:scale(1.1)}
-  to{transform:scale(1.25)}
-}
-
-.hero-text{
-  position:relative;
-}
-
-.hero-text h2{
-  font-family:'Playfair Display';
-  font-size:60px;
-}
-
-/* ================= FILTER ================= */
-.filters{
-  text-align:center;
-  margin-bottom:30px;
-}
-
-.filters button{
-  margin:10px;
-  padding:10px 20px;
-  border:none;
-  background:rgba(255,255,255,0.1);
-  color:#fff;
-  cursor:pointer;
-  border-radius:20px;
-}
-
-/* ================= GALLERY ================= */
-.gallery{
-  column-count:3;
-  column-gap:15px;
-  padding:0 60px;
-}
-
-.gallery img{
-  width:100%;
-  margin-bottom:15px;
-  border-radius:15px;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.gallery img:hover{
-  transform:scale(1.03);
-}
-
-/* ================= FULL SCREEN VIEW ================= */
-.viewer{
-  position:fixed;
-  inset:0;
-  background:#000;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  opacity:0;
-  pointer-events:none;
-  transition:.4s;
-}
-
-.viewer.active{
-  opacity:1;
-  pointer-events:all;
-}
-
-.viewer img{
-  max-width:95%;
-  max-height:90%;
-}
-
-/* ================= DASHBOARD ================= */
-.dashboard{
-  padding:100px 60px;
-  text-align:center;
-}
-
-.login-box{
-  background:rgba(255,255,255,0.05);
-  padding:40px;
-  border-radius:20px;
-  display:inline-block;
-}
-
-/* ================= MOBILE ================= */
-@media(max-width:900px){
-  .gallery{column-count:2}
-}
-
-@media(max-width:600px){
-  .gallery{column-count:1;padding:0 20px}
-}
-
+body{font-family:Arial;background:#111;color:#fff;text-align:center}
+button{padding:10px 20px;margin:10px;border:none;border-radius:8px;cursor:pointer}
+input{padding:10px;margin:5px;border-radius:6px;border:none}
+#loginPage,#dashboard,#adminPanel{display:none}
+img{width:200px;margin:10px;border-radius:10px}
 </style>
 </head>
 
 <body>
 
-<div class="cursor" id="cursor"></div>
+<!-- LOGIN -->
+<div id="loginPage">
+<h2>Login</h2>
+<button onclick="googleLogin()">Google Login</button>
 
-<header>
-  <h1>Dillu Captures</h1>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#gallery">Gallery</a>
-    <a href="#dashboard">Client</a>
-  </nav>
-</header>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-text">
-    <h2>Capturing Timeless Moments</h2>
-  </div>
-</section>
-
-<!-- FILTER -->
-<div class="filters">
-  <button onclick="filterImages('all')">All</button>
-  <button onclick="filterImages('kids')">Kids</button>
-  <button onclick="filterImages('maternity')">Maternity</button>
-  <button onclick="filterImages('culture')">Culture</button>
-</div>
-
-<!-- GALLERY -->
-<div class="gallery" id="gallery">
-
-<img src="Images/Kids/20240813111900_IMG_0814.webp" data-cat="kids">
-<img src="Images/Kids/IMG_1902.webp" data-cat="kids">
-<img src="Images/Maternity Shoot/IMG_4216.webp" data-cat="maternity">
-<img src="Images/Maternity Shoot/IMG_4265.webp" data-cat="maternity">
-<img src="Images/Temples & Culture/IMG_3234.webp" data-cat="culture">
-<img src="Images/Temples & Culture/IMG_3390.webp" data-cat="culture">
-
-</div>
-
-<!-- VIEWER -->
-<div class="viewer" id="viewer">
-  <img id="viewer-img">
+<div id="recaptcha"></div>
+<input id="phone" placeholder="+91XXXXXXXXXX">
+<button onclick="sendOTP()">Send OTP</button>
+<input id="otp" placeholder="OTP">
+<button onclick="verifyOTP()">Verify</button>
 </div>
 
 <!-- DASHBOARD -->
-<section id="dashboard" class="dashboard">
-  <h2>Client Dashboard</h2>
-  <div class="login-box">
-    <p>Enter Client ID</p>
-    <input type="text" placeholder="Client ID">
-    <br><br>
-    <button>Access Gallery</button>
-  </div>
-</section>
+<div id="dashboard">
+<h2>Client Dashboard</h2>
+<button onclick="logout()">Logout</button>
+<div id="gallery"></div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+<h2>Admin Panel</h2>
+<button onclick="logout()">Logout</button>
+
+<input type="file" id="upload" multiple>
+<input id="clientId" placeholder="Client UID">
+<button onclick="uploadPhotos()">Upload</button>
+</div>
 
 <script>
 
-/* ================= CURSOR ================= */
-const cursor = document.getElementById("cursor");
-document.addEventListener("mousemove",(e)=>{
-  cursor.style.left=e.clientX+"px";
-  cursor.style.top=e.clientY+"px";
-});
+// 🔥 FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  appId: "YOUR_APP_ID"
+};
 
-/* ================= FILTER ================= */
-function filterImages(cat){
-  document.querySelectorAll(".gallery img").forEach(img=>{
-    img.style.display = (cat==="all" || img.dataset.cat===cat) ? "block":"none";
-  });
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+// ================= LOGIN =================
+
+function googleLogin(){
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider);
 }
 
-/* ================= VIEWER ================= */
-const viewer = document.getElementById("viewer");
-const viewerImg = document.getElementById("viewer-img");
+window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha');
 
-document.querySelectorAll(".gallery img").forEach(img=>{
-  img.onclick=()=>{
-    viewer.classList.add("active");
-    viewerImg.src=img.src;
+function sendOTP(){
+  const phone = document.getElementById("phone").value;
+
+  auth.signInWithPhoneNumber(phone, recaptchaVerifier)
+    .then(res => window.confirmationResult = res);
+}
+
+function verifyOTP(){
+  const code = document.getElementById("otp").value;
+
+  confirmationResult.confirm(code);
+}
+
+// ================= AUTH STATE =================
+
+auth.onAuthStateChanged(async user => {
+
+  if(!user){
+    show("loginPage");
+    return;
   }
+
+  // create user if not exists
+  const ref = db.collection("users").doc(user.uid);
+  const doc = await ref.get();
+
+  if(!doc.exists){
+    await ref.set({
+      role: "client" // change manually to admin in Firebase
+    });
+  }
+
+  const role = (await ref.get()).data().role;
+
+  if(role === "admin"){
+    show("adminPanel");
+  } else {
+    show("dashboard");
+    loadGallery();
+  }
+
 });
 
-viewer.onclick=()=>viewer.classList.remove("active");
+// ================= SHOW UI =================
 
-/* ================= SWIPE ================= */
-let startX=0;
+function show(id){
+  document.getElementById("loginPage").style.display="none";
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("adminPanel").style.display="none";
 
-viewer.addEventListener("touchstart",(e)=>{
-  startX=e.touches[0].clientX;
-});
+  document.getElementById(id).style.display="block";
+}
 
-viewer.addEventListener("touchend",(e)=>{
-  let endX=e.changedTouches[0].clientX;
-  if(startX - endX > 50){
-    // next (optional expand)
+// ================= ADMIN UPLOAD =================
+
+async function uploadPhotos(){
+
+  const files = document.getElementById("upload").files;
+  const clientId = document.getElementById("clientId").value;
+
+  let urls=[];
+
+  for(let file of files){
+    const ref = storage.ref("photos/"+file.name);
+    await ref.put(file);
+
+    const url = await ref.getDownloadURL();
+    urls.push(url);
   }
-  if(endX - startX > 50){
-    // prev (optional expand)
-  }
-});
+
+  await db.collection("galleries").add({
+    clientId: clientId,
+    images: urls
+  });
+
+  alert("Uploaded!");
+}
+
+// ================= CLIENT LOAD =================
+
+async function loadGallery(){
+
+  const user = auth.currentUser;
+  const snap = await db.collection("galleries")
+    .where("clientId","==",user.uid)
+    .get();
+
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML="";
+
+  snap.forEach(doc=>{
+    doc.data().images.forEach(img=>{
+      const i = document.createElement("img");
+      i.src = img;
+      gallery.appendChild(i);
+    });
+  });
+
+}
+
+// ================= LOGOUT =================
+
+function logout(){
+  auth.signOut();
+}
 
 </script>
 
