@@ -3,117 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dillu Captures Premium</title>
+<title>Dillu Ultra Premium</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
+
+<!-- TensorFlow -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
 
 <style>
 
 /* ===== GLOBAL ===== */
-:root{
-  --bg:#0f0f0f;
-  --text:#fff;
-  --glass:rgba(255,255,255,0.08);
-}
-
 body{
   margin:0;
   font-family:Inter;
-  background:var(--bg);
-  color:var(--text);
+  background:#0f0f0f;
+  color:#fff;
   overflow-x:hidden;
 }
 
-/* ===== CURSOR GLOW ===== */
-.cursor{
-  width:20px;
-  height:20px;
-  border-radius:50%;
+/* ===== INTRO CINEMATIC ===== */
+.intro{
   position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  font-size:40px;
+  font-family:Playfair Display;
+  letter-spacing:2px;
+  animation:fadeOut 2s forwards 2s;
+}
+@keyframes fadeOut{
+  to{opacity:0;visibility:hidden;}
+}
+
+/* ===== CURSOR ===== */
+.cursor{
+  width:25px;height:25px;
+  position:fixed;
+  border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  filter:blur(8px);
   pointer-events:none;
-  background:rgba(255,255,255,0.3);
-  filter:blur(10px);
   z-index:9999;
 }
 
-/* ===== HEADER ===== */
-header{
-  position:fixed;
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  padding:20px 60px;
-  backdrop-filter:blur(20px);
-  background:var(--glass);
-  z-index:1000;
-}
-
-nav a{
-  margin-left:20px;
-  color:#fff;
-  text-decoration:none;
-}
-
-/* ===== HERO ===== */
+/* ===== HERO PARALLAX ===== */
 .hero{
   height:100vh;
   display:flex;
   align-items:center;
-  padding:0 60px;
+  padding:60px;
+  transform-style:preserve-3d;
 }
-
 .hero h1{
   font-size:60px;
   font-family:Playfair Display;
-  opacity:0;
-  transform:translateY(40px);
-  animation:fadeUp 1s forwards;
 }
 
-@keyframes fadeUp{
-  to{opacity:1;transform:translateY(0);}
-}
-
-/* ===== FILTER TABS ===== */
-.filters{
-  text-align:center;
-  margin:40px 0;
-}
-
-.filters button{
-  margin:10px;
-  padding:10px 20px;
-  border:none;
-  border-radius:20px;
-  background:var(--glass);
+/* ===== BUTTON ===== */
+.btn{
+  padding:12px 24px;
+  border-radius:30px;
+  background:#222;
   color:#fff;
+  border:none;
   cursor:pointer;
   transition:.3s;
 }
-.filters button:hover{
+.btn:hover{
   transform:scale(1.1);
 }
 
 /* ===== GALLERY ===== */
 .gallery{
   column-count:3;
-  column-gap:20px;
-  padding:40px;
+  padding:30px;
 }
-
 .gallery img{
   width:100%;
   margin-bottom:20px;
   border-radius:15px;
   cursor:pointer;
-  transition:.4s;
-  filter:blur(10px);
-}
-.gallery img.loaded{
-  filter:blur(0);
-}
-.gallery img:hover{
-  transform:scale(1.03);
+  transition:.3s;
 }
 
 /* ===== VIEWER ===== */
@@ -130,9 +105,18 @@ nav a{
   max-height:90%;
 }
 
-/* ===== MOBILE ===== */
-@media(max-width:768px){
-  .gallery{column-count:1;}
+/* ===== LIGHTROOM PANEL ===== */
+.editor{
+  position:fixed;
+  right:0;
+  top:0;
+  width:250px;
+  height:100%;
+  background:#111;
+  padding:20px;
+}
+.editor input{
+  width:100%;
 }
 
 </style>
@@ -140,115 +124,112 @@ nav a{
 
 <body>
 
+<div class="intro">Dillu Captures</div>
 <div class="cursor" id="cursor"></div>
 
-<header>
-  <h2>Dillu Captures</h2>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#gallery">Gallery</a>
-  </nav>
-</header>
-
 <section class="hero">
-  <h1>Capturing Timeless Luxury</h1>
+  <h1>Luxury Visual Storytelling</h1>
 </section>
-
-<div class="filters" id="filters"></div>
 
 <div class="gallery" id="gallery"></div>
 
-<div class="viewer" id="viewer" onclick="closeViewer()">
+<div class="viewer" id="viewer">
   <img id="viewerImg">
+</div>
+
+<div class="editor">
+  <h3>Edit</h3>
+  <label>Brightness</label>
+  <input type="range" min="0.5" max="2" step="0.1" id="brightness">
+  <label>Contrast</label>
+  <input type="range" min="0.5" max="2" step="0.1" id="contrast">
 </div>
 
 <script>
 
 /* ===== CURSOR ===== */
-document.addEventListener("mousemove", e=>{
+document.addEventListener("mousemove",e=>{
   const c=document.getElementById("cursor");
   c.style.left=e.clientX+"px";
   c.style.top=e.clientY+"px";
 });
 
-/* ===== IMAGE DATA ===== */
-const images = [
+/* ===== PARALLAX ===== */
+document.addEventListener("mousemove",e=>{
+  document.querySelector(".hero").style.transform =
+    `rotateY(${e.clientX/50}deg) rotateX(${-e.clientY/50}deg)`;
+});
+
+/* ===== IMAGES ===== */
+const images=[
 "Images/Kids/IMG_1902.webp",
-"Images/Kids/IMG_5332.webp",
 "Images/Maternity Shoot/IMG_4216.webp",
-"Images/Maternity Shoot/IMG_4265.webp",
-"Images/Temples & Culture/IMG_3390.webp",
-"Images/Temples & Culture/IMG_3037.webp"
+"Images/Temples & Culture/IMG_3390.webp"
 ];
 
-/* ===== AI CATEGORY DETECTION ===== */
-function detectCategory(path){
-  path=path.toLowerCase();
-
-  if(path.includes("kids")) return "Kids";
-  if(path.includes("maternity")) return "Maternity";
-  if(path.includes("culture")) return "Culture";
-  return "Other";
-}
-
-const categorized = {};
-
-images.forEach(img=>{
-  const cat = detectCategory(img);
-  if(!categorized[cat]) categorized[cat]=[];
-  categorized[cat].push(img);
-});
-
-/* ===== CREATE FILTER BUTTONS ===== */
-const filtersDiv = document.getElementById("filters");
-
-Object.keys(categorized).forEach(cat=>{
-  const btn=document.createElement("button");
-  btn.innerText=cat;
-  btn.onclick=()=>loadGallery(cat);
-  filtersDiv.appendChild(btn);
-});
-
 /* ===== LOAD GALLERY ===== */
-function loadGallery(category){
-  const gallery=document.getElementById("gallery");
-  gallery.innerHTML="";
+const gallery=document.getElementById("gallery");
 
-  categorized[category].forEach(src=>{
-    const img=document.createElement("img");
-    img.dataset.src=src;
+images.forEach(src=>{
+  const img=document.createElement("img");
+  img.src=src;
 
-    img.onclick=()=>openViewer(src);
-
-    img.onload=()=>img.classList.add("loaded");
-
-    observer.observe(img);
-    gallery.appendChild(img);
-  });
-}
-
-/* ===== LAZY LOAD ===== */
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      const img = entry.target;
-      img.src = img.dataset.src;
-      observer.unobserve(img);
-    }
-  });
+  img.onclick=()=>openViewer(src);
+  gallery.appendChild(img);
 });
 
-/* ===== VIEWER ===== */
+/* ===== SWIPE VIEWER ===== */
+let currentIndex=0;
+
 function openViewer(src){
+  currentIndex=images.indexOf(src);
   document.getElementById("viewer").style.display="flex";
   document.getElementById("viewerImg").src=src;
 }
-function closeViewer(){
-  document.getElementById("viewer").style.display="none";
+
+let startX=0;
+
+document.getElementById("viewer").addEventListener("touchstart",e=>{
+  startX=e.touches[0].clientX;
+});
+
+document.getElementById("viewer").addEventListener("touchend",e=>{
+  let endX=e.changedTouches[0].clientX;
+
+  if(startX-endX>50) next();
+  if(endX-startX>50) prev();
+});
+
+function next(){
+  currentIndex=(currentIndex+1)%images.length;
+  viewerImg.src=images[currentIndex];
+}
+function prev(){
+  currentIndex=(currentIndex-1+images.length)%images.length;
+  viewerImg.src=images[currentIndex];
 }
 
-/* INIT */
-loadGallery(Object.keys(categorized)[0]);
+/* ===== AI TAGGING (REAL TFJS) ===== */
+async function runAI(){
+  const model = await mobilenet.load();
+
+  document.querySelectorAll(".gallery img").forEach(async img=>{
+    const predictions = await model.classify(img);
+    console.log(img.src, predictions[0].className);
+  });
+}
+runAI();
+
+/* ===== EDITOR ===== */
+const viewerImg=document.getElementById("viewerImg");
+
+brightness.oninput=contrast.oninput=()=>{
+  viewerImg.style.filter =
+    `brightness(${brightness.value}) contrast(${contrast.value})`;
+};
+
+/* ===== CLOSE VIEWER ===== */
+viewer.onclick=()=>viewer.style.display="none";
 
 </script>
 
