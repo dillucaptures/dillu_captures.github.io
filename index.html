@@ -3,130 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dillu Captures — Cinematic</title>
 
-<title>Dillu Captures</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+<!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
 <style>
 
-/* ===== BASE ===== */
+/* ================= BASE ================= */
+*{margin:0;padding:0;box-sizing:border-box}
 body{
-  margin:0;
-  font-family:'Inter',sans-serif;
+  font-family:Inter;
   background:#000;
   color:#fff;
   overflow-x:hidden;
 }
 
-section{
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  position:relative;
-}
-
-/* ===== NAV ===== */
+/* ================= NAV ================= */
 header{
   position:fixed;
-  top:0;
   width:100%;
-  padding:18px 40px;
+  top:0;
+  padding:20px 40px;
   display:flex;
   justify-content:space-between;
   z-index:1000;
   backdrop-filter:blur(20px);
-  background:rgba(0,0,0,0.4);
 }
 
 header h1{
-  font-weight:500;
   font-size:18px;
+  font-weight:500;
 }
 
 nav a{
+  margin-left:25px;
   color:#aaa;
   text-decoration:none;
-  margin-left:20px;
   font-size:14px;
 }
 
-/* ===== HERO ===== */
+nav a:hover{color:#fff}
+
+/* ================= SECTIONS ================= */
+.section{
+  height:100vh;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ================= HERO ================= */
 .hero{
-  background:url('Images/1776695215852.webp') center/cover no-repeat;
+  background:#000;
 }
 
 .hero h2{
   font-size:64px;
-  font-weight:600;
+  text-align:center;
+  line-height:1.1;
 }
 
-/* ===== IMAGE SECTIONS ===== */
-.panel{
-  background-size:cover;
-  background-position:center;
-}
-
-.overlay{
+/* ================= IMAGE STACK ================= */
+.stack{
   position:absolute;
-  inset:0;
-  background:linear-gradient(to bottom,rgba(0,0,0,0.3),#000);
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
 }
 
-.text{
-  position:relative;
-  z-index:2;
-  max-width:700px;
+.stack img{
+  position:absolute;
+  width:60%;
+  left:20%;
+  top:20%;
+  border-radius:20px;
+  object-fit:cover;
+  filter:blur(20px);
+  transform:scale(1.2);
+  opacity:0;
 }
 
-.text h2{
-  font-size:48px;
-  margin-bottom:10px;
+/* ================= TEXT STORY ================= */
+.story-text{
+  position:absolute;
+  bottom:20%;
+  font-size:28px;
+  opacity:0;
+  text-align:center;
 }
 
-.text p{
-  font-size:18px;
-  color:#ccc;
-}
-
-/* ===== GALLERY GRID ===== */
+/* ================= GALLERY ================= */
 .gallery{
-  padding:100px 40px;
-  background:#000;
-}
-
-.grid{
+  padding:120px 40px;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:20px;
 }
 
-.grid img{
+.gallery img{
   width:100%;
-  border-radius:16px;
+  border-radius:15px;
   transition:.5s;
 }
 
-.grid img:hover{
+.gallery img:hover{
   transform:scale(1.05);
 }
 
-/* ===== FOOTER ===== */
+/* ================= FOOTER ================= */
 footer{
-  padding:80px 20px;
+  padding:80px 40px;
   text-align:center;
-  color:#888;
-}
-
-/* MOBILE */
-@media(max-width:768px){
-  .hero h2{ font-size:36px; }
-  .text h2{ font-size:28px; }
+  color:#aaa;
 }
 
 </style>
@@ -139,100 +133,126 @@ footer{
   <nav>
     <a href="#">Home</a>
     <a href="#gallery">Gallery</a>
-    <a href="#contact">Contact</a>
   </nav>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <h2>Capture Life<br>Beautifully</h2>
+<!-- ================= HERO ================= -->
+<section class="section hero">
+  <h2 id="heroText">Capturing<br>Emotion</h2>
 </section>
 
-<!-- STORY PANELS -->
-<section class="panel" style="background-image:url('Images/Kids/IMG_1902.webp')">
-  <div class="overlay"></div>
-  <div class="text">
-    <h2>Pure Moments</h2>
-    <p>Every child tells a story of joy and innocence.</p>
+<!-- ================= CINEMATIC STORY ================= -->
+<section class="section">
+
+  <div class="stack">
+
+    <!-- KIDS -->
+    <img src="Images/Kids/IMG_1902.webp">
+    <img src="Images/Kids/IMG_5332.webp">
+
+    <!-- MATERNITY -->
+    <img src="Images/Maternity Shoot/IMG_4216.webp">
+    <img src="Images/Maternity Shoot/IMG_4363.webp">
+
+    <!-- CULTURE -->
+    <img src="Images/Temples & Culture/IMG_3390.webp">
+    <img src="Images/Temples & Culture/IMG_3234.webp">
+
   </div>
-</section>
 
-<section class="panel" style="background-image:url('Images/Maternity Shoot/IMG_4216.webp')">
-  <div class="overlay"></div>
-  <div class="text">
-    <h2>Timeless Love</h2>
-    <p>Capturing the beauty of motherhood.</p>
+  <div class="story-text" id="storyText">
+    Every frame tells a story
   </div>
+
 </section>
 
-<section class="panel" style="background-image:url('Images/Temples & Culture/IMG_3390.webp')">
-  <div class="overlay"></div>
-  <div class="text">
-    <h2>Culture & Soul</h2>
-    <p>Where tradition meets visual storytelling.</p>
-  </div>
-</section>
+<!-- ================= GALLERY ================= -->
+<section id="gallery">
 
-<!-- GALLERY -->
-<section class="gallery" id="gallery">
-  <h2 style="text-align:center;margin-bottom:40px;">Gallery</h2>
+  <div class="gallery">
 
-  <div class="grid">
+    <!-- Kids -->
     <img src="Images/Kids/20240813111900_IMG_0814.webp">
     <img src="Images/Kids/IMG_1902.webp">
     <img src="Images/Kids/IMG_5197 (1).webp">
     <img src="Images/Kids/IMG_5332.webp">
 
+    <!-- Maternity -->
+    <img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp">
     <img src="Images/Maternity Shoot/IMG_4216.webp">
     <img src="Images/Maternity Shoot/IMG_4265.webp">
     <img src="Images/Maternity Shoot/IMG_4363.webp">
 
+    <!-- Culture -->
+    <img src="Images/Temples & Culture/20230609184601_IMG_7346.webp">
+    <img src="Images/Temples & Culture/20231001121437_IMG_8556.webp">
+    <img src="Images/Temples & Culture/IMG_20251225_093551493.webp">
+    <img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp">
     <img src="Images/Temples & Culture/IMG_3234.webp">
     <img src="Images/Temples & Culture/IMG_3390.webp">
     <img src="Images/Temples & Culture/IMG_3037.webp">
+    <img src="Images/Temples & Culture/IMG_20251225_195802010.webp">
+
   </div>
+
 </section>
 
-<!-- FOOTER -->
-<footer id="contact">
-  <p>© 2026 Dillu Captures</p>
+<footer>
+  © 2026 Dillu Captures — Cinematic Experience
 </footer>
 
 <script>
 
-/* GSAP */
+/* ================= GSAP ================= */
 gsap.registerPlugin(ScrollTrigger);
 
-/* HERO TEXT */
-gsap.from(".hero h2",{
+/* HERO ANIMATION */
+gsap.from("#heroText",{
+  scale:1.5,
   opacity:0,
-  y:80,
-  duration:1.5
+  duration:2,
+  ease:"power3.out"
 });
 
-/* PANEL ANIMATION */
-gsap.utils.toArray(".panel").forEach(panel=>{
-  gsap.from(panel.querySelector(".text"),{
+/* ================= IMAGE STORY ================= */
+const images = document.querySelectorAll(".stack img");
+
+images.forEach((img, i)=>{
+  gsap.to(img,{
+    scrollTrigger:{
+      trigger:".section",
+      start:`top+=${i*150} center`,
+      end:`+=400`,
+      scrub:true
+    },
+    opacity:1,
+    scale:1,
+    filter:"blur(0px)"
+  });
+
+  gsap.to(img,{
+    scrollTrigger:{
+      trigger:".section",
+      start:`top+=${i*150+200} center`,
+      end:`+=400`,
+      scrub:true
+    },
     opacity:0,
-    y:80,
-    scrollTrigger:{
-      trigger:panel,
-      start:"top 70%",
-      scrub:true
-    }
+    scale:1.2,
+    filter:"blur(20px)"
   });
 });
 
-/* PARALLAX */
-gsap.utils.toArray(".panel").forEach(panel=>{
-  gsap.to(panel,{
-    backgroundPosition:"50% 60%",
-    ease:"none",
-    scrollTrigger:{
-      trigger:panel,
-      scrub:true
-    }
-  });
+/* ================= TEXT STORY ================= */
+gsap.to("#storyText",{
+  scrollTrigger:{
+    trigger:".section",
+    start:"top center",
+    end:"bottom center",
+    scrub:true
+  },
+  opacity:1,
+  y:-50
 });
 
 </script>
