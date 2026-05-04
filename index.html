@@ -13,19 +13,31 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
   font-family:'Inter',sans-serif;
-  background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
+  background:#0b0b0b;
   color:#fff;
-  height:200vh; /* for scroll feel */
+  overflow-x:hidden;
 }
 
-/* ===== GLASS EFFECT ===== */
-.glass{
-  backdrop-filter:blur(25px);
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.15);
+/* ===== CURSOR GLOW ===== */
+.cursor{
+  position:fixed;
+  width:20px;height:20px;
+  border-radius:50%;
+  background:white;
+  pointer-events:none;
+  mix-blend-mode:difference;
+  z-index:9999;
+  transition:transform .15s ease;
+}
+.cursor-glow{
+  position:fixed;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(255,255,255,0.15),transparent);
+  pointer-events:none;
+  z-index:9998;
 }
 
-/* ===== HERO (MINIMAL) ===== */
+/* ===== HERO ===== */
 .hero{
   height:100vh;
   display:flex;
@@ -33,59 +45,58 @@ body{
   align-items:center;
   text-align:center;
 }
+.hero h1{font-size:60px;}
+.hero p{opacity:.6;margin-top:10px;}
 
-.hero h1{
-  font-size:60px;
-  font-weight:500;
-  letter-spacing:1px;
+/* ===== SECTIONS ===== */
+section{padding:100px 20px;text-align:center;}
+
+/* ===== GALLERY ===== */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  padding:20px;
+}
+.gallery img{
+  width:100%;
+  border-radius:15px;
+  transition:.4s;
+}
+.gallery img:hover{
+  transform:scale(1.05);
 }
 
-.hero p{
-  opacity:0.6;
-  margin-top:10px;
-}
-
-/* ===== MAC DOCK ===== */
+/* ===== DOCK ===== */
 .dock{
   position:fixed;
   bottom:20px;
   left:50%;
   transform:translateX(-50%);
-  padding:12px 18px;
-  border-radius:30px;
   display:flex;
   gap:18px;
-  z-index:999;
+  padding:14px 20px;
+  border-radius:30px;
+  backdrop-filter:blur(25px);
+  background:rgba(255,255,255,0.08);
 }
 
-/* ICON STYLE */
+/* ICON */
 .dock-item{
-  width:50px;
-  height:50px;
+  width:55px;height:55px;
   display:flex;
   justify-content:center;
   align-items:center;
-  font-size:22px;
-  border-radius:15px;
+  border-radius:16px;
+  transition:.2s;
   cursor:pointer;
-  transition:0.2s ease;
-  position:relative;
+}
+.dock-item img{
+  width:28px;
+  pointer-events:none;
 }
 
-/* MAGNIFY EFFECT */
-.dock-item:hover{
-  transform:scale(1.8) translateY(-10px);
-}
-
-/* NEIGHBOR SCALE */
-.dock-item:hover + .dock-item{
-  transform:scale(1.4) translateY(-6px);
-}
-.dock-item:has(+ .dock-item:hover){
-  transform:scale(1.4) translateY(-6px);
-}
-
-/* TOOLTIP */
+/* ===== TOOLTIP ===== */
 .dock-item::after{
   content:attr(data-label);
   position:absolute;
@@ -95,101 +106,133 @@ body{
   border-radius:6px;
   font-size:12px;
   opacity:0;
-  transform:translateY(10px);
-  transition:0.2s;
-  white-space:nowrap;
+  transition:.2s;
 }
+.dock-item:hover::after{opacity:1;}
 
-.dock-item:hover::after{
-  opacity:1;
-  transform:translateY(0);
+/* ===== ADMIN PANEL ===== */
+.admin{
+  position:fixed;
+  top:20px;
+  right:20px;
+  padding:15px;
+  border-radius:15px;
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.08);
 }
-
-/* ===== SECTIONS ===== */
-section{
-  padding:120px 20px;
-  text-align:center;
-}
-
-h2{
-  font-size:32px;
-  margin-bottom:10px;
-}
-
-p{
-  opacity:0.6;
-}
-
-/* ===== SMOOTH SCROLL OFFSET ===== */
-html{
-  scroll-behavior:smooth;
-}
+.admin input{margin:5px 0;}
 
 </style>
 </head>
 
 <body>
 
+<div class="cursor"></div>
+<div class="cursor-glow"></div>
+
 <!-- HERO -->
 <div class="hero">
   <div>
     <h1>Dillu Captures</h1>
-    <p>Luxury Photography Experience</p>
+    <p>Ultra Premium Photography Experience</p>
   </div>
 </div>
 
-<!-- SECTIONS -->
-<section id="about">
-  <h2>About</h2>
-  <p>Professional photographer capturing timeless moments with cinematic storytelling.</p>
+<!-- GALLERY -->
+<section id="gallery">
+  <h2>Gallery</h2>
+  <div class="gallery" id="galleryGrid"></div>
 </section>
 
-<section id="services">
-  <h2>Services</h2>
-  <p>Weddings • Portraits • Maternity • Cinematic Shoots</p>
-</section>
+<!-- ADMIN PANEL -->
+<div class="admin">
+  <h4>Upload Image</h4>
+  <input type="file" id="upload">
+</div>
 
-<section id="contact">
-  <h2>Contact</h2>
-  <p>Tap icons below to connect instantly</p>
-</section>
+<!-- DOCK -->
+<div class="dock" id="dock">
 
-<!-- MAC DOCK -->
-<div class="dock glass">
+  <div class="dock-item" data-label="Home" onclick="scrollToTop()">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/home.png"/>
+  </div>
 
-  <div class="dock-item" data-label="Home" onclick="scrollToSection('top')">🏠</div>
+  <div class="dock-item" data-label="Gallery" onclick="scrollToGallery()">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/picture.png"/>
+  </div>
 
-  <div class="dock-item" data-label="About" onclick="scrollToSection('about')">👤</div>
+  <div class="dock-item" data-label="WhatsApp" onclick="openWA()">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png"/>
+  </div>
 
-  <div class="dock-item" data-label="Services" onclick="scrollToSection('services')">🎬</div>
-
-  <div class="dock-item" data-label="WhatsApp"
-       onclick="openWhatsApp()">💬</div>
-
-  <div class="dock-item" data-label="Instagram"
-       onclick="openInsta()">📸</div>
+  <div class="dock-item" data-label="Instagram" onclick="openIG()">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png"/>
+  </div>
 
 </div>
 
 <script>
 
-/* SCROLL FUNCTION */
-function scrollToSection(id){
-  if(id === 'top'){
-    window.scrollTo({top:0,behavior:'smooth'});
-  } else {
-    document.getElementById(id).scrollIntoView({behavior:'smooth'});
+/* ===== CURSOR ===== */
+const cursor=document.querySelector('.cursor');
+const glow=document.querySelector('.cursor-glow');
+
+document.addEventListener('mousemove',e=>{
+  cursor.style.transform=`translate(${e.clientX}px,${e.clientY}px)`;
+  glow.style.transform=`translate(${e.clientX-150}px,${e.clientY-150}px)`;
+});
+
+/* ===== DOCK MAGNETIC EFFECT ===== */
+const dock=document.getElementById('dock');
+const items=document.querySelectorAll('.dock-item');
+
+dock.addEventListener('mousemove',e=>{
+  items.forEach(item=>{
+    const rect=item.getBoundingClientRect();
+    const x=e.clientX-(rect.left+rect.width/2);
+    const distance=Math.abs(x);
+    const scale=Math.max(1,1.8-distance/100);
+    item.style.transform=`scale(${scale}) translateY(-${scale*10}px)`;
+  });
+});
+
+dock.addEventListener('mouseleave',()=>{
+  items.forEach(i=>i.style.transform='scale(1)');
+});
+
+/* ===== SCROLL ===== */
+function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'});}
+function scrollToGallery(){document.getElementById('gallery').scrollIntoView({behavior:'smooth'});}
+
+/* ===== LINKS ===== */
+function openWA(){window.open("https://wa.me/919700034138");}
+function openIG(){window.open("https://instagram.com/dillu_captures");}
+
+/* ===== GALLERY STORAGE ===== */
+const grid=document.getElementById('galleryGrid');
+let images=JSON.parse(localStorage.getItem('images')||'[]');
+
+function render(){
+  grid.innerHTML="";
+  images.forEach(src=>{
+    const img=document.createElement('img');
+    img.src=src;
+    grid.appendChild(img);
+  });
+}
+render();
+
+/* ===== UPLOAD ===== */
+document.getElementById('upload').onchange=e=>{
+  const file=e.target.files[0];
+  const reader=new FileReader();
+  reader.onload=function(){
+    images.push(reader.result);
+    localStorage.setItem('images',JSON.stringify(images));
+    render();
   }
-}
-
-/* LINKS */
-function openWhatsApp(){
-  window.open("https://wa.me/919700034138","_blank");
-}
-
-function openInsta(){
-  window.open("https://www.instagram.com/dillu_captures/","_blank");
-}
+  reader.readAsDataURL(file);
+};
 
 </script>
 
