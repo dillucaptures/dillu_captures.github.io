@@ -6,305 +6,226 @@
     <meta name="color-scheme" content="light dark">
     <title>Dillu Captures | Luxury Photography</title>
 
-    <!-- Google Fonts: Inter for UI, Playfair for Elegance -->
+    <!-- Typography: Inter for that sleek system feel -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@100;300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@100;300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* ================= THEME & VARIABLES ================= */
         :root {
             --bg: #ffffff;
             --text: #000000;
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(0, 0, 0, 0.08);
-            --accent: #0071e3; /* Apple Blue */
-            --card-bg: rgba(245, 245, 247, 0.7);
+            --glass-rgb: 255, 255, 255;
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --accent: #0071e3;
+            --ios-blur: blur(30px) saturate(200%) brightness(1.1);
         }
 
         body.dark {
             --bg: #000000;
-            --text: #f5f5f7;
-            --glass-bg: rgba(22, 22, 23, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --card-bg: rgba(28, 28, 30, 0.7);
+            --text: #ffffff;
+            --glass-rgb: 28, 28, 30;
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --ios-blur: blur(30px) saturate(180%) brightness(0.8);
         }
 
-        /* ================= GLOBAL STYLES ================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.5;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             transition: background-color 0.5s ease;
         }
 
-        /* REVEAL ON SCROLL ANIMATION */
+        /* PERFORMANCE FIX: Hardware Acceleration for smooth scrolling */
+        .reveal, .gallery img, .glass {
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+        }
+
+        /* REVEAL ANIMATION */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* ================= GLASS UI UTILITY ================= */
+        /* ================= iOS 26 GLASS UI ================= */
         .glass {
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            background: var(--glass-bg);
+            backdrop-filter: var(--ios-blur);
+            -webkit-backdrop-filter: var(--ios-blur);
+            background: rgba(var(--glass-rgb), 0.6);
             border: 1px solid var(--glass-border);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
         }
 
         /* ================= INTRO ================= */
         .intro {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
+            position: fixed; inset: 0; background: var(--bg);
+            display: flex; justify-content: center; align-items: center; z-index: 10000;
         }
         .intro-text {
-            font-family: 'Playfair Display';
-            font-size: clamp(2rem, 8vw, 4rem);
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            opacity: 0;
-            transform: scale(0.95);
-            animation: introFade 2s forwards ease-in-out;
+            font-family: 'Playfair Display'; font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 700; opacity: 0; animation: introFade 2.4s forwards ease-in-out;
         }
         @keyframes introFade {
-            0% { opacity: 0; transform: scale(0.95); filter: blur(10px); }
-            50% { opacity: 1; transform: scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: scale(1.05); filter: blur(10px); }
+            0% { opacity: 0; filter: blur(15px); transform: scale(0.9); }
+            40% { opacity: 1; filter: blur(0px); transform: scale(1); }
+            100% { opacity: 0; filter: blur(15px); transform: scale(1.1); }
         }
         .intro.hide { display: none; }
 
         /* ================= NAV ================= */
         header {
-            position: fixed;
-            top: 0; width: 100%;
-            height: 52px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 10%;
-            z-index: 1000;
-            font-size: 12px;
+            position: fixed; top: 0; width: 100%; height: 60px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 1000; border-bottom: 0.5px solid var(--glass-border);
         }
-        header h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+        header h1 { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
         
-        nav { display: flex; align-items: center; gap: 30px; }
-        nav a {
-            text-decoration: none;
-            color: var(--text);
-            opacity: 0.8;
-            transition: 0.3s;
-            font-weight: 400;
-        }
+        nav { display: flex; align-items: center; gap: 25px; }
+        nav a { text-decoration: none; color: var(--text); font-size: 13px; font-weight: 500; opacity: 0.7; transition: 0.3s; }
         nav a:hover { opacity: 1; }
 
         .theme-toggle {
-            width: 44px;
-            height: 22px;
-            border-radius: 20px;
-            cursor: pointer;
-            position: relative;
-            background: var(--glass-border);
-            border: 1px solid var(--glass-border);
+            width: 48px; height: 26px; border-radius: 20px; cursor: pointer;
+            position: relative; background: rgba(var(--glass-rgb), 0.8); border: 1px solid var(--glass-border);
         }
         .toggle-circle {
-            width: 18px;
-            height: 18px;
-            background: var(--text);
-            border-radius: 50%;
-            position: absolute;
-            top: 1px; left: 2px;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; align-items: center; justify-content: center; font-size: 10px;
+            width: 20px; height: 20px; background: var(--text); border-radius: 50%;
+            position: absolute; top: 2px; left: 3px; transition: 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+            display: flex; align-items: center; justify-content: center; font-size: 11px;
         }
-        body.dark .toggle-circle { left: 22px; background: #fff; }
+        body.dark .toggle-circle { left: 23px; background: #fff; color: #000; }
 
-        /* ================= HERO ================= */
+        /* ================= HERO: PHOTO ON RIGHT ================= */
         .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            background: radial-gradient(circle at center, transparent 0%, var(--bg) 100%),
-                        url('Images/1776695215852.webp') center/cover;
-            padding: 0 20px;
+            height: 100vh; display: flex; align-items: center;
+            padding: 0 5% 0 10%; position: relative; gap: 40px; overflow: hidden;
         }
-        .hero-text h2 {
-            font-family: 'Playfair Display';
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            margin-bottom: 10px;
+        .hero-content { flex: 1; z-index: 2; }
+        .hero-content h2 {
+            font-family: 'Playfair Display'; font-size: clamp(3.5rem, 8vw, 7rem);
+            line-height: 0.9; font-weight: 700; letter-spacing: -0.05em; margin-bottom: 20px;
         }
-        .hero-text p {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            font-weight: 300;
-            opacity: 0.6;
+        .hero-content p { font-size: 1.2rem; font-weight: 300; opacity: 0.6; max-width: 450px; }
+
+        .hero-image-container {
+            flex: 1; height: 85vh; border-radius: 40px; overflow: hidden;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.2); position: relative;
+        }
+        .hero-image-container img {
+            width: 100%; height: 100%; object-fit: cover;
+            /* Adjust object-position if you need to center yourself better */
+            object-position: center;
         }
 
-        /* ================= SECTIONS ================= */
-        section { padding: 140px 10%; }
+        /* ================= GALLERY: OPTIMIZED ================= */
+        section { padding: 120px 5%; }
+        .section-title { font-family: 'Playfair Display'; font-size: 48px; margin-bottom: 60px; text-align: center; }
 
-        .about {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            gap: 80px;
-        }
-        .about-img {
-            width: 100%;
-            border-radius: 30px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
-            transition: 0.5s ease;
-        }
-        .about-img:hover { transform: scale(1.02); }
-
-        .section-title {
-            font-family: 'Playfair Display';
-            font-size: 42px;
-            margin-bottom: 20px;
-            letter-spacing: -0.02em;
-        }
-
-        /* ================= GALLERY ================= */
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 24px;
+        }
+        .gallery-item {
+            position: relative; border-radius: 32px; overflow: hidden;
+            background: #1c1c1e; height: 550px;
         }
         .gallery img {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            border-radius: 24px;
-            transition: 0.6s cubic-bezier(0.2, 1, 0.3, 1);
-            cursor: zoom-in;
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
         }
-        .gallery img:hover {
-            transform: scale(0.98);
-            filter: brightness(0.9);
-        }
+        .gallery-item:hover img { transform: scale(1.05); }
 
-        /* ================= CALENDAR ================= */
+        /* ================= CALENDAR & BOOKING ================= */
         .calendar-card {
-            max-width: 500px;
-            margin: 60px auto;
-            padding: 40px;
-            border-radius: 32px;
+            max-width: 450px; margin: 40px auto; padding: 40px;
+            border-radius: 36px;
         }
-        .calendar-header h3 { font-weight: 600; font-size: 20px; }
         .day {
-            padding: 15px;
-            border-radius: 14px;
-            font-size: 14px;
-            transition: 0.2s;
-            border: 1px solid transparent;
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; font-size: 14px; cursor: pointer; transition: 0.2s;
         }
-        .day:hover:not(.disabled) {
-            background: var(--text);
-            color: var(--bg);
-        }
-        .day.selected {
-            background: var(--accent);
-            color: #fff;
-        }
-        .day.today { border: 1px solid var(--accent); }
+        .day:hover:not(.disabled) { background: var(--text); color: var(--bg); }
+        .day.selected { background: var(--accent); color: #fff; font-weight: 700; }
+        .day.today { border: 1.5px solid var(--accent); }
 
         .btn {
-            display: inline-block;
-            padding: 14px 32px;
-            border-radius: 30px;
-            background: var(--text);
-            color: var(--bg);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-            transition: 0.3s;
-            margin: 10px 5px;
+            display: inline-block; padding: 16px 36px; border-radius: 40px;
+            background: var(--text); color: var(--bg); text-decoration: none;
+            font-weight: 600; font-size: 14px; transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1);
         }
-        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
 
-        /* ================= MOBILE ================= */
-        @media(max-width: 768px){
-            header { padding: 0 20px; }
-            nav { display: none; } /* Add a mobile menu icon if needed */
-            .about { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-            section { padding: 80px 20px; }
-            .hero-text h2 { font-size: 3.5rem; }
+        /* ================= MOBILE FIXES ================= */
+        @media(max-width: 900px){
+            .hero { flex-direction: column; text-align: center; padding: 100px 20px 0; justify-content: flex-start; }
+            .hero-image-container { width: 100%; height: 50vh; order: -1; }
+            .hero-content h2 { font-size: 3rem; }
+            .gallery { grid-template-columns: 1fr; }
+            nav { display: none; }
         }
     </style>
 </head>
 
 <body>
 
-<!-- APPLE-STYLE INTRO -->
-<div class="intro" id="intro">
-    <div class="intro-text">Dillu Captures</div>
-</div>
+<div class="intro" id="intro"><div class="intro-text">Dillu Captures</div></div>
 
 <header class="glass">
-    <h1>Dillu Captures</h1>
+    <h1>DILLU CAPTURES</h1>
     <nav>
         <a href="#">Home</a>
-        <a href="#about">About</a>
-        <a href="#gallery">Gallery</a>
-        <a href="#contact">Contact</a>
-        <div class="theme-toggle" onclick="toggleTheme()">
-            <span class="toggle-circle"><span id="icon">☀️</span></span>
-        </div>
+        <a href="#about">The Artist</a>
+        <a href="#gallery">Works</a>
+        <a href="#contact">Inquire</a>
+        <div class="theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="icon">☀️</span></span></div>
     </nav>
 </header>
 
 <main>
+    <!-- HERO SECTION -->
     <section class="hero">
-        <div class="hero-text">
-            <h2 class="reveal">Cinematic Stories.</h2>
-            <p class="reveal">Luxury photography through a poetic lens.</p>
+        <div class="hero-content">
+            <h2 class="reveal">Elegance <br>Redefined.</h2>
+            <p class="reveal">Capturing high-end visuals for clients who value cinematic storytelling and luxury aesthetics.</p>
+            <div class="reveal" style="margin-top: 30px;">
+                <a href="#contact" class="btn">Book a Session</a>
+            </div>
+        </div>
+        <div class="hero-image-container reveal">
+            <!-- YOUR PHOTO HERE -->
+            <img src="Images/1776695215852.webp" alt="Dillu Captures">
         </div>
     </section>
 
-    <section id="about" class="about">
-        <img src="Images/IMG_1164.webp" class="about-img reveal">
-        <div class="reveal">
-            <h2 class="section-title">The Artist</h2>
-            <p style="font-weight:300; font-size:18px; opacity:0.8;">I specialize in capturing the quiet intensity of moments. From timeless portraits to cinematic wedding stories, my work is a blend of technical precision and raw emotion.</p>
-        </div>
-    </section>
-
+    <!-- GALLERY SECTION -->
     <section id="gallery">
-        <h2 class="section-title reveal" style="text-align: center; margin-bottom: 60px;">Selected Works</h2>
+        <h2 class="section-title reveal">The Portfolio</h2>
         <div class="gallery">
-            <img src="Images/Kids/20240813111900_IMG_0814.webp" class="reveal">
-            <img src="Images/Kids/IMG_1902.webp" class="reveal">
-            <img src="Images/Maternity Shoot/IMG_4216.webp" class="reveal">
-            <img src="Images/Temples & Culture/IMG_3390.webp" class="reveal">
-            <img src="Images/Temples & Culture/IMG_20251225_195802010.webp" class="reveal">
-            <img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp" class="reveal">
+            <div class="gallery-item reveal"><img src="Images/Kids/20240813111900_IMG_0814.webp" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="Images/Kids/IMG_1902.webp" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="Images/Maternity Shoot/IMG_4216.webp" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="Images/Temples & Culture/IMG_3390.webp" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="Images/Temples & Culture/IMG_20251225_195802010.webp" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp" loading="lazy"></div>
         </div>
     </section>
 
-    <section id="contact" style="text-align:center;">
-        <h2 class="section-title reveal">Book Your Session</h2>
-        <div style="margin-bottom: 40px;" class="reveal">
-            <a class="btn" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
-            <a class="btn" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
+    <!-- BOOKING SECTION -->
+    <section id="contact" style="text-align:center; background: rgba(var(--glass-rgb), 0.2);">
+        <h2 class="section-title reveal">Schedule</h2>
+        <div style="margin-bottom: 50px;" class="reveal">
+            <a class="btn" style="background:#25D366; color:white;" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
+            <a class="btn" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color:white;" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
         </div>
 
         <div class="calendar-card glass reveal">
@@ -313,23 +234,25 @@
                 <h3 id="monthYear"></h3>
                 <button onclick="nextMonth()" style="background:none; border:none; color:var(--text); cursor:pointer; font-size:24px;">›</button>
             </div>
-            <div class="weekdays" style="display:grid; grid-template-columns:repeat(7,1fr); font-size:12px; font-weight:600; opacity:0.4; margin-bottom:15px;">
+            <div class="weekdays" style="display:grid; grid-template-columns:repeat(7,1fr); font-size:11px; font-weight:700; opacity:0.3; margin-bottom:15px;">
                 <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
             </div>
-            <div class="days" id="days" style="display:grid; grid-template-columns:repeat(7,1fr); gap:10px;"></div>
-            <div class="slots" id="slots" style="margin-top:30px; display:flex; flex-wrap:wrap; justify-content:center;"></div>
+            <div class="days" id="days" style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px;"></div>
+            <div class="slots" id="slots" style="margin-top:30px; display:flex; flex-wrap:wrap; justify-content:center; gap:10px;"></div>
         </div>
     </section>
 </main>
 
-<!-- SMOOTH SCROLL LIBRARY (LENIS) -->
+<!-- LIBRARIES -->
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
 <script>
-/* 1. MOMENTUM SMOOTH SCROLL */
+/* 1. LENIS SMOOTH SCROLL (High Performance Settings) */
 const lenis = new Lenis({
-    duration: 1.2,
+    duration: 1.4,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    wheelMultiplier: 1.1,
 })
 function raf(time) {
     lenis.raf(time)
@@ -337,30 +260,33 @@ function raf(time) {
 }
 requestAnimationFrame(raf)
 
-/* 2. INTRO & REVEAL LOGIC */
+/* 2. INTRO & REVEAL */
 window.addEventListener('load', () => {
     setTimeout(() => {
         document.getElementById("intro").style.opacity = "0";
         setTimeout(() => document.getElementById("intro").classList.add("hide"), 800);
-    }, 2000);
+    }, 2400);
 });
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('active');
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            // Optimization: stop observing once revealed
+            observer.unobserve(entry.target);
+        }
     });
 }, { threshold: 0.1 });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-/* 3. THEME TOGGLE */
+/* 3. THEME */
 function toggleTheme(){
     document.body.classList.toggle("dark");
-    const isDark = document.body.classList.contains("dark");
-    document.getElementById("icon").textContent = isDark ? "🌙" : "☀️";
+    document.getElementById("icon").textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
 }
 
-/* 4. CALENDAR LOGIC */
+/* 4. CALENDAR */
 let currentDate = new Date();
 let selectedDate = null;
 
@@ -400,14 +326,15 @@ function selectDate(day,el){
 function showSlots(){
     const slots = document.getElementById("slots");
     slots.innerHTML="";
-    ["10:00 AM", "02:00 PM", "05:00 PM"].forEach(time => {
+    ["Morning Slot", "Afternoon Slot", "Sunset Session"].forEach(time => {
         const s = document.createElement("div");
         s.className = "btn";
         s.style.fontSize = "12px";
+        s.style.padding = "10px 20px";
         s.style.cursor = "pointer";
         s.innerText = time;
         s.onclick = () => {
-            const msg = `Hi Dillu, I'd like to book a shoot on ${selectedDate} at ${time}.`;
+            const msg = `Hi Dillu, I'm interested in booking a ${time} on ${selectedDate}.`;
             window.open(`https://wa.me/919700034138?text=${encodeURIComponent(msg)}`);
         };
         slots.appendChild(s);
