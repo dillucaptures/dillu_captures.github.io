@@ -3,239 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name | Premium Photography Portfolio</title>
-    <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font - Apple San Francisco alternative -->
+    <meta name="color-scheme" content="light dark">
+    <title>Dillu Captures | Luxury Photography</title>
+
+    <!-- Google Fonts: Inter for UI, Playfair for Elegance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@100;300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        /* Custom Inter Font Application */
-        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        /* ================= THEME & VARIABLES ================= */
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --accent: #0071e3; /* Apple Blue */
+            --card-bg: rgba(245, 245, 247, 0.7);
+        }
 
-        /* Apple Style Smooth Scrolling (Momentum/Inertial) handled by Lenis.js */
-        /* Basic scroll-behavior: smooth is too slow. Lenis makes it velvety. */
+        body.dark {
+            --bg: #000000;
+            --text: #f5f5f7;
+            --glass-bg: rgba(22, 22, 23, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(28, 28, 30, 0.7);
+        }
+
+        /* ================= GLOBAL STYLES ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Glassmorphism Effect Utility Classes */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.5s ease;
+        }
+
+        /* REVEAL ON SCROLL ANIMATION */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ================= GLASS UI UTILITY ================= */
         .glass {
-            background: rgba(18, 18, 18, 0.7) !important;
-            backdrop-filter: blur(20px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .glass-card {
-            background: rgba(30, 30, 30, 0.5);
-            backdrop-filter: blur(10px) saturate(120%);
-            -webkit-backdrop-filter: blur(10px) saturate(120%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 1.5rem;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
         }
 
-        /* Lightbox Custom Styling */
-        #lightbox { display: none; background: rgba(0,0,0,0.95); }
+        /* ================= INTRO ================= */
+        .intro {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .intro-text {
+            font-family: 'Playfair Display';
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: introFade 2s forwards ease-in-out;
+        }
+        @keyframes introFade {
+            0% { opacity: 0; transform: scale(0.95); filter: blur(10px); }
+            50% { opacity: 1; transform: scale(1); filter: blur(0px); }
+            100% { opacity: 0; transform: scale(1.05); filter: blur(10px); }
+        }
+        .intro.hide { display: none; }
 
-        /* Masonry Gallery Setup (Tailwind handle grid, standard Masonry requires dynamic JS) */
-        .gallery-grid { display: columns; column-count: 1; column-gap: 1.5rem; }
-        @media (min-width: 768px) { .gallery-grid { column-count: 2; } }
-        @media (min-width: 1024px) { .gallery-grid { column-count: 3; } }
+        /* ================= NAV ================= */
+        header {
+            position: fixed;
+            top: 0; width: 100%;
+            height: 52px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10%;
+            z-index: 1000;
+            font-size: 12px;
+        }
+        header h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
         
-        /* Premium Hover Effect on Gallery Items */
-        .gallery-item-container { break-inside: avoid; margin-bottom: 1.5rem; overflow: hidden; border-radius: 1rem; cursor: pointer; }
-        .gallery-item { transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        .gallery-item-container:hover .gallery-item { transform: scale(1.05); }
+        nav { display: flex; align-items: center; gap: 30px; }
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            opacity: 0.8;
+            transition: 0.3s;
+            font-weight: 400;
+        }
+        nav a:hover { opacity: 1; }
 
-        /* Smooth Anchor Scroll Padding for Fixed Header */
-        html { scroll-padding-top: 64px; }
+        .theme-toggle {
+            width: 44px;
+            height: 22px;
+            border-radius: 20px;
+            cursor: pointer;
+            position: relative;
+            background: var(--glass-border);
+            border: 1px solid var(--glass-border);
+        }
+        .toggle-circle {
+            width: 18px;
+            height: 18px;
+            background: var(--text);
+            border-radius: 50%;
+            position: absolute;
+            top: 1px; left: 2px;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; align-items: center; justify-content: center; font-size: 10px;
+        }
+        body.dark .toggle-circle { left: 22px; background: #fff; }
+
+        /* ================= HERO ================= */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: radial-gradient(circle at center, transparent 0%, var(--bg) 100%),
+                        url('Images/1776695215852.webp') center/cover;
+            padding: 0 20px;
+        }
+        .hero-text h2 {
+            font-family: 'Playfair Display';
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin-bottom: 10px;
+        }
+        .hero-text p {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: 300;
+            opacity: 0.6;
+        }
+
+        /* ================= SECTIONS ================= */
+        section { padding: 140px 10%; }
+
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 80px;
+        }
+        .about-img {
+            width: 100%;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            transition: 0.5s ease;
+        }
+        .about-img:hover { transform: scale(1.02); }
+
+        .section-title {
+            font-family: 'Playfair Display';
+            font-size: 42px;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        /* ================= GALLERY ================= */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .gallery img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 24px;
+            transition: 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            cursor: zoom-in;
+        }
+        .gallery img:hover {
+            transform: scale(0.98);
+            filter: brightness(0.9);
+        }
+
+        /* ================= CALENDAR ================= */
+        .calendar-card {
+            max-width: 500px;
+            margin: 60px auto;
+            padding: 40px;
+            border-radius: 32px;
+        }
+        .calendar-header h3 { font-weight: 600; font-size: 20px; }
+        .day {
+            padding: 15px;
+            border-radius: 14px;
+            font-size: 14px;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+        .day:hover:not(.disabled) {
+            background: var(--text);
+            color: var(--bg);
+        }
+        .day.selected {
+            background: var(--accent);
+            color: #fff;
+        }
+        .day.today { border: 1px solid var(--accent); }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 30px;
+            background: var(--text);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: 0.3s;
+            margin: 10px 5px;
+        }
+        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* ================= MOBILE ================= */
+        @media(max-width: 768px){
+            header { padding: 0 20px; }
+            nav { display: none; } /* Add a mobile menu icon if needed */
+            .about { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            section { padding: 80px 20px; }
+            .hero-text h2 { font-size: 3.5rem; }
+        }
     </style>
 </head>
-<body class="bg-black text-zinc-100 antialiased overflow-x-hidden">
 
-    <!-- Fixed Header: Frosted Glass Effect -->
-    <header class="fixed top-0 left-0 w-full z-50 glass h-16 flex items-center justify-center px-6">
-        <nav class="max-w-7xl w-full flex items-center justify-between font-light tracking-tight text-sm text-zinc-300">
-            <a href="#" class="text-white font-medium text-lg tracking-normal">Your Name</a>
-            <div class="flex items-center gap-8">
-                <a href="#hero" class="hover:text-white transition">Home</a>
-                <a href="#work" class="hover:text-white transition">Work</a>
-                <a href="#about" class="hover:text-white transition">About</a>
-                <a href="#contact" class="hover:text-white transition">Contact</a>
-            </div>
-        </nav>
-    </header>
+<body>
 
-    <!-- Main Content -->
-    <main class="w-full pt-16">
+<!-- APPLE-STYLE INTRO -->
+<div class="intro" id="intro">
+    <div class="intro-text">Dillu Captures</div>
+</div>
 
-        <!-- Hero Section: Premium Product Launch Aesthetic -->
-        <section id="hero" class="w-full h-screen flex items-center justify-center relative overflow-hidden bg-zinc-950">
-            <!-- PLACEHOLDER: Replace src with your best landscape photograph (optimized for web) -->
-            <img src="images/hero.jpg" alt="Featured Photography" class="absolute inset-0 w-full h-full object-cover opacity-60">
-            
-            <div class="z-10 text-center px-6 flex flex-col items-center">
-                <h2 class="text-xs uppercase tracking-[0.2em] text-zinc-400 font-light mb-4">Landscape & Narrative</h2>
-                <h1 class="text-6xl md:text-7xl font-bold tracking-tighter text-white mb-6">Capture the Atmosphere.</h1>
-                <p class="max-w-2xl text-lg md:text-xl text-zinc-300 font-light tracking-tight mb-12">Visual storytelling focused on the intersection of light, architecture, and human emotion.</p>
-                
-                <div class="flex items-center gap-6">
-                    <a href="#work" class="bg-white text-black px-8 py-3 rounded-full font-medium text-sm hover:bg-zinc-200 transition">View Galleries</a>
-                    <a href="#contact" class="text-white font-light text-sm flex items-center gap-2 hover:text-zinc-300 group">
-                        Inquire
-                        <span class="group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Work/Gallery Section: Clean Masonry Grid -->
-        <section id="work" class="w-full py-24 md:py-32 px-6">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-20 flex flex-col items-center">
-                    <h2 class="text-sm uppercase tracking-[0.2em] text-zinc-500 font-light mb-2">Portfolio</h2>
-                    <h3 class="text-5xl font-extrabold tracking-tighter text-white">Visual Collections</h3>
-                </div>
-
-                <div class="gallery-grid">
-                    <!-- GALLERY ITEM 1: PORTRAIT PLACEHOLDER -->
-                    <!-- PLACEHOLDER: Replace src with your image paths. Adjust aspect ratio in Tailwind classes. -->
-                    <div class="gallery-item-container" onclick="openLightbox(this.querySelector('img').src)">
-                        <img src="images/photo1.jpg" alt="Gallery Photo 1" class="gallery-item w-full aspect-[3/4] object-cover">
-                    </div>
-
-                    <!-- GALLERY ITEM 2: LANDSCAPE PLACEHOLDER -->
-                    <div class="gallery-item-container" onclick="openLightbox(this.querySelector('img').src)">
-                        <img src="images/photo2.jpg" alt="Gallery Photo 2" class="gallery-item w-full aspect-[16/9] object-cover">
-                    </div>
-
-                    <!-- GALLERY ITEM 3: SQUARE PLACEHOLDER -->
-                    <div class="gallery-item-container" onclick="openLightbox(this.querySelector('img').src)">
-                        <img src="images/photo3.jpg" alt="Gallery Photo 3" class="gallery-item w-full aspect-square object-cover">
-                    </div>
-
-                    <!-- GALLERY ITEM 4: LANDSCAPE PLACEHOLDER -->
-                    <div class="gallery-item-container" onclick="openLightbox(this.querySelector('img').src)">
-                        <img src="images/photo4.jpg" alt="Gallery Photo 4" class="gallery-item w-full aspect-[16/10] object-cover">
-                    </div>
-
-                    <!-- GALLERY ITEM 5: PORTRAIT PLACEHOLDER -->
-                    <div class="gallery-item-container" onclick="openLightbox(this.querySelector('img').src)">
-                        <img src="images/photo5.jpg" alt="Gallery Photo 5" class="gallery-item w-full aspect-[2/3] object-cover">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section: Glass Card -->
-        <section id="about" class="w-full py-24 md:py-32 px-6 bg-zinc-950">
-            <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-16">
-                <!-- PLACEHOLDER: Your headshot -->
-                <img src="images/author.jpg" alt="Photographer Headshot" class="w-64 h-64 rounded-full object-cover border-4 border-zinc-800 shadow-2xl">
-                
-                <div class="glass-card p-12 flex-1 shadow-xl">
-                    <h2 class="text-sm uppercase tracking-[0.2em] text-zinc-500 font-light mb-2">The Artist</h2>
-                    <h3 class="text-4xl font-extrabold tracking-tighter text-white mb-6">Your Name</h3>
-                    <p class="text-zinc-300 font-light text-lg tracking-tight leading-relaxed mb-8">
-                        Based in [Your City], I create immersive visual narratives. My approach blends technical precision with a poetic lens, capturing moments of quiet intensity in both natural landscapes and bustling urban environments. Published in [Optional: Publications] and exhibiting globally.
-                    </p>
-                    <a href="mailto:your.email@example.com" class="text-white font-medium text-sm flex items-center gap-2 hover:text-zinc-300 group">
-                        Request Artist Statement
-                        <span class="group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section: Minimalist Form -->
-        <section id="contact" class="w-full py-24 md:py-32 px-6">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-16 flex flex-col items-center">
-                    <h2 class="text-sm uppercase tracking-[0.2em] text-zinc-500 font-light mb-2">Collaborate</h2>
-                    <h3 class="text-5xl font-extrabold tracking-tighter text-white">Inquiries & Commissions</h3>
-                </div>
-
-                <!-- Glassmorphism Form Container -->
-                <form class="glass-card p-10 md:p-16 shadow-2xl space-y-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <label class="block text-xs uppercase tracking-wider text-zinc-500 mb-2 font-medium">Full Name</label>
-                            <input type="text" placeholder="John Doe" class="w-full bg-black/40 border border-zinc-800 rounded-lg p-4 text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-zinc-600 focus:border-zinc-600 transition">
-                        </div>
-                        <div>
-                            <label class="block text-xs uppercase tracking-wider text-zinc-500 mb-2 font-medium">Email Address</label>
-                            <input type="email" placeholder="john@example.com" class="w-full bg-black/40 border border-zinc-800 rounded-lg p-4 text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-zinc-600 focus:border-zinc-600 transition">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-zinc-500 mb-2 font-medium">Project or Print Inquiry</label>
-                        <textarea placeholder="Describe your project, commission, or print request..." rows="6" class="w-full bg-black/40 border border-zinc-800 rounded-lg p-4 text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-zinc-600 focus:border-zinc-600 transition"></textarea>
-                    </div>
-                    <button type="submit" class="w-full md:w-auto bg-white text-black px-12 py-4 rounded-full font-semibold text-sm hover:bg-zinc-200 transition shadow-lg">Submit Request</button>
-                </form>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="w-full py-12 px-6 bg-black border-t border-zinc-900">
-        <div class="max-w-7xl mx-auto text-center font-light text-sm text-zinc-600 flex flex-col md:flex-row items-center justify-between gap-6">
-            <p>&copy; 2026 Your Name Photography. All product rights reserved.</p>
-            <div class="flex items-center gap-6">
-                <a href="#" class="hover:text-white Transition">Instagram</a>
-                <a href="#" class="hover:text-white Transition">Behance</a>
-                <a href="#" class="hover:text-white Transition">LinkedIn</a>
-            </div>
+<header class="glass">
+    <h1>Dillu Captures</h1>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <span class="toggle-circle"><span id="icon">☀️</span></span>
         </div>
-    </footer>
+    </nav>
+</header>
 
-    <!-- Lightbox Modal -->
-    <div id="lightbox" class="fixed inset-0 z-50 flex items-center justify-center p-6" onclick="this.style.display='none'">
-        <img id="lightbox-img" class="max-w-full max-h-full rounded-2xl shadow-2xl object-contain border border-zinc-800">
-    </div>
+<main>
+    <section class="hero">
+        <div class="hero-text">
+            <h2 class="reveal">Cinematic Stories.</h2>
+            <p class="reveal">Luxury photography through a poetic lens.</p>
+        </div>
+    </section>
 
-    <!-- SCRIPT SECTION: Key Interactivity & Scrolling -->
+    <section id="about" class="about">
+        <img src="Images/IMG_1164.webp" class="about-img reveal">
+        <div class="reveal">
+            <h2 class="section-title">The Artist</h2>
+            <p style="font-weight:300; font-size:18px; opacity:0.8;">I specialize in capturing the quiet intensity of moments. From timeless portraits to cinematic wedding stories, my work is a blend of technical precision and raw emotion.</p>
+        </div>
+    </section>
 
-    <!-- 1. Lenis.js for Momentum Scrolling (via CDN) -->
-    <!-- Essential for the velvety "Apple Style" very smooth scroll. -->
-    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@latest/dist/lenis.min.js"></script>
-    <script>
-        // Initialize Lenis Momentum Scrolling
-        const lenis = new Lenis({
-            duration: 1.2, // Adjust duration for slower/faster smooth scroll
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Apple-like easing function
-            smooth: true,
-            mouseMultiplier: 1, // Sensitivity of mouse wheel
-        })
+    <section id="gallery">
+        <h2 class="section-title reveal" style="text-align: center; margin-bottom: 60px;">Selected Works</h2>
+        <div class="gallery">
+            <img src="Images/Kids/20240813111900_IMG_0814.webp" class="reveal">
+            <img src="Images/Kids/IMG_1902.webp" class="reveal">
+            <img src="Images/Maternity Shoot/IMG_4216.webp" class="reveal">
+            <img src="Images/Temples & Culture/IMG_3390.webp" class="reveal">
+            <img src="Images/Temples & Culture/IMG_20251225_195802010.webp" class="reveal">
+            <img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp" class="reveal">
+        </div>
+    </section>
 
-        function raf(time) {
-            lenis.raf(time)
-            requestAnimationFrame(raf)
-        }
-        requestAnimationFrame(raf)
+    <section id="contact" style="text-align:center;">
+        <h2 class="section-title reveal">Book Your Session</h2>
+        <div style="margin-bottom: 40px;" class="reveal">
+            <a class="btn" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
+            <a class="btn" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
+        </div>
 
-        // Ensure Lenis works with standard anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                lenis.scrollTo(this.getAttribute('href'))
-            });
-        });
-    </script>
+        <div class="calendar-card glass reveal">
+            <div class="calendar-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <button onclick="prevMonth()" style="background:none; border:none; color:var(--text); cursor:pointer; font-size:24px;">‹</button>
+                <h3 id="monthYear"></h3>
+                <button onclick="nextMonth()" style="background:none; border:none; color:var(--text); cursor:pointer; font-size:24px;">›</button>
+            </div>
+            <div class="weekdays" style="display:grid; grid-template-columns:repeat(7,1fr); font-size:12px; font-weight:600; opacity:0.4; margin-bottom:15px;">
+                <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
+            </div>
+            <div class="days" id="days" style="display:grid; grid-template-columns:repeat(7,1fr); gap:10px;"></div>
+            <div class="slots" id="slots" style="margin-top:30px; display:flex; flex-wrap:wrap; justify-content:center;"></div>
+        </div>
+    </section>
+</main>
 
-    <!-- 2. Minimalist Lightbox Gallery Script -->
-    <script>
-        function openLightbox(src) {
-            document.getElementById('lightbox-img').src = src;
-            document.getElementById('lightbox').style.display = 'flex';
-        }
-        // Handle Escape Key to Close
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                document.getElementById('lightbox').style.display = 'none';
-            }
-        });
-    </script>
+<!-- SMOOTH SCROLL LIBRARY (LENIS) -->
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+
+<script>
+/* 1. MOMENTUM SMOOTH SCROLL */
+const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+})
+function raf(time) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+}
+requestAnimationFrame(raf)
+
+/* 2. INTRO & REVEAL LOGIC */
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        document.getElementById("intro").style.opacity = "0";
+        setTimeout(() => document.getElementById("intro").classList.add("hide"), 800);
+    }, 2000);
+});
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* 3. THEME TOGGLE */
+function toggleTheme(){
+    document.body.classList.toggle("dark");
+    const isDark = document.body.classList.contains("dark");
+    document.getElementById("icon").textContent = isDark ? "🌙" : "☀️";
+}
+
+/* 4. CALENDAR LOGIC */
+let currentDate = new Date();
+let selectedDate = null;
+
+function renderCalendar(){
+    const daysEl = document.getElementById("days");
+    const monthYear = document.getElementById("monthYear");
+    daysEl.innerHTML="";
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    monthYear.innerText = currentDate.toLocaleString("default",{month:"long"})+" "+year;
+    
+    const firstDay = new Date(year,month,1).getDay();
+    const lastDate = new Date(year,month+1,0).getDate();
+    const today = new Date();
+
+    for(let i=0; i<firstDay; i++) daysEl.innerHTML+="<div></div>";
+
+    for(let d=1; d<=lastDate; d++){
+        const date = new Date(year,month,d);
+        const div = document.createElement("div");
+        div.className="day";
+        div.innerText=d;
+        if(date < new Date(today.setHours(0,0,0,0))) div.classList.add("disabled");
+        if(d===today.getDate() && month===today.getMonth()) div.classList.add("today");
+        div.onclick=()=>selectDate(d,div);
+        daysEl.appendChild(div);
+    }
+}
+
+function selectDate(day,el){
+    document.querySelectorAll(".day").forEach(d=>d.classList.remove("selected"));
+    el.classList.add("selected");
+    selectedDate = `${day} ${currentDate.toLocaleString("default",{month:"long"})}`;
+    showSlots();
+}
+
+function showSlots(){
+    const slots = document.getElementById("slots");
+    slots.innerHTML="";
+    ["10:00 AM", "02:00 PM", "05:00 PM"].forEach(time => {
+        const s = document.createElement("div");
+        s.className = "btn";
+        s.style.fontSize = "12px";
+        s.style.cursor = "pointer";
+        s.innerText = time;
+        s.onclick = () => {
+            const msg = `Hi Dillu, I'd like to book a shoot on ${selectedDate} at ${time}.`;
+            window.open(`https://wa.me/919700034138?text=${encodeURIComponent(msg)}`);
+        };
+        slots.appendChild(s);
+    });
+}
+
+function prevMonth(){ currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); }
+function nextMonth(){ currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); }
+
+renderCalendar();
+</script>
 
 </body>
 </html>
