@@ -101,7 +101,6 @@
         nav { display: flex; align-items: center; gap: 30px; }
         nav a { text-decoration: none; color: var(--text); font-size: 12px; font-weight: 500; opacity: 0.6; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.05em; }
         nav a:hover { opacity: 1; }
-        .login-nav-btn { font-weight: 700; border: 1px solid var(--text); padding: 8px 16px; border-radius: 20px; opacity: 1 !important; }
 
         .menu-toggle { display: none; cursor: pointer; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; z-index: 6000; }
 
@@ -115,42 +114,6 @@
             display: flex; align-items: center; justify-content: center; font-size: 10px;
         }
         body.dark .toggle-circle { left: 21px; background: #fff; color: #000; }
-
-        /* LOGIN MODAL */
-        #loginModal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            z-index: 3000; display: none; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.4s ease; backdrop-filter: blur(15px);
-        }
-        #loginModal.active { display: flex; opacity: 1; }
-        
-        .login-content {
-            width: 90%; max-width: 400px; padding: 50px 40px;
-            border-radius: 30px; text-align: center;
-            position: relative;
-            transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        #loginModal.active .login-content { transform: translateY(0); }
-        
-        .login-content h2 {
-            font-family: 'Cinzel'; font-size: 24px; letter-spacing: 0.1em; margin-bottom: 10px;
-        }
-        .login-content p { font-size: 12px; opacity: 0.6; margin-bottom: 30px; }
-        
-        .login-input {
-            width: 100%; padding: 15px 20px; margin-bottom: 15px;
-            border-radius: 12px; border: 1px solid var(--glass-border);
-            background: rgba(var(--glass-rgb), 0.3);
-            color: var(--text); font-family: 'Inter'; font-size: 14px;
-            outline: none; transition: 0.3s;
-        }
-        .login-input::placeholder { color: var(--text); opacity: 0.5; }
-        .login-input:focus { border-color: var(--text); background: rgba(var(--glass-rgb), 0.6); }
-        
-        .close-login {
-            position: absolute; top: 20px; right: 25px; color: var(--text);
-            font-size: 30px; cursor: pointer; font-weight: 300; line-height: 1;
-        }
 
         /* HERO */
         .hero {
@@ -249,10 +212,9 @@
             display: inline-block; padding: 18px 40px; border-radius: 50px;
             background: var(--text); color: var(--bg); text-decoration: none;
             font-weight: 600; font-size: 13px; transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            text-transform: uppercase; letter-spacing: 0.1em; border: none; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.1em;
         }
         .btn:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
-        .btn-full { width: 100%; margin-top: 10px; }
 
         /* MOBILE FIXES */
         @media(max-width: 1000px){
@@ -334,24 +296,9 @@
         <a href="#about" onclick="toggleMenu()">The Artist</a>
         <a href="#gallery" onclick="toggleMenu()">Works</a>
         <a href="#contact" onclick="toggleMenu()">Book</a>
-        <a href="#" class="login-nav-btn" onclick="openLogin(); toggleMenu();">Client Login</a>
         <div class="theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="icon">☀️</span></span></div>
     </nav>
 </header>
-
-<!-- LOGIN MODAL -->
-<div id="loginModal" onclick="closeLoginOutside(event)">
-    <div class="login-content glass">
-        <span class="close-login" onclick="closeLogin()">&times;</span>
-        <h2>Client Access</h2>
-        <p>Sign in to view your private galleries.</p>
-        
-        <input type="email" class="login-input" placeholder="Email Address">
-        <input type="password" class="login-input" placeholder="Password">
-        
-        <button class="btn btn-full" onclick="handleLoginSubmit()">Sign In</button>
-    </div>
-</div>
 
 <div id="lightbox" onclick="closeLightbox()">
     <span class="close-lightbox">&times;</span>
@@ -429,31 +376,6 @@
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
 <script>
-/* LOGIN MODAL LOGIC */
-function openLogin() {
-    const modal = document.getElementById('loginModal');
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeLogin() {
-    const modal = document.getElementById('loginModal');
-    modal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
-
-function closeLoginOutside(event) {
-    if (event.target.id === 'loginModal') {
-        closeLogin();
-    }
-}
-
-function handleLoginSubmit() {
-    // Placeholder alert - Backend required for real authentication
-    alert("Login system front-end is ready! You will need a backend database to verify users.");
-    closeLogin();
-}
-
 function toggleMenu() {
     if (window.innerWidth <= 1000) {
         const nav = document.getElementById('mainNav');
