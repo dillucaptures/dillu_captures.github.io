@@ -108,6 +108,11 @@
             width: 44px; height: 24px; border-radius: 20px; cursor: pointer;
             position: relative; background: rgba(var(--glass-rgb), 0.8); border: 1px solid var(--glass-border);
         }
+        
+        .mobile-theme-toggle {
+            display: none; /* Hidden on desktop so it doesn't affect the layout */
+        }
+        
         .toggle-circle {
             width: 18px; height: 18px; background: var(--text); border-radius: 50%;
             position: absolute; top: 2px; left: 3px; transition: 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
@@ -245,6 +250,18 @@
             header h1 { font-size: 14px; }
             .menu-toggle { display: block; }
 
+            /* Fix Theme toggle for mobile headers */
+            nav .theme-toggle { 
+                display: none; /* Hide the one inside the hidden menu */
+            }
+            .mobile-theme-toggle {
+                display: block;
+                position: absolute;
+                right: calc(5% + 65px); /* Positioned cleanly beside the "Menu" button */
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
             nav { 
                 position: fixed;
                 top: 0; right: -100%;
@@ -261,7 +278,6 @@
 
             nav.active { right: 0; }
             nav a { font-size: 24px; font-family: 'Cinzel'; opacity: 1; }
-            .theme-toggle { position: absolute; bottom: 50px; transform: scale(1.2); }
 
             /* GALLERY MOBILE FIX */
             .gallery { 
@@ -290,6 +306,10 @@
 
 <header class="glass">
     <h1>DILLU CAPTURES</h1>
+    
+    <!-- Added a specific theme toggle for mobile view, placed outside the hidden nav -->
+    <div class="mobile-theme-toggle theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="mobile-icon">☀️</span></span></div>
+    
     <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">Menu</div>
     <nav id="mainNav">
         <a href="#" onclick="toggleMenu()">Home</a>
@@ -327,7 +347,7 @@
                 To me, photography isn't just about clicking a button—it’s about the silent rhythm of a moment, the way light dances on a surface, and the raw, unscripted emotions that make us human.
             </p>
             <p class="reveal">
-                Based in Hyderabad, I specialize in high-end cinematic storytelling. My work is defined by a relentless pursuit of aesthetic perfection.
+                Based in Secunderabad, I specialize in high-end cinematic storytelling. My work is defined by a relentless pursuit of aesthetic perfection.
             </p>
             <div class="fancy-quote reveal">
                 "I don't just take photographs; I capture the soul of the story you're living."
@@ -431,9 +451,16 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+// Updated JavaScript to target both Theme toggles
 function toggleTheme(){
     document.body.classList.toggle("dark");
-    document.getElementById("icon").textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
+    const isDark = document.body.classList.contains("dark");
+    const newIcon = isDark ? "🌙" : "☀️";
+    
+    document.getElementById("icon").textContent = newIcon;
+    if(document.getElementById("mobile-icon")) {
+        document.getElementById("mobile-icon").textContent = newIcon;
+    }
 }
 
 let currentDate = new Date();
