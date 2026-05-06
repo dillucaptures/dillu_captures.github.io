@@ -216,13 +216,20 @@
         }
         .btn:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
 
-        /* MOBILE FIXES */
+        /* MOBILE FIXES & MENU STYLE */
         @media(max-width: 1000px){
             #about { grid-template-columns: 1fr; text-align: center; padding: 100px 5%; }
             .artist-text h3 { justify-content: center; }
             .fancy-quote { border-left: none; border-top: 1px solid var(--accent); padding: 25px 0 0; }
-            .hero { flex-direction: column; justify-content: center; text-align: center; }
-            .hero-content h2 { font-size: 4rem; }
+            
+            /* Fixed overlap: Added padding-top to keep content below the header */
+            .hero { 
+                flex-direction: column; 
+                justify-content: center; 
+                text-align: center; 
+                padding-top: 100px; 
+            }
+            .hero-content h2 { font-size: 3.5rem; }
             header h1 { font-size: 14px; }
 
             .menu-toggle { display: block; }
@@ -254,6 +261,7 @@
 
 <header class="glass">
     <h1>DILLU CAPTURES</h1>
+    <!-- Stylish Menu Toggle -->
     <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">Menu</div>
     <nav id="mainNav">
         <a href="#" onclick="toggleMenu()">Home</a>
@@ -347,6 +355,13 @@ function toggleMenu() {
         const toggle = document.getElementById('menuToggle');
         nav.classList.toggle('active');
         toggle.textContent = nav.classList.contains('active') ? 'Close' : 'Menu';
+        
+        // Prevent background scrolling when menu is open
+        if(nav.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
     }
 }
 
