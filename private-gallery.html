@@ -81,8 +81,10 @@
         .gallery-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); 
-            gap: 30px; 
+            gap: 60px 30px; 
         }
+
+        .gallery-card { display: flex; flex-direction: column; gap: 20px; }
 
         .gallery-item { 
             position: relative; 
@@ -101,6 +103,26 @@
 
         .gallery-item:hover img { transform: scale(1.08); }
 
+        /* Story Text Styling */
+        .image-story {
+            padding: 0 10px;
+        }
+
+        .image-story h3 {
+            font-family: 'Playfair Display';
+            font-size: 22px;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .image-story p {
+            font-size: 13px;
+            line-height: 1.6;
+            opacity: 0.7;
+            font-weight: 300;
+            max-width: 90%;
+        }
+
         .btn-logout { 
             padding: 10px 22px; border-radius: 50px; 
             background: var(--danger); color: #ffffff; 
@@ -118,6 +140,7 @@
         @media(max-width: 768px) {
             .gallery-grid { grid-template-columns: 1fr; }
             .gallery-item { height: 450px; }
+            .gallery-grid { gap: 40px; }
         }
     </style>
 </head>
@@ -146,15 +169,37 @@
 
     <section class="gallery-container">
         <div class="gallery-grid" id="mainGrid">
-            <div class="gallery-item reveal">
-                <img src="Images/Kids/20240813111900_IMG_0814.webp" alt="Client Shoot">
+            
+            <div class="gallery-card reveal">
+                <div class="gallery-item">
+                    <img src="Images/Kids/20240813111900_IMG_0814.webp" alt="Child Portrait">
+                </div>
+                <div class="image-story">
+                    <h3>Golden Innocence</h3>
+                    <p>Captured during the soft "blue hour," this shot focuses on the raw, unscripted curiosity of childhood. The natural lighting highlights the delicate details and the timeless essence of wonder.</p>
+                </div>
             </div>
-            <div class="gallery-item reveal">
-                <img src="Images/Kids/IMG_1902.webp" alt="Client Shoot">
+
+            <div class="gallery-card reveal">
+                <div class="gallery-item">
+                    <img src="Images/Kids/IMG_1902.webp" alt="Kids Shoot">
+                </div>
+                <div class="image-story">
+                    <h3>Pure Joy</h3>
+                    <p>A candid moment of laughter that reflects the vibrant energy of the studio. We utilized a minimalist setup to ensure the child's personality remains the sole focal point of the frame.</p>
+                </div>
             </div>
-            <div class="gallery-item reveal">
-                <img src="Images/Maternity Shoot/IMG_4216.webp" alt="Client Shoot">
+
+            <div class="gallery-card reveal">
+                <div class="gallery-item">
+                    <img src="Images/Maternity Shoot/IMG_4216.webp" alt="Maternity Shoot">
+                </div>
+                <div class="image-story">
+                    <h3>The Beginning</h3>
+                    <p>Celebrating the grace of motherhood. This maternity portrait uses cinematic shadows and light to create an intimate, high-fashion aesthetic that honors a beautiful new chapter of life.</p>
+                </div>
             </div>
+
         </div>
     </section>
 </main>
@@ -228,4 +273,4 @@
 </script>
 
 </body>
-</html>```
+</html>
