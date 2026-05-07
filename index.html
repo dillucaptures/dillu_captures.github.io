@@ -31,8 +31,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         html {
-            scroll-behavior: initial; /* Essential for Lenis to handle smooth scrolling */
-            scroll-padding-top: 75px; /* Offset for the fixed header */
+            scroll-behavior: initial;
+            scroll-padding-top: 75px;
         }
 
         body {
@@ -44,13 +44,11 @@
             transition: background-color 0.5s ease;
         }
 
-        /* HARDWARE ACCELERATION */
         .reveal, .gallery img, .glass, .artist-image-container {
             will-change: transform, opacity;
             backface-visibility: hidden;
         }
 
-        /* REVEAL ANIMATION */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
@@ -61,7 +59,6 @@
             transform: translateY(0);
         }
 
-        /* iOS 26 GLASS UI */
         .glass {
             backdrop-filter: var(--ios-blur);
             -webkit-backdrop-filter: var(--ios-blur);
@@ -70,7 +67,6 @@
             box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
         }
 
-        /* INTRO */
         .intro {
             position: fixed; inset: 0; background: var(--bg);
             display: flex; justify-content: center; align-items: center; z-index: 10000;
@@ -87,7 +83,6 @@
         }
         .intro.hide { display: none; }
 
-        /* NAV & STYLISH LOGO */
         header {
             position: fixed; top: 0; width: 100%; height: 75px;
             display: flex; justify-content: space-between; align-items: center;
@@ -103,7 +98,7 @@
         }
         
         nav { display: flex; align-items: center; gap: 30px; }
-        nav a { text-decoration: none; color: var(--text); font-size: 12px; font-weight: 500; opacity: 0.6; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.05em; }
+        nav a { text-decoration: none; color: var(--text); font-size: 12px; font-weight: 500; opacity: 0.6; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; }
         nav a:hover { opacity: 1; }
 
         .menu-toggle { display: none; cursor: pointer; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; z-index: 6000; }
@@ -113,9 +108,7 @@
             position: relative; background: rgba(var(--glass-rgb), 0.8); border: 1px solid var(--glass-border);
         }
         
-        .mobile-theme-toggle {
-            display: none;
-        }
+        .mobile-theme-toggle { display: none; }
         
         .toggle-circle {
             width: 18px; height: 18px; background: var(--text); border-radius: 50%;
@@ -124,7 +117,6 @@
         }
         body.dark .toggle-circle { left: 21px; background: #fff; color: #000; }
 
-        /* HERO */
         .hero {
             height: 100vh; display: flex; align-items: center;
             padding: 0 5%; position: relative; gap: 5vw;
@@ -136,7 +128,6 @@
         }
         .hero-content p { font-size: 1.1rem; font-weight: 300; opacity: 0.6; max-width: 500px; line-height: 1.6; }
 
-        /* STUDIO / LOGIN STYLES */
         #studio { 
             position: relative; padding: 150px 5%; min-height: 100vh; 
             display: flex; align-items: center; justify-content: center; 
@@ -164,7 +155,6 @@
         .btn-login:hover { background: var(--accent); color: white; transform: scale(1.02); }
         .toggle-auth { color: var(--accent); cursor: pointer; font-weight: 600; text-decoration: underline; }
 
-        /* ARTIST SECTION */
         #about { 
             padding: 150px 5%; 
             display: grid; 
@@ -174,29 +164,15 @@
             background: rgba(var(--glass-rgb), 0.03);
         }
         .artist-image-container {
-            position: relative;
-            border-radius: 40px;
-            overflow: hidden;
-            aspect-ratio: 4/5;
+            position: relative; border-radius: 40px; overflow: hidden; aspect-ratio: 4/5;
             box-shadow: 0 40px 80px rgba(0,0,0,0.15);
         }
-        .artist-image-container img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-        .artist-text h3 {
-            font-family: 'Playfair Display'; font-size: 18px; font-style: italic; color: var(--accent); margin-bottom: 15px;
-        }
-        .artist-text h2 {
-            font-family: 'Playfair Display'; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 30px;
-        }
-        .artist-text p {
-            font-size: 1.1rem; line-height: 1.8; opacity: 0.7; margin-bottom: 25px; font-weight: 300;
-        }
-        .fancy-quote {
-            font-family: 'Playfair Display'; font-size: 1.5rem; border-left: 3px solid var(--accent); padding-left: 25px; margin-top: 40px; font-style: italic; opacity: 0.9;
-        }
+        .artist-image-container img { width: 100%; height: 100%; object-fit: cover; }
+        .artist-text h3 { font-family: 'Playfair Display'; font-size: 18px; font-style: italic; color: var(--accent); margin-bottom: 15px; }
+        .artist-text h2 { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 30px; }
+        .artist-text p { font-size: 1.1rem; line-height: 1.8; opacity: 0.7; margin-bottom: 25px; font-weight: 300; }
+        .fancy-quote { font-family: 'Playfair Display'; font-size: 1.5rem; border-left: 3px solid var(--accent); padding-left: 25px; margin-top: 40px; font-style: italic; opacity: 0.9; }
 
-        /* GALLERY */
         section { padding: 120px 5%; }
         .section-title { font-family: 'Playfair Display'; font-size: 56px; margin-bottom: 80px; text-align: center; letter-spacing: -0.03em; }
 
@@ -214,7 +190,6 @@
         }
         .gallery-item:hover img { transform: scale(1.08); }
 
-        /* LIGHTBOX */
         #lightbox {
             position: fixed; inset: 0; background: rgba(0,0,0,0.95);
             z-index: 2000; display: none; justify-content: center; align-items: center;
@@ -232,11 +207,7 @@
             font-size: 40px; cursor: pointer; font-family: 'Inter'; font-weight: 200;
         }
 
-        /* CALENDAR */
-        .calendar-card {
-            max-width: 500px; margin: 40px auto; padding: 45px;
-            border-radius: 40px;
-        }
+        .calendar-card { max-width: 500px; margin: 40px auto; padding: 45px; border-radius: 40px; }
         .day {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
             border-radius: 14px; font-size: 14px; cursor: pointer; transition: 0.3s;
@@ -253,7 +224,6 @@
         }
         .btn:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
 
-        /* MOBILE FIXES */
         @media(max-width: 1000px){
             body { width: 100vw; overflow-x: hidden; }
             #about { grid-template-columns: 1fr; text-align: center; padding: 80px 5%; width: 100%; }
@@ -266,11 +236,8 @@
             .menu-toggle { display: block; }
             nav .theme-toggle { display: none; }
             .mobile-theme-toggle {
-                display: block;
-                position: absolute;
-                right: calc(5% + 65px);
-                top: 50%;
-                transform: translateY(-50%);
+                display: block; position: absolute;
+                right: calc(5% + 65px); top: 50%; transform: translateY(-50%);
             }
             nav { 
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
@@ -287,7 +254,7 @@
     </style>
 </head>
 
-<body>
+<body id="top">
 
 <div class="intro" id="intro"><div class="intro-text">DILLU CAPTURES</div></div>
 
@@ -296,10 +263,10 @@
     <div class="mobile-theme-toggle theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="mobile-icon">☀️</span></span></div>
     <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">Menu</div>
     <nav id="mainNav">
-        <a href="#" onclick="toggleMenu()">Home</a>
+        <a href="#top" onclick="toggleMenu()">Home</a>
         <a href="#about" onclick="toggleMenu()">The Artist</a>
         <a href="#gallery" onclick="toggleMenu()">Works</a>
-        <a href="#studio" onclick="toggleMenu()">Studio</a>
+        <a href="#studio" onclick="toggleMenu()">Gallery</a>
         <a href="#contact" onclick="toggleMenu()">Book</a>
         <div class="theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="icon">☀️</span></span></div>
     </nav>
@@ -354,7 +321,7 @@
         <div class="login-card glass reveal">
             <div class="brand-login">
                 <h1>DILLU CAPTURES</h1>
-                <h2 id="authTitle">Studio Access</h2>
+                <h2 id="authTitle">Gallery Access</h2>
             </div>
 
             <form id="authForm">
@@ -373,7 +340,7 @@
 
             <div style="margin-top: 30px; text-align: center; font-size: 12px; opacity: 0.6;">
                 <p id="toggleText">New to the studio? <span class="toggle-auth" id="switchAuth">Register Here</span></p>
-                <p style="margin-top: 15px;"><a href="#" style="color:var(--text); text-decoration:none; opacity: 0.5;">Forgot password?</a></p>
+                <p style="margin-top: 15px;"><span id="forgotPassword" style="color:var(--text); cursor:pointer; text-decoration:none; opacity: 0.5;">Forgot password?</span></p>
             </div>
         </div>
     </section>
@@ -408,7 +375,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA7_qvAe4C3lqikSgbLKSwrw3xvCh8XOx4",
@@ -433,7 +400,7 @@
         if (switchBtn) {
             switchBtn.onclick = () => {
                 isLoginMode = !isLoginMode;
-                authTitle.textContent = isLoginMode ? "Studio Access" : "Join the Studio";
+                authTitle.textContent = isLoginMode ? "Gallery Access" : "Join the Studio";
                 authBtn.textContent = isLoginMode ? "Sign In" : "Create Account";
                 toggleText.innerHTML = isLoginMode ? 
                     'New to the studio? <span class="toggle-auth" id="switchAuth">Register Here</span>' : 
@@ -443,6 +410,21 @@
         }
     }
     setupAuthToggle();
+
+    // FORGOT PASSWORD LOGIC
+    document.getElementById('forgotPassword').onclick = async () => {
+        const email = document.getElementById('email').value;
+        if (!email) {
+            alert("Please enter your email address first.");
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, email);
+            alert("Password reset email sent! Check your inbox.");
+        } catch (error) {
+            alert(error.message);
+        }
+    };
 
     authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -469,17 +451,16 @@
 
     onAuthStateChanged(auth, (user) => {
         if (user && window.location.hash === "#studio") {
-             authTitle.textContent = "Studio Access";
+             authTitle.textContent = "Gallery Access";
              authBtn.textContent = "Enter Gallery";
         }
     });
 </script>
 
 <script>
-/* OPTIMIZED LENIS SMOOTH SCROLLING */
 const lenis = new Lenis({
     duration: 1.5,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Apple-style easing
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
     wheelMultiplier: 1,
     smoothTouch: false,
@@ -493,14 +474,14 @@ function raf(time) {
 }
 requestAnimationFrame(raf);
 
-/* LINK CLICK OFFSET FIX */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        const target = (href === "#top") ? document.body : document.querySelector(href);
         if (target) {
             lenis.scrollTo(target, {
-                offset: -75,
+                offset: (href === "#top") ? 0 : -75,
                 immediate: false,
                 duration: 1.5
             });
@@ -508,7 +489,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-/* UI & NAVIGATION LOGIC */
 function toggleMenu() {
     if (window.innerWidth <= 1000) {
         const nav = document.getElementById('mainNav');
@@ -540,7 +520,6 @@ window.addEventListener('load', () => {
     }, 2400);
 });
 
-/* REFINED INTERSECTION OBSERVER */
 const observerOptions = {
     threshold: 0.15,
     rootMargin: "0px 0px -50px 0px"
@@ -568,7 +547,6 @@ function toggleTheme(){
     }
 }
 
-/* CALENDAR LOGIC */
 let currentDate = new Date();
 let selectedDate = null;
 
