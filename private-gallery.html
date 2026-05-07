@@ -17,7 +17,7 @@
             --glass-rgb: 255, 255, 255;
             --glass-border: rgba(0, 0, 0, 0.1);
             --accent: #0071e3;
-            --danger: #ff3b30; /* Red color for Sign Out */
+            --danger: #ff3b30;
             --ios-blur: blur(30px) saturate(200%) brightness(1.1);
         }
 
@@ -70,25 +70,10 @@
         .toggle-circle { width: 18px; height: 18px; background: var(--text); border-radius: 50%; position: absolute; top: 2px; left: 3px; transition: 0.5s; display: flex; align-items: center; justify-content: center; font-size: 10px; }
         body.dark .toggle-circle { left: 21px; background: #fff; color: #000; }
 
-        .filter-nav { display: flex; justify-content: center; gap: 30px; margin-bottom: 50px; }
-        .filter-btn {
-            background: none; border: none; color: var(--text);
-            font-family: 'Inter'; font-size: 12px; font-weight: 500;
-            text-transform: uppercase; letter-spacing: 0.2em;
-            cursor: pointer; opacity: 0.4; transition: 0.3s;
-            position: relative; padding-bottom: 8px;
-        }
-        .filter-btn.active { opacity: 1; }
-        .filter-btn.active::after {
-            content: ''; position: absolute; bottom: 0; left: 50%;
-            transform: translateX(-50%); width: 20px; height: 1px;
-            background: var(--accent);
-        }
-
         .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        .private-hero { padding: 160px 5% 40px; text-align: center; }
+        .private-hero { padding: 160px 5% 60px; text-align: center; }
         .private-hero h2 { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1; margin-bottom: 15px; }
 
         /* Gallery Grid */
@@ -116,7 +101,6 @@
 
         .gallery-item:hover img { transform: scale(1.08); }
 
-        /* Red Logout Button */
         .btn-logout { 
             padding: 10px 22px; border-radius: 50px; 
             background: var(--danger); color: #ffffff; 
@@ -137,7 +121,9 @@
         }
     </style>
 </head>
-<body class="light"> <div id="loading-overlay">
+<body class="light">
+
+<div id="loading-overlay">
     <div style="font-family: 'Cinzel'; letter-spacing: 0.5em; font-size: 11px; opacity: 0.5; color: #000;">VAULT ACCESS</div>
     <div id="status-text" style="font-family: 'Playfair Display'; font-size: 22px; margin-top: 10px; color: #000;">Verifying Session...</div>
 </div>
@@ -156,22 +142,17 @@
     <section class="private-hero">
         <p class="reveal" style="font-size: 11px; letter-spacing: 0.3em; opacity: 0.5; margin-bottom: 10px;">CLIENT EXCLUSIVE</p>
         <h2 class="reveal">The Gallery</h2>
-        
-        <nav class="filter-nav reveal">
-            <button class="filter-btn active" data-filter="all">All Works</button>
-            <button class="filter-btn" data-filter="shoots">Photography</button>
-        </nav>
     </section>
 
     <section class="gallery-container">
         <div class="gallery-grid" id="mainGrid">
-            <div class="gallery-item reveal shoots">
+            <div class="gallery-item reveal">
                 <img src="Images/Kids/20240813111900_IMG_0814.webp" alt="Client Shoot">
             </div>
-            <div class="gallery-item reveal shoots">
+            <div class="gallery-item reveal">
                 <img src="Images/Kids/IMG_1902.webp" alt="Client Shoot">
             </div>
-            <div class="gallery-item reveal shoots">
+            <div class="gallery-item reveal">
                 <img src="Images/Maternity Shoot/IMG_4216.webp" alt="Client Shoot">
             </div>
         </div>
@@ -219,7 +200,7 @@
         signOut(auth).then(() => window.location.href = "index.html");
     });
 
-    // 3. THEME TOGGLE (Starts in light)
+    // 3. THEME TOGGLE
     const themeBtn = document.getElementById('themeBtn');
     themeBtn.addEventListener('click', () => {
         document.body.classList.toggle("dark");
@@ -227,29 +208,7 @@
         document.getElementById('theme-icon').textContent = isDark ? "🌙" : "☀️";
     });
 
-    // 4. FILTER LOGIC
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const items = document.querySelectorAll('.gallery-item');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const filter = btn.getAttribute('data-filter');
-
-            items.forEach(item => {
-                if (filter === 'all' || item.classList.contains(filter)) {
-                    item.style.display = 'block';
-                    setTimeout(() => item.style.opacity = '1', 10);
-                } else {
-                    item.style.opacity = '0';
-                    setTimeout(() => item.style.display = 'none', 300);
-                }
-            });
-        });
-    });
-
-    // 5. SMOOTH SCROLL & REVEAL
+    // 4. SMOOTH SCROLL & REVEAL
     const lenis = new Lenis({
         duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
@@ -269,4 +228,4 @@
 </script>
 
 </body>
-</html>
+</html>```
