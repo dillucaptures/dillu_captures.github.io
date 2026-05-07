@@ -40,12 +40,6 @@
             transition: background-color 0.5s ease;
         }
 
-        /* HARDWARE ACCELERATION */
-        .reveal, .gallery img, .glass, .artist-image-container {
-            will-change: transform, opacity;
-            backface-visibility: hidden;
-        }
-
         /* REVEAL ANIMATION */
         .reveal {
             opacity: 0;
@@ -57,13 +51,11 @@
             transform: translateY(0);
         }
 
-        /* iOS 26 GLASS UI */
         .glass {
             backdrop-filter: var(--ios-blur);
             -webkit-backdrop-filter: var(--ios-blur);
             background: rgba(var(--glass-rgb), 0.6);
             border: 1px solid var(--glass-border);
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
         }
 
         /* INTRO */
@@ -83,263 +75,109 @@
         }
         .intro.hide { display: none; }
 
-        /* NAV & STYLISH LOGO */
         header {
             position: fixed; top: 0; width: 100%; height: 75px;
             display: flex; justify-content: space-between; align-items: center;
             padding: 0 5%; z-index: 1000; border-bottom: 0.5px solid var(--glass-border);
         }
-        
-        header h1 { 
-            font-family: 'Cinzel', serif;
-            font-size: 18px; 
-            font-weight: 700; 
-            letter-spacing: 0.25em; 
-            text-transform: uppercase;
-        }
+        header h1 { font-family: 'Cinzel', serif; font-size: 18px; letter-spacing: 0.25em; }
         
         nav { display: flex; align-items: center; gap: 30px; }
         nav a { text-decoration: none; color: var(--text); font-size: 12px; font-weight: 500; opacity: 0.6; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer;}
         nav a:hover { opacity: 1; }
 
-        .menu-toggle { display: none; cursor: pointer; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; z-index: 6000; }
-
         .theme-toggle {
             width: 44px; height: 24px; border-radius: 20px; cursor: pointer;
             position: relative; background: rgba(var(--glass-rgb), 0.8); border: 1px solid var(--glass-border);
         }
-        
-        .mobile-theme-toggle {
-            display: none;
-        }
-        
         .toggle-circle {
             width: 18px; height: 18px; background: var(--text); border-radius: 50%;
-            position: absolute; top: 2px; left: 3px; transition: 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+            position: absolute; top: 2px; left: 3px; transition: 0.5s;
             display: flex; align-items: center; justify-content: center; font-size: 10px;
         }
         body.dark .toggle-circle { left: 21px; background: #fff; color: #000; }
 
-        /* LOGIN SECTION STYLES */
-        #loginOverlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.4);
-            z-index: 8000; display: none; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.4s ease; backdrop-filter: blur(15px);
+        /* STUDIO LOGIN CARD SECTION */
+        .studio-access-section {
+            padding: 100px 5%;
+            text-align: center;
         }
-        #loginOverlay.active { display: flex; opacity: 1; }
         .login-card {
-            width: 90%; max-width: 400px; padding: 40px; border-radius: 35px;
-            text-align: center; transform: scale(0.9); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 450px; margin: 0 auto; padding: 50px 40px;
+            border-radius: 40px; text-align: center;
         }
-        #loginOverlay.active .login-card { transform: scale(1); }
-        .login-card h2 { font-family: 'Cinzel'; font-size: 24px; margin-bottom: 30px; letter-spacing: 0.1em; }
+        .login-card h2 { font-family: 'Playfair Display'; font-size: 32px; margin-bottom: 10px; }
         .login-input {
-            width: 100%; padding: 15px 20px; margin-bottom: 15px; border-radius: 15px;
-            border: 1px solid var(--glass-border); background: rgba(var(--glass-rgb), 0.3);
+            width: 100%; padding: 16px 20px; margin-bottom: 15px; border-radius: 15px;
+            border: 1px solid var(--glass-border); background: rgba(var(--glass-rgb), 0.4);
             color: var(--text); font-family: 'Inter'; outline: none; transition: 0.3s;
         }
         .login-input:focus { border-color: var(--accent); }
         .login-btn { width: 100%; border: none; cursor: pointer; margin-top: 10px; }
 
         /* HERO */
-        .hero {
-            height: 100vh; display: flex; align-items: center;
-            padding: 0 5%; position: relative; gap: 5vw;
-        }
-        .hero-content { flex: 1.2; }
-        .hero-content h2 {
-            font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 8rem);
-            line-height: 0.85; font-weight: 700; letter-spacing: -0.06em; margin-bottom: 30px;
-        }
-        .hero-content p { font-size: 1.1rem; font-weight: 300; opacity: 0.6; max-width: 500px; line-height: 1.6; }
-
-        /* ARTIST SECTION */
-        #about { 
-            padding: 150px 5%; 
-            display: grid; 
-            grid-template-columns: 1fr 1.2fr; 
-            gap: 80px; 
-            align-items: center;
-            background: rgba(var(--glass-rgb), 0.03);
-        }
-        .artist-image-container {
-            position: relative;
-            border-radius: 40px;
-            overflow: hidden;
-            aspect-ratio: 4/5;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.15);
-        }
-        .artist-image-container img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-        .artist-text h3 {
-            font-family: 'Playfair Display'; font-size: 18px; font-style: italic; color: var(--accent); margin-bottom: 15px;
-        }
-        .artist-text h2 {
-            font-family: 'Playfair Display'; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 30px;
-        }
-        .artist-text p {
-            font-size: 1.1rem; line-height: 1.8; opacity: 0.7; margin-bottom: 25px; font-weight: 300;
-        }
-        .fancy-quote {
-            font-family: 'Playfair Display'; font-size: 1.5rem; border-left: 3px solid var(--accent); padding-left: 25px; margin-top: 40px; font-style: italic; opacity: 0.9;
-        }
+        .hero { height: 100vh; display: flex; align-items: center; padding: 0 5%; }
+        .hero-content h2 { font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 8rem); line-height: 0.85; margin-bottom: 30px; letter-spacing: -0.06em; }
+        .hero-content p { font-size: 1.1rem; opacity: 0.6; max-width: 500px; font-weight: 300; }
 
         /* GALLERY */
         section { padding: 120px 5%; }
-        .section-title { font-family: 'Playfair Display'; font-size: 56px; margin-bottom: 80px; text-align: center; letter-spacing: -0.03em; }
-
-        .gallery {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 30px;
-        }
-        .gallery-item {
-            position: relative; border-radius: 30px; overflow: hidden;
-            background: #1c1c1e; height: 580px; cursor: pointer;
-        }
-        .gallery img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
-        }
+        .section-title { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 60px; text-align: center; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 30px; }
+        .gallery-item { position: relative; border-radius: 30px; overflow: hidden; height: 580px; cursor: pointer; background: #1c1c1e; }
+        .gallery img { width: 100%; height: 100%; object-fit: cover; transition: 1.2s cubic-bezier(0.2, 1, 0.3, 1); }
         .gallery-item:hover img { transform: scale(1.08); }
+
+        /* CALENDAR */
+        .calendar-card { max-width: 500px; margin: 40px auto; padding: 40px; border-radius: 40px; }
+        .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 14px; cursor: pointer; transition: 0.3s; }
+        .day:hover:not(.disabled) { background: var(--text); color: var(--bg); }
+        .day.selected { background: var(--accent); color: #fff; font-weight: 700; }
+        .day.disabled { opacity: 0.2; cursor: default; }
+
+        .btn {
+            display: inline-block; padding: 18px 40px; border-radius: 50px;
+            background: var(--text); color: var(--bg); text-decoration: none;
+            font-weight: 600; font-size: 12px; transition: 0.4s;
+            text-transform: uppercase; letter-spacing: 0.1em; border: none;
+        }
 
         /* LIGHTBOX */
         #lightbox {
             position: fixed; inset: 0; background: rgba(0,0,0,0.95);
             z-index: 2000; display: none; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.4s ease; backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
         }
-        #lightbox.active { display: flex; opacity: 1; }
-        #lightbox img { 
-            max-width: 90%; max-height: 85vh; border-radius: 10px; 
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        #lightbox.active img { transform: scale(1); }
-        .close-btn {
-            position: absolute; top: 30px; right: 40px; color: white;
-            font-size: 40px; cursor: pointer; font-family: 'Inter'; font-weight: 200;
-        }
+        #lightbox.active { display: flex; }
+        #lightbox img { max-width: 90%; max-height: 85vh; border-radius: 10px; }
 
-        /* CALENDAR */
-        .calendar-card {
-            max-width: 500px; margin: 40px auto; padding: 45px;
-            border-radius: 40px;
-        }
-        .day {
-            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-            border-radius: 14px; font-size: 14px; cursor: pointer; transition: 0.3s;
-        }
-        .day:hover:not(.disabled) { background: var(--text); color: var(--bg); }
-        .day.selected { background: var(--accent); color: #fff; font-weight: 700; transform: scale(1.1); }
-        .day.today { border: 2px solid var(--accent); }
-
-        .btn {
-            display: inline-block; padding: 18px 40px; border-radius: 50px;
-            background: var(--text); color: var(--bg); text-decoration: none;
-            font-weight: 600; font-size: 13px; transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            text-transform: uppercase; letter-spacing: 0.1em;
-        }
-        .btn:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
-
-        /* MOBILE FIXES */
-        @media(max-width: 1000px){
-            body { width: 100vw; overflow-x: hidden; }
-            #about { grid-template-columns: 1fr; text-align: center; padding: 80px 5%; width: 100%; }
-            .artist-text h3 { justify-content: center; }
-            .fancy-quote { border-left: none; border-top: 1px solid var(--accent); padding: 25px 0 0; }
-            .hero { flex-direction: column; justify-content: center; text-align: center; padding: 120px 5% 40px; height: auto; min-height: 80vh; }
-            .hero-content { width: 100%; }
-            .hero-content h2 { font-size: 3.2rem; margin-bottom: 20px; }
-            .hero-content p { margin: 0 auto; }
+        @media(max-width: 768px) {
             header h1 { font-size: 14px; }
-            .menu-toggle { display: block; }
-            nav .theme-toggle { display: none; }
-            .mobile-theme-toggle {
-                display: block; position: absolute; right: calc(5% + 65px); top: 50%; transform: translateY(-50%);
-            }
-            nav { 
-                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
-                background: rgba(var(--glass-rgb), 0.98); backdrop-filter: blur(25px);
-                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
-                transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 5500;
-            }
-            nav.active { right: 0; }
-            nav a { font-size: 24px; font-family: 'Cinzel'; opacity: 1; }
-            .gallery { grid-template-columns: 1fr; width: 100%; padding: 0; }
-            .gallery-item { height: 450px; width: 100%; }
-            .calendar-card { width: 100%; padding: 25px 15px; margin: 20px 0; }
-            .section-title { font-size: 36px; margin-bottom: 40px; }
-            section { padding: 60px 5%; }
+            nav { display: none; } /* Simplified for mobile */
+            .gallery { grid-template-columns: 1fr; }
+            .gallery-item { height: 450px; }
         }
     </style>
 </head>
-
-<body>
+<body class="dark">
 
 <div class="intro" id="intro"><div class="intro-text">DILLU CAPTURES</div></div>
 
-<!-- LOGIN OVERLAY -->
-<div id="loginOverlay" onclick="closeLogin(event)">
-    <div class="login-card glass" onclick="event.stopPropagation()">
-        <h2>Account</h2>
-        <form onsubmit="return false">
-            <input type="email" placeholder="Email" class="login-input">
-            <input type="password" placeholder="Password" class="login-input">
-            <button class="btn login-btn">Sign In</button>
-        </form>
-        <p style="font-size: 11px; opacity: 0.5; margin-top: 20px; cursor: pointer;">Forgot Password?</p>
-    </div>
-</div>
-
 <header class="glass">
     <h1>DILLU CAPTURES</h1>
-    
-    <div class="mobile-theme-toggle theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="mobile-icon">☀️</span></span></div>
-    
-    <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">Menu</div>
-    <nav id="mainNav">
-        <a href="#" onclick="toggleMenu()">Home</a>
-        <a href="#about" onclick="toggleMenu()">The Artist</a>
-        <a href="#gallery" onclick="toggleMenu()">Works</a>
-        <a href="#contact" onclick="toggleMenu()">Book</a>
-        <a onclick="openLogin(); toggleMenu();">Login</a>
-        <div class="theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="icon">☀️</span></span></div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#gallery">Works</a>
+        <a href="#studio">Studio</a>
+        <div class="theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="icon">🌙</span></span></div>
     </nav>
 </header>
-
-<div id="lightbox" onclick="closeLightbox()">
-    <span class="close-btn">&times;</span>
-    <img id="lightbox-img" src="" alt="Enlarged View">
-</div>
 
 <main>
     <section class="hero">
         <div class="hero-content">
             <h2 class="reveal">The Art of <br>Perspective.</h2>
             <p class="reveal">Luxury lifestyle photography for those who believe that every moment is a masterpiece waiting to be framed.</p>
-            <div class="reveal" style="margin-top: 40px;">
-                <a href="#gallery" class="btn">View Collection</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="about">
-        <div class="artist-image-container reveal">
-            <img src="Images/1776695215852.webp" alt="Dillu - The Artist">
-        </div>
-        <div class="artist-text">
-            <h3 class="reveal">The Visionary Behind the Lens</h3>
-            <h2 class="reveal">Crafting Legacies, <br>One Frame at a Time.</h2>
-            <p class="reveal">
-                To me, photography isn't just about clicking a button—it’s about the silent rhythm of a moment, the way light dances on a surface, and the raw, unscripted emotions that make us human.
-            </p>
-            <p class="reveal">
-                Based in Secunderabad, I specialize in high-end cinematic storytelling. My work is defined by a relentless pursuit of aesthetic perfection.
-            </p>
-            <div class="fancy-quote reveal">
-                "I don't just take photographs; I capture the soul of the story you're living."
-            </div>
         </div>
     </section>
 
@@ -347,181 +185,131 @@
         <h2 class="section-title reveal">Curated Works</h2>
         <div class="gallery">
             <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/20240813111900_IMG_0814.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_1902.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_5197 (1).webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_5332.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp" loading="lazy"></div>
             <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4216.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4265.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4363.webp" loading="lazy"></div>
             <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/20230609184601_IMG_7346.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/20231001121437_IMG_8556.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_20251225_093551493.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3234.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3390.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3037.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_20251225_195802010.webp" loading="lazy"></div>
         </div>
     </section>
 
-    <section id="contact" style="text-align:center; background: rgba(var(--glass-rgb), 0.1);">
-        <h2 class="section-title reveal">Reserve a Session</h2>
-        <div style="margin-bottom: 60px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;" class="reveal">
-            <a class="btn" style="background:#25D366; color:white; border:none;" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
-            <a class="btn" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color:white; border:none;" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
+    <!-- STUDIO LOGIN SECTION (Replacing the Overlay from previous code) -->
+    <section class="studio-access-section" id="studio">
+        <div class="login-card glass reveal">
+            <p style="font-size: 10px; letter-spacing: 0.3em; opacity: 0.5; margin-bottom: 15px; text-transform: uppercase;">Private Client Vault</p>
+            <h2>Studio Access</h2>
+            <p style="font-size: 14px; opacity: 0.6; margin-bottom: 30px;">Enter your credentials to view your private gallery.</p>
+            
+            <input type="email" id="email" placeholder="Client Email" class="login-input">
+            <input type="password" id="password" placeholder="Access Key" class="login-input">
+            <button class="btn login-btn" id="loginBtn">Unlock Vault</button>
+            
+            <p id="error-msg" style="color: #ff453a; font-size: 12px; margin-top: 15px; display: none;">Invalid credentials.</p>
         </div>
+    </section>
 
+    <section id="contact" style="text-align:center;">
+        <h2 class="section-title reveal">Reserve a Session</h2>
         <div class="calendar-card glass reveal">
-            <div class="calendar-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-                <button onclick="prevMonth()" style="background:none; border:none; color:var(--text); cursor:pointer; font-size:24px;">‹</button>
-                <h3 id="monthYear" style="font-family:'Playfair Display'"></h3>
-                <button onclick="nextMonth()" style="background:none; border:none; color:var(--text); cursor:pointer; font-size:24px;">›</button>
-            </div>
-            <div class="weekdays" style="display:grid; grid-template-columns:repeat(7,1fr); font-size:10px; font-weight:700; opacity:0.4; margin-bottom:15px; letter-spacing:0.1em;">
-                <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
-            </div>
+            <div id="monthYear" style="font-family:'Playfair Display'; margin-bottom: 20px; font-size: 20px;"></div>
             <div class="days" id="days" style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px;"></div>
-            <div class="slots" id="slots" style="margin-top:35px; display:flex; flex-wrap:wrap; justify-content:center; gap:12px;"></div>
         </div>
     </section>
 </main>
 
-<footer style="padding: 60px 5% 120px; text-align: center; font-size: 10px; opacity: 0.4; letter-spacing: 0.3em;">
+<div id="lightbox" onclick="this.classList.remove('active')">
+    <img id="lightbox-img" src="">
+</div>
+
+<footer style="padding: 60px 5%; text-align: center; font-size: 10px; opacity: 0.4; letter-spacing: 0.3em;">
     © 2026 DILLU CAPTURES | CINEMATIC EXCELLENCE
 </footer>
 
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
-<script>
-function toggleMenu() {
-    if (window.innerWidth <= 1000) {
-        const nav = document.getElementById('mainNav');
-        const toggle = document.getElementById('menuToggle');
-        nav.classList.toggle('active');
-        toggle.textContent = nav.classList.contains('active') ? 'Close' : 'Menu';
-        document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : 'auto';
-    }
-}
+<script type="module">
+    // FIREBASE INTEGRATION
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-// LOGIN MODAL FUNCTIONS
-function openLogin() {
-    document.getElementById('loginOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-function closeLogin(e) {
-    document.getElementById('loginOverlay').classList.remove('active');
-    if (!document.getElementById('lightbox').classList.contains('active')) {
-        document.body.style.overflow = 'auto';
-    }
-}
+    const firebaseConfig = {
+        apiKey: "AIzaSyA7_qvAe4C3lqikSgbLKSwrw3xvCh8XOx4",
+        authDomain: "dillu-captures07.firebaseapp.com",
+        projectId: "dillu-captures07",
+        storageBucket: "dillu-captures07.firebasestorage.app",
+        messagingSenderId: "710377587336",
+        appId: "1:710377587336:web:9a8abc278a28bc2f9d953d"
+    };
 
-function openLightbox(element) {
-    const src = element.querySelector('img').src;
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lightbox-img');
-    lbImg.src = src;
-    lb.classList.add('active');
-    document.body.style.overflow = 'hidden'; 
-}
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('active');
-    document.body.style.overflow = 'auto'; 
-}
+    // Login Method
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errorMsg = document.getElementById('error-msg');
 
-const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true })
-function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-requestAnimationFrame(raf);
-
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        document.getElementById("intro").style.opacity = "0";
-        setTimeout(() => document.getElementById("intro").classList.add("hide"), 800);
-    }, 2400);
-});
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-            observer.unobserve(entry.target);
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            window.location.href = "studio.html"; // Redirect to your private page
+        } catch (error) {
+            errorMsg.style.display = 'block';
+            errorMsg.textContent = "Access Denied: Please check your credentials.";
         }
     });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-function toggleTheme(){
-    document.body.classList.toggle("dark");
-    const isDark = document.body.classList.contains("dark");
-    const newIcon = isDark ? "🌙" : "☀️";
-    
-    document.getElementById("icon").textContent = newIcon;
-    if(document.getElementById("mobile-icon")) {
-        document.getElementById("mobile-icon").textContent = newIcon;
-    }
-}
-
-let currentDate = new Date();
-let selectedDate = null;
-
-function renderCalendar(){
-    const daysEl = document.getElementById("days");
-    const monthYear = document.getElementById("monthYear");
-    if(!daysEl) return;
-    daysEl.innerHTML="";
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    monthYear.innerText = currentDate.toLocaleString("default",{month:"long"})+" "+year;
-    
-    const firstDay = new Date(year,month,1).getDay();
-    const lastDate = new Date(year,month+1,0).getDate();
-    const today = new Date();
-
-    for(let i=0; i<firstDay; i++) daysEl.innerHTML+="<div></div>";
-
-    for(let d=1; d<=lastDate; d++){
-        const date = new Date(year,month,d);
-        const div = document.createElement("div");
-        div.className="day";
-        div.innerText=d;
-        if(date < new Date(today.setHours(0,0,0,0))) div.classList.add("disabled");
-        if(d===today.getDate() && month===today.getMonth()) div.classList.add("today");
-        div.onclick=()=>selectDate(d,div);
-        daysEl.appendChild(div);
-    }
-}
-
-function selectDate(day,el){
-    if(el.classList.contains("disabled")) return;
-    document.querySelectorAll(".day").forEach(d=>d.classList.remove("selected"));
-    el.classList.add("selected");
-    selectedDate = `${day} ${currentDate.toLocaleString("default",{month:"long"})}`;
-    showSlots();
-}
-
-function showSlots(){
-    const slots = document.getElementById("slots");
-    slots.innerHTML="";
-    ["Morning", "Afternoon", "Golden Hour"].forEach(time => {
-        const s = document.createElement("div");
-        s.className = "btn";
-        s.style.fontSize = "10px";
-        s.style.padding = "10px 20px";
-        s.style.cursor = "pointer";
-        s.innerText = time;
-        s.onclick = (e) => {
-            e.stopPropagation();
-            const msg = `Hi Dillu, I'd like to inquire about a ${time} session on ${selectedDate}.`;
-            window.open(`https://wa.me/919700034138?text=${encodeURIComponent(msg)}`);
-        };
-        slots.appendChild(s);
+    // Auto-redirect if already logged in
+    onAuthStateChanged(auth, (user) => {
+        if (user && window.location.hash === "#studio") {
+            window.location.href = "studio.html";
+        }
     });
-}
+</script>
 
-function prevMonth(){ currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); }
-function nextMonth(){ currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); }
-renderCalendar();
+<script>
+    // THEME & UI LOGIC
+    function toggleTheme(){
+        document.body.classList.toggle("dark");
+        document.getElementById("icon").textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
+    }
+
+    function openLightbox(el) {
+        document.getElementById('lightbox-img').src = el.querySelector('img').src;
+        document.getElementById('lightbox').classList.add('active');
+    }
+
+    // Scroll Reveal
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('active');
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth Scroll
+    const lenis = new Lenis();
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+
+    // Intro Timeout
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById("intro").style.opacity = "0";
+            setTimeout(() => document.getElementById("intro").style.display = "none", 800);
+        }, 2400);
+    });
+
+    // Simple Calendar Render
+    function renderCal() {
+        const d = new Date();
+        document.getElementById('monthYear').innerText = d.toLocaleString('default', { month: 'long' }) + " " + d.getFullYear();
+        const days = document.getElementById('days');
+        for(let i=1; i<=30; i++) {
+            const div = document.createElement('div');
+            div.className = 'day';
+            div.innerText = i;
+            days.appendChild(div);
+        }
+    }
+    renderCal();
 </script>
 
 </body>
