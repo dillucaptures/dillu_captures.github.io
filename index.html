@@ -81,10 +81,10 @@
         .ambient-light { position: absolute; width: 600px; height: 600px; background: var(--accent); filter: blur(180px); opacity: 0.1; z-index: 0; border-radius: 50%; animation: drift 25s infinite alternate; }
         @keyframes drift { from { transform: translate(-10%, -10%); } to { transform: translate(10%, 10%); } }
 
-        .login-card { position: relative; z-index: 1; width: 100%; max-width: 450px; padding: 60px 50px; border-radius: 45px; }
+        .login-card { position: relative; z-index: 1; width: 100%; max-width: 450px; padding: 60px 50px; border-radius: 45px; transition: 0.5s ease; }
         .brand-login { text-align: center; margin-bottom: 45px; }
         .brand-login h1 { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.4em; opacity: 0.6; margin-bottom: 12px; }
-        .brand-login h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; }
+        .brand-login h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; transition: 0.3s; }
 
         .input-group { position: relative; margin-bottom: 25px; text-align: left; }
         .input-group label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin-bottom: 10px; margin-left: 5px; }
@@ -103,6 +103,8 @@
         .gallery-item:hover img { transform: scale(1.08); }
 
         .btn { display: inline-block; padding: 18px 40px; border-radius: 50px; background: var(--text); color: var(--bg); text-decoration: none; font-weight: 600; font-size: 13px; transition: 0.5s; text-transform: uppercase; letter-spacing: 0.1em; }
+
+        .toggle-auth { color: var(--accent); cursor: pointer; font-weight: 600; text-decoration: underline; }
 
         @media(max-width: 1000px){
             header h1 { font-size: 14px; }
@@ -144,16 +146,32 @@
         </div>
     </section>
 
-    <section id="about" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 80px; align-items: center;">
-        <div class="reveal" style="border-radius: 40px; overflow: hidden; aspect-ratio: 4/5;">
-            <img src="Images/1776695215852.webp" alt="Dillu" style="width:100%; height:100%; object-fit:cover;">
-        </div>
-        <div>
-            <h3 class="reveal" style="font-family:'Playfair Display'; font-style:italic; color:var(--accent); margin-bottom:15px;">The Visionary</h3>
-            <h2 class="reveal" style="font-family:'Playfair Display'; font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom:30px;">Crafting Legacies.</h2>
-            <p class="reveal" style="line-height:1.8; opacity:0.7; margin-bottom:20px;">Based in Secunderabad, I specialize in high-end cinematic storytelling. Every frame is a relentless pursuit of aesthetic perfection.</p>
-            <div class="reveal" style="font-family:'Playfair Display'; font-size: 1.5rem; border-left: 3px solid var(--accent); padding-left: 25px; font-style: italic;">
-                "I don't just take photographs; I capture the soul of the story."
+    <!-- Studio Access Portal with Registration -->
+    <section id="studio">
+        <div class="ambient-light"></div>
+        <div class="login-card glass reveal">
+            <div class="brand-login">
+                <h1>DILLU CAPTURES</h1>
+                <h2 id="authTitle">Studio Access</h2>
+            </div>
+
+            <form id="authForm">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="artist@dillucaptures.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-login" id="authBtn">Sign In</button>
+            </form>
+
+            <div style="margin-top: 30px; text-align: center; font-size: 12px; opacity: 0.6;">
+                <p id="toggleText">New to the studio? <span class="toggle-auth" id="switchAuth">Register Here</span></p>
+                <p style="margin-top: 15px;"><a href="#" style="color:var(--text); text-decoration:none; opacity: 0.5;">Forgot password?</a></p>
             </div>
         </div>
     </section>
@@ -165,36 +183,6 @@
             <div class="gallery-item reveal"><img src="Images/Maternity Shoot/IMG_4216.webp" loading="lazy"></div>
             <div class="gallery-item reveal"><img src="Images/Temples & Culture/IMG_3234.webp" loading="lazy"></div>
             <div class="gallery-item reveal"><img src="Images/Kids/IMG_5197 (1).webp" loading="lazy"></div>
-        </div>
-    </section>
-
-    <section id="studio">
-        <div class="ambient-light"></div>
-        <div class="login-card glass reveal">
-            <div class="brand-login">
-                <h1>DILLU CAPTURES</h1>
-                <h2>Studio Access</h2>
-            </div>
-
-            <!-- MODIFIED FORM -->
-            <form id="loginForm">
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email" placeholder="artist@dillucaptures.com" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="password" placeholder="••••••••" required>
-                </div>
-
-                <button type="submit" class="btn-login" id="loginBtn">Sign In</button>
-            </form>
-
-            <div style="margin-top: 30px; text-align: center; font-size: 12px; opacity: 0.5;">
-                <p><a href="#" style="color:var(--text); text-decoration:none;">Forgot password?</a></p>
-                <p style="margin-top: 15px;">New to the studio? <a href="#contact" style="color:var(--accent); text-decoration:none; font-weight:600;">Inquire for Access</a></p>
-            </div>
         </div>
     </section>
 
@@ -213,97 +201,96 @@
 
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
-<!-- MODIFIED FIREBASE SCRIPT -->
 <script type="module">
-    // 1. IMPORT FIREBASE
+    // 1. FIREBASE SETUP
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // 2. CONFIGURATION
     const firebaseConfig = {
         apiKey: "AIzaSyA7_qvAe4C3lqikSgbLKSwrw3xvCh8XOx4",
         authDomain: "dillu-captures07.firebaseapp.com",
         projectId: "dillu-captures07",
         storageBucket: "dillu-captures07.firebasestorage.app",
         messagingSenderId: "710377587336",
-        appId: "1:710377587336:web:9a8abc278a28bc2f9d953d",
-        measurementId: "G-XYM8BBKGS3"
+        appId: "1:710377587336:web:9a8abc278a28bc2f9d953d"
     };
 
-    // 3. INITIALIZE
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // 4. LOGIN LOGIC
-    const loginForm = document.getElementById('loginForm');
-    const loginBtn = document.getElementById('loginBtn');
+    // 2. AUTH UI LOGIC
+    let isLoginMode = true;
+    const authForm = document.getElementById('authForm');
+    const authBtn = document.getElementById('authBtn');
+    const authTitle = document.getElementById('authTitle');
+    const switchAuth = document.getElementById('switchAuth');
+    const toggleText = document.getElementById('toggleText');
 
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    switchAuth.addEventListener('click', () => {
+        isLoginMode = !isLoginMode;
+        authTitle.textContent = isLoginMode ? "Studio Access" : "Join the Studio";
+        authBtn.textContent = isLoginMode ? "Sign In" : "Create Account";
+        toggleText.innerHTML = isLoginMode ? 
+            'New to the studio? <span class="toggle-auth" id="switchAuth">Register Here</span>' : 
+            'Already have access? <span class="toggle-auth" id="switchAuth">Login Here</span>';
         
+        // Re-attach listener because innerHTML wipes it
+        document.getElementById('switchAuth').addEventListener('click', () => switchAuth.click());
+    });
+
+    authForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
-        loginBtn.textContent = "Verifying...";
-        loginBtn.disabled = true;
+        authBtn.textContent = "Processing...";
+        authBtn.disabled = true;
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            alert("Success! Access granted.");
+            if (isLoginMode) {
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("Welcome back!");
+            } else {
+                await createUserWithEmailAndPassword(auth, email, password);
+                alert("Account created! Welcome to the studio.");
+            }
             window.location.href = "private-gallery.html"; 
         } catch (error) {
-            alert("Error: " + error.message);
+            alert(error.message);
         } finally {
-            loginBtn.textContent = "Sign In";
-            loginBtn.disabled = false;
+            authBtn.textContent = isLoginMode ? "Sign In" : "Create Account";
+            authBtn.disabled = false;
         }
     });
 
-    // --- UI LOGIC (Integrated into module) ---
-
-    // Smooth Scroll
+    // 3. UI ANIMATIONS (LENIS, THEME, REVEAL)
     const lenis = new Lenis();
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
 
-    // Theme Toggle
     document.getElementById('themeBtn').addEventListener('click', () => {
         document.body.classList.toggle("dark");
-        const isDark = document.body.classList.contains("dark");
-        document.getElementById("icon").textContent = isDark ? "🌙" : "☀️";
+        document.getElementById("icon").textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
     });
 
-    // Mobile Menu
     const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.getElementById('mainNav');
-    
-    const toggleMenu = () => {
+    menuToggle.addEventListener('click', () => {
         if (window.innerWidth <= 1000) {
             mainNav.classList.toggle('active');
             menuToggle.textContent = mainNav.classList.contains('active') ? 'Close' : 'Menu';
-            document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : 'auto';
         }
-    };
-
-    menuToggle.addEventListener('click', toggleMenu);
-    document.querySelectorAll('#mainNav a').forEach(link => {
-        link.addEventListener('click', toggleMenu);
     });
 
-    // Intro Fade
     window.addEventListener('load', () => {
         setTimeout(() => {
-            const intro = document.getElementById("intro");
-            intro.style.opacity = "0";
-            setTimeout(() => intro.classList.add("hide"), 800);
+            document.getElementById("intro").style.opacity = "0";
+            setTimeout(() => document.getElementById("intro").classList.add("hide"), 800);
         }, 2400);
     });
 
-    // Reveal on Scroll
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('active');
-        });
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
