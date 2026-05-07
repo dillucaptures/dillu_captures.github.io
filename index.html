@@ -6,6 +6,7 @@
     <meta name="color-scheme" content="light dark">
     <title>Dillu Captures | Luxury Photography</title>
 
+    <!-- Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@100;300;400;500;600;700&display=swap" rel="stylesheet">
@@ -30,11 +31,6 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html {
-            scroll-behavior: initial;
-            scroll-padding-top: 75px;
-        }
-
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg);
@@ -44,21 +40,24 @@
             transition: background-color 0.5s ease;
         }
 
+        /* HARDWARE ACCELERATION */
         .reveal, .gallery img, .glass, .artist-image-container {
             will-change: transform, opacity;
             backface-visibility: hidden;
         }
 
+        /* REVEAL ANIMATION */
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
+        /* iOS 26 GLASS UI */
         .glass {
             backdrop-filter: var(--ios-blur);
             -webkit-backdrop-filter: var(--ios-blur);
@@ -67,6 +66,7 @@
             box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
         }
 
+        /* INTRO */
         .intro {
             position: fixed; inset: 0; background: var(--bg);
             display: flex; justify-content: center; align-items: center; z-index: 10000;
@@ -83,6 +83,7 @@
         }
         .intro.hide { display: none; }
 
+        /* NAV & STYLISH LOGO */
         header {
             position: fixed; top: 0; width: 100%; height: 75px;
             display: flex; justify-content: space-between; align-items: center;
@@ -98,7 +99,7 @@
         }
         
         nav { display: flex; align-items: center; gap: 30px; }
-        nav a { text-decoration: none; color: var(--text); font-size: 12px; font-weight: 500; opacity: 0.6; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; }
+        nav a { text-decoration: none; color: var(--text); font-size: 12px; font-weight: 500; opacity: 0.6; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.05em; }
         nav a:hover { opacity: 1; }
 
         .menu-toggle { display: none; cursor: pointer; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; z-index: 6000; }
@@ -108,7 +109,9 @@
             position: relative; background: rgba(var(--glass-rgb), 0.8); border: 1px solid var(--glass-border);
         }
         
-        .mobile-theme-toggle { display: none; }
+        .mobile-theme-toggle {
+            display: none; /* Hidden on desktop so it doesn't affect the layout */
+        }
         
         .toggle-circle {
             width: 18px; height: 18px; background: var(--text); border-radius: 50%;
@@ -117,6 +120,7 @@
         }
         body.dark .toggle-circle { left: 21px; background: #fff; color: #000; }
 
+        /* HERO */
         .hero {
             height: 100vh; display: flex; align-items: center;
             padding: 0 5%; position: relative; gap: 5vw;
@@ -128,33 +132,7 @@
         }
         .hero-content p { font-size: 1.1rem; font-weight: 300; opacity: 0.6; max-width: 500px; line-height: 1.6; }
 
-        #studio { 
-            position: relative; padding: 150px 5%; min-height: 100vh; 
-            display: flex; align-items: center; justify-content: center; 
-            background: radial-gradient(circle at center, rgba(0,113,227,0.05) 0%, transparent 70%); 
-            overflow: hidden; 
-        }
-        .ambient-light { 
-            position: absolute; width: 600px; height: 600px; background: var(--accent); 
-            filter: blur(180px); opacity: 0.1; z-index: 0; border-radius: 50%; 
-            animation: drift 25s infinite alternate; 
-        }
-        @keyframes drift { from { transform: translate(-10%, -10%); } to { transform: translate(10%, 10%); } }
-
-        .login-card { position: relative; z-index: 1; width: 100%; max-width: 450px; padding: 60px 50px; border-radius: 45px; transition: 0.5s ease; }
-        .brand-login { text-align: center; margin-bottom: 45px; }
-        .brand-login h1 { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.4em; opacity: 0.6; margin-bottom: 12px; }
-        .brand-login h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; }
-
-        .input-group { position: relative; margin-bottom: 25px; text-align: left; }
-        .input-group label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin-bottom: 10px; margin-left: 5px; }
-        .input-group input { width: 100%; padding: 18px 25px; border-radius: 18px; background: rgba(var(--glass-rgb), 0.05); border: 1px solid var(--glass-border); color: var(--text); font-size: 15px; outline: none; transition: 0.3s; }
-        .input-group input:focus { border-color: var(--accent); background: rgba(var(--glass-rgb), 0.1); }
-
-        .btn-login { width: 100%; padding: 20px; border-radius: 18px; border: none; background: var(--text); color: var(--bg); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: 0.4s; }
-        .btn-login:hover { background: var(--accent); color: white; transform: scale(1.02); }
-        .toggle-auth { color: var(--accent); cursor: pointer; font-weight: 600; text-decoration: underline; }
-
+        /* ARTIST SECTION */
         #about { 
             padding: 150px 5%; 
             display: grid; 
@@ -164,15 +142,29 @@
             background: rgba(var(--glass-rgb), 0.03);
         }
         .artist-image-container {
-            position: relative; border-radius: 40px; overflow: hidden; aspect-ratio: 4/5;
+            position: relative;
+            border-radius: 40px;
+            overflow: hidden;
+            aspect-ratio: 4/5;
             box-shadow: 0 40px 80px rgba(0,0,0,0.15);
         }
-        .artist-image-container img { width: 100%; height: 100%; object-fit: cover; }
-        .artist-text h3 { font-family: 'Playfair Display'; font-size: 18px; font-style: italic; color: var(--accent); margin-bottom: 15px; }
-        .artist-text h2 { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 30px; }
-        .artist-text p { font-size: 1.1rem; line-height: 1.8; opacity: 0.7; margin-bottom: 25px; font-weight: 300; }
-        .fancy-quote { font-family: 'Playfair Display'; font-size: 1.5rem; border-left: 3px solid var(--accent); padding-left: 25px; margin-top: 40px; font-style: italic; opacity: 0.9; }
+        .artist-image-container img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .artist-text h3 {
+            font-family: 'Playfair Display'; font-size: 18px; font-style: italic; color: var(--accent); margin-bottom: 15px;
+        }
+        .artist-text h2 {
+            font-family: 'Playfair Display'; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 30px;
+        }
+        .artist-text p {
+            font-size: 1.1rem; line-height: 1.8; opacity: 0.7; margin-bottom: 25px; font-weight: 300;
+        }
+        .fancy-quote {
+            font-family: 'Playfair Display'; font-size: 1.5rem; border-left: 3px solid var(--accent); padding-left: 25px; margin-top: 40px; font-style: italic; opacity: 0.9;
+        }
 
+        /* GALLERY */
         section { padding: 120px 5%; }
         .section-title { font-family: 'Playfair Display'; font-size: 56px; margin-bottom: 80px; text-align: center; letter-spacing: -0.03em; }
 
@@ -190,6 +182,7 @@
         }
         .gallery-item:hover img { transform: scale(1.08); }
 
+        /* LIGHTBOX */
         #lightbox {
             position: fixed; inset: 0; background: rgba(0,0,0,0.95);
             z-index: 2000; display: none; justify-content: center; align-items: center;
@@ -207,7 +200,11 @@
             font-size: 40px; cursor: pointer; font-family: 'Inter'; font-weight: 200;
         }
 
-        .calendar-card { max-width: 500px; margin: 40px auto; padding: 45px; border-radius: 40px; }
+        /* CALENDAR */
+        .calendar-card {
+            max-width: 500px; margin: 40px auto; padding: 45px;
+            border-radius: 40px;
+        }
         .day {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
             border-radius: 14px; font-size: 14px; cursor: pointer; transition: 0.3s;
@@ -224,49 +221,100 @@
         }
         .btn:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
 
+        /* MOBILE FIXES */
         @media(max-width: 1000px){
             body { width: 100vw; overflow-x: hidden; }
-            #about { grid-template-columns: 1fr; text-align: center; padding: 80px 5%; width: 100%; }
+            
+            #about { 
+                grid-template-columns: 1fr; 
+                text-align: center; 
+                padding: 80px 5%; 
+                width: 100%;
+            }
+            
             .artist-text h3 { justify-content: center; }
             .fancy-quote { border-left: none; border-top: 1px solid var(--accent); padding: 25px 0 0; }
-            .hero { flex-direction: column; justify-content: center; text-align: center; padding: 120px 5% 40px; height: auto; min-height: 80vh; }
+            
+            .hero { 
+                flex-direction: column; 
+                justify-content: center; 
+                text-align: center; 
+                padding: 120px 5% 40px; 
+                height: auto;
+                min-height: 80vh;
+            }
             .hero-content { width: 100%; }
             .hero-content h2 { font-size: 3.2rem; margin-bottom: 20px; }
+            .hero-content p { margin: 0 auto; }
+
             header h1 { font-size: 14px; }
             .menu-toggle { display: block; }
-            nav .theme-toggle { display: none; }
+
+            /* Fix Theme toggle for mobile headers */
+            nav .theme-toggle { 
+                display: none; /* Hide the one inside the hidden menu */
+            }
             .mobile-theme-toggle {
-                display: block; position: absolute;
-                right: calc(5% + 65px); top: 50%; transform: translateY(-50%);
+                display: block;
+                position: absolute;
+                right: calc(5% + 65px); /* Positioned cleanly beside the "Menu" button */
+                top: 50%;
+                transform: translateY(-50%);
             }
+
             nav { 
-                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
-                background: rgba(var(--glass-rgb), 0.98); backdrop-filter: blur(25px);
-                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
-                transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 5500;
+                position: fixed;
+                top: 0; right: -100%;
+                width: 100%; height: 100vh;
+                background: rgba(var(--glass-rgb), 0.98);
+                backdrop-filter: blur(25px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                z-index: 5500;
             }
+
             nav.active { right: 0; }
             nav a { font-size: 24px; font-family: 'Cinzel'; opacity: 1; }
-            .gallery { grid-template-columns: 1fr; width: 100%; padding: 0; }
+
+            /* GALLERY MOBILE FIX */
+            .gallery { 
+                grid-template-columns: 1fr; 
+                width: 100%;
+                padding: 0;
+            }
             .gallery-item { height: 450px; width: 100%; }
-            .login-card { padding: 40px 25px; }
+
+            /* CALENDAR MOBILE FIX */
+            .calendar-card { 
+                width: 100%; 
+                padding: 25px 15px; 
+                margin: 20px 0;
+            }
+            .section-title { font-size: 36px; margin-bottom: 40px; }
+            
+            section { padding: 60px 5%; }
         }
     </style>
 </head>
 
-<body id="top">
+<body>
 
 <div class="intro" id="intro"><div class="intro-text">DILLU CAPTURES</div></div>
 
 <header class="glass">
     <h1>DILLU CAPTURES</h1>
+    
+    <!-- Added a specific theme toggle for mobile view, placed outside the hidden nav -->
     <div class="mobile-theme-toggle theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="mobile-icon">☀️</span></span></div>
+    
     <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">Menu</div>
     <nav id="mainNav">
-        <a href="#top" onclick="toggleMenu()">Home</a>
+        <a href="#" onclick="toggleMenu()">Home</a>
         <a href="#about" onclick="toggleMenu()">The Artist</a>
         <a href="#gallery" onclick="toggleMenu()">Works</a>
-        <a href="#studio" onclick="toggleMenu()">Gallery</a>
         <a href="#contact" onclick="toggleMenu()">Book</a>
         <div class="theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="icon">☀️</span></span></div>
     </nav>
@@ -313,35 +361,19 @@
             <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/20240813111900_IMG_0814.webp" loading="lazy"></div>
             <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_1902.webp" loading="lazy"></div>
             <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_5197 (1).webp" loading="lazy"></div>
-        </div>
-    </section>
-
-    <section id="studio">
-        <div class="ambient-light"></div>
-        <div class="login-card glass reveal">
-            <div class="brand-login">
-                <h1>DILLU CAPTURES</h1>
-                <h2 id="authTitle">Gallery Access</h2>
-            </div>
-
-            <form id="authForm">
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email" placeholder="artist@dillucaptures.com" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="password" placeholder="••••••••" required>
-                </div>
-
-                <button type="submit" class="btn-login" id="authBtn">Sign In</button>
-            </form>
-
-            <div style="margin-top: 30px; text-align: center; font-size: 12px; opacity: 0.6;">
-                <p id="toggleText">New to the studio? <span class="toggle-auth" id="switchAuth">Register Here</span></p>
-                <p style="margin-top: 15px;"><span id="forgotPassword" style="color:var(--text); cursor:pointer; text-decoration:none; opacity: 0.5;">Forgot password?</span></p>
-            </div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_5332.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4216.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4265.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4363.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/20230609184601_IMG_7346.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/20231001121437_IMG_8556.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_20251225_093551493.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3234.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3390.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3037.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_20251225_195802010.webp" loading="lazy"></div>
         </div>
     </section>
 
@@ -373,122 +405,7 @@
 
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyA7_qvAe4C3lqikSgbLKSwrw3xvCh8XOx4",
-        authDomain: "dillu-captures07.firebaseapp.com",
-        projectId: "dillu-captures07",
-        storageBucket: "dillu-captures07.firebasestorage.app",
-        messagingSenderId: "710377587336",
-        appId: "1:710377587336:web:9a8abc278a28bc2f9d953d"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    let isLoginMode = true;
-    const authForm = document.getElementById('authForm');
-    const authBtn = document.getElementById('authBtn');
-    const authTitle = document.getElementById('authTitle');
-    const toggleText = document.getElementById('toggleText');
-
-    function setupAuthToggle() {
-        const switchBtn = document.getElementById('switchAuth');
-        if (switchBtn) {
-            switchBtn.onclick = () => {
-                isLoginMode = !isLoginMode;
-                authTitle.textContent = isLoginMode ? "Gallery Access" : "Join the Studio";
-                authBtn.textContent = isLoginMode ? "Sign In" : "Create Account";
-                toggleText.innerHTML = isLoginMode ? 
-                    'New to the studio? <span class="toggle-auth" id="switchAuth">Register Here</span>' : 
-                    'Already have access? <span class="toggle-auth" id="switchAuth">Login Here</span>';
-                setupAuthToggle(); 
-            };
-        }
-    }
-    setupAuthToggle();
-
-    // FORGOT PASSWORD LOGIC
-    document.getElementById('forgotPassword').onclick = async () => {
-        const email = document.getElementById('email').value;
-        if (!email) {
-            alert("Please enter your email address first.");
-            return;
-        }
-        try {
-            await sendPasswordResetEmail(auth, email);
-            alert("Password reset email sent! Check your inbox.");
-        } catch (error) {
-            alert(error.message);
-        }
-    };
-
-    authForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        authBtn.textContent = "Processing...";
-        authBtn.disabled = true;
-
-        try {
-            if (isLoginMode) {
-                await signInWithEmailAndPassword(auth, email, password);
-            } else {
-                await createUserWithEmailAndPassword(auth, email, password);
-            }
-            window.location.href = "private-gallery.html"; 
-        } catch (error) {
-            alert(error.message);
-        } finally {
-            authBtn.textContent = isLoginMode ? "Sign In" : "Create Account";
-            authBtn.disabled = false;
-        }
-    });
-
-    onAuthStateChanged(auth, (user) => {
-        if (user && window.location.hash === "#studio") {
-             authTitle.textContent = "Gallery Access";
-             authBtn.textContent = "Enter Gallery";
-        }
-    });
-</script>
-
 <script>
-const lenis = new Lenis({
-    duration: 1.5,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true,
-    wheelMultiplier: 1,
-    smoothTouch: false,
-    touchMultiplier: 2,
-    infinite: false,
-});
-
-function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
-
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const href = this.getAttribute('href');
-        const target = (href === "#top") ? document.body : document.querySelector(href);
-        if (target) {
-            lenis.scrollTo(target, {
-                offset: (href === "#top") ? 0 : -75,
-                immediate: false,
-                duration: 1.5
-            });
-        }
-    });
-});
-
 function toggleMenu() {
     if (window.innerWidth <= 1000) {
         const nav = document.getElementById('mainNav');
@@ -513,17 +430,16 @@ function closeLightbox() {
     document.body.style.overflow = 'auto'; 
 }
 
+const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true })
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+
 window.addEventListener('load', () => {
     setTimeout(() => {
         document.getElementById("intro").style.opacity = "0";
         setTimeout(() => document.getElementById("intro").classList.add("hide"), 800);
     }, 2400);
 });
-
-const observerOptions = {
-    threshold: 0.15,
-    rootMargin: "0px 0px -50px 0px"
-};
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -532,10 +448,10 @@ const observer = new IntersectionObserver((entries) => {
             observer.unobserve(entry.target);
         }
     });
-}, observerOptions);
-
+}, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+// Updated JavaScript to target both Theme toggles
 function toggleTheme(){
     document.body.classList.toggle("dark");
     const isDark = document.body.classList.contains("dark");
@@ -553,7 +469,6 @@ let selectedDate = null;
 function renderCalendar(){
     const daysEl = document.getElementById("days");
     const monthYear = document.getElementById("monthYear");
-    if(!daysEl) return;
     daysEl.innerHTML="";
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -597,7 +512,6 @@ function showSlots(){
         s.innerText = time;
         s.onclick = (e) => {
             e.stopPropagation();
-            if(!selectedDate) { alert("Please select a date first."); return; }
             const msg = `Hi Dillu, I'd like to inquire about a ${time} session on ${selectedDate}.`;
             window.open(`https://wa.me/919700034138?text=${encodeURIComponent(msg)}`);
         };
@@ -612,3 +526,5 @@ renderCalendar();
 
 </body>
 </html>
+
+
