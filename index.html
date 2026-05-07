@@ -30,6 +30,10 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        html {
+            scroll-behavior: smooth; /* Native smooth scroll fallback */
+        }
+
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg);
@@ -436,7 +440,6 @@
     const authTitle = document.getElementById('authTitle');
     const toggleText = document.getElementById('toggleText');
 
-    // Authentication UI Logic
     function setupAuthToggle() {
         const switchBtn = document.getElementById('switchAuth');
         if (switchBtn) {
@@ -453,7 +456,6 @@
     }
     setupAuthToggle();
 
-    // Redirection Fix: Only redirect if explicitly signing in
     authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value;
@@ -468,7 +470,6 @@
             } else {
                 await createUserWithEmailAndPassword(auth, email, password);
             }
-            // After successful login/signup, go to gallery
             window.location.href = "private-gallery.html"; 
         } catch (error) {
             alert(error.message);
@@ -478,17 +479,33 @@
         }
     });
 
-    // Check if user is already logged in
     onAuthStateChanged(auth, (user) => {
         if (user && window.location.hash === "#studio") {
-             // User is already signed in, maybe show a "Go to Gallery" button instead of form?
-             authTitle.textContent = "Studio Active";
+             // Removed "Welcome Back" note - Keep original branding
+             authTitle.textContent = "Studio Access";
              authBtn.textContent = "Enter Gallery";
         }
     });
 </script>
 
 <script>
+/* SMOOTH SCROLLING ANIMATION (LENIS) */
+const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    orientation: 'vertical',
+    gestureOrientation: 'vertical',
+    smoothTouch: false,
+    touchMultiplier: 2,
+});
+
+function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
 /* UI & NAVIGATION LOGIC */
 function toggleMenu() {
     if (window.innerWidth <= 1000) {
@@ -513,10 +530,6 @@ function closeLightbox() {
     document.getElementById('lightbox').classList.remove('active');
     document.body.style.overflow = 'auto'; 
 }
-
-const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true })
-function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-requestAnimationFrame(raf);
 
 window.addEventListener('load', () => {
     setTimeout(() => {
