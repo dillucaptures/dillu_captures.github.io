@@ -16,17 +16,19 @@
             --bg: #ffffff;
             --text: #000000;
             --glass-rgb: 255, 255, 255;
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --accent: #0071e3;
-            --ios-blur: blur(30px) saturate(200%) brightness(1.1);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --accent: #000000;
+            --overlay-grad: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+            --ios-blur: blur(25px) saturate(200%) brightness(1.1);
         }
 
         body.dark {
             --bg: #000000;
             --text: #ffffff;
-            --glass-rgb: 28, 28, 30;
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --ios-blur: blur(30px) saturate(180%) brightness(0.8);
+            --glass-rgb: 15, 15, 15;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #ffffff;
+            --ios-blur: blur(25px) saturate(180%) brightness(0.7);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,111 +37,149 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            transition: background-color 0.5s ease;
+            transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
+        /* Luxury Loader */
         #loading-overlay { 
             position: fixed; inset: 0; 
             background: var(--bg); 
             z-index: 10000; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 1s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
-        .glass {
+        .loader-bar {
+            width: 100px; height: 1px;
+            background: var(--glass-border);
+            position: relative; overflow: hidden; margin-top: 20px;
+        }
+        .loader-bar::after {
+            content: ''; position: absolute; left: -100%; width: 100%; height: 100%;
+            background: var(--text);
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading { 100% { left: 100%; } }
+
+        /* Header Navigation */
+        header { 
+            position: fixed; top: 0; width: 100%; height: 80px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 0 5%; z-index: 1000; 
             backdrop-filter: var(--ios-blur);
             -webkit-backdrop-filter: var(--ios-blur);
             background: rgba(var(--glass-rgb), 0.7);
             border-bottom: 1px solid var(--glass-border);
         }
 
-        header { 
-            position: fixed; top: 0; width: 100%; height: 75px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 0 5%; z-index: 1000; 
+        header h1 { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 0.4em; font-weight: 700; }
+
+        .header-controls { display: flex; align-items: center; gap: 24px; }
+
+        .theme-toggle { 
+            width: 48px; height: 26px; border-radius: 30px; cursor: pointer; 
+            position: relative; background: var(--glass-border); 
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
         }
+        .toggle-circle { 
+            width: 20px; height: 20px; background: var(--text); 
+            border-radius: 50%; position: absolute; top: 2px; left: 3px; 
+            transition: 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+            display: flex; align-items: center; justify-content: center; font-size: 10px;
+        }
+        body.dark .toggle-circle { left: 23px; background: #fff; color: #000; }
 
-        header h1 { font-family: 'Cinzel', serif; font-size: 16px; letter-spacing: 0.25em; }
+        /* Hero Section */
+        .private-hero { padding: 180px 5% 100px; text-align: center; }
+        .private-hero span { font-size: 10px; letter-spacing: 0.5em; text-transform: uppercase; opacity: 0.5; display: block; margin-bottom: 15px; }
+        .private-hero h2 { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 400; font-style: italic; }
 
-        .header-controls { display: flex; align-items: center; gap: 20px; }
-
-        .theme-toggle { width: 44px; height: 24px; border-radius: 20px; cursor: pointer; position: relative; background: rgba(var(--glass-rgb), 0.8); border: 1px solid var(--glass-border); }
-        .toggle-circle { width: 18px; height: 18px; background: var(--text); border-radius: 50%; position: absolute; top: 2px; left: 3px; transition: 0.5s; display: flex; align-items: center; justify-content: center; font-size: 10px; }
-        body.dark .toggle-circle { left: 21px; background: #fff; color: #000; }
-
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        .private-hero { padding: 160px 5% 60px; text-align: center; }
-        .private-hero h2 { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; margin-bottom: 15px; }
-
-        .gallery-container { padding: 0 5% 100px; }
+        /* Premium Gallery Grid */
+        .gallery-container { padding: 0 5% 120px; }
         .gallery-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); 
-            gap: 40px; 
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); 
+            gap: 60px; 
         }
 
         .gallery-item { 
             position: relative; 
-            border-radius: 24px; 
+            border-radius: 2px; /* Hard edges for professional feel */
             overflow: hidden; 
-            height: 650px; 
+            height: 700px; 
             background: #111;
+            cursor: none; /* Custom cursor behavior handled by hover */
         }
 
         .gallery-item img { 
             width: 100%; height: 100%; 
             object-fit: cover; 
-            transition: 1.5s cubic-bezier(0.2, 1, 0.3, 1); 
-            opacity: 0.9;
+            transition: 1.8s cubic-bezier(0.19, 1, 0.22, 1);
+            filter: grayscale(0.2) brightness(0.9);
         }
 
+        /* Hover Story Overlay */
         .story-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);
+            background: var(--overlay-grad);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 40px;
+            padding: 60px;
             color: white;
             opacity: 0;
-            transition: 0.5s ease;
+            transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .gallery-item:hover .story-overlay { opacity: 1; }
-        .gallery-item:hover img { transform: scale(1.05); opacity: 1; }
+        .gallery-item:hover img { transform: scale(1.05); filter: grayscale(0) brightness(1); }
 
-        .story-title { font-family: 'Playfair Display'; font-size: 28px; margin-bottom: 12px; }
-        .story-text { font-size: 15px; line-height: 1.6; font-weight: 300; opacity: 0.9; max-width: 90%; }
-
-        .btn-logout { 
-            padding: 10px 22px; border-radius: 50px; 
-            background: var(--text); color: var(--bg); 
-            border: none; font-size: 11px; font-weight: 700; 
-            text-transform: uppercase; letter-spacing: 0.1em; 
-            cursor: pointer; transition: 0.3s;
+        .story-title { 
+            font-family: 'Playfair Display'; font-size: 32px; margin-bottom: 15px; 
+            transform: translateY(20px); transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .story-text { 
+            font-size: 15px; line-height: 1.8; font-weight: 300; opacity: 0; 
+            max-width: 450px; transform: translateY(20px);
+            transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.1s;
         }
 
+        .gallery-item:hover .story-title, 
+        .gallery-item:hover .story-text { opacity: 1; transform: translateY(0); }
+
+        /* Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(60px); transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .btn-logout { 
+            background: none; border: 1px solid var(--text); color: var(--text);
+            padding: 10px 25px; font-size: 10px; font-weight: 700; 
+            text-transform: uppercase; letter-spacing: 0.2em; 
+            cursor: pointer; transition: 0.4s;
+        }
+        .btn-logout:hover { background: var(--text); color: var(--bg); }
+
         @media(max-width: 768px) {
-            .gallery-grid { grid-template-columns: 1fr; }
-            .gallery-item { height: 500px; }
-            .story-overlay { opacity: 1; padding: 25px; }
-            .story-title { font-size: 22px; }
+            .gallery-grid { grid-template-columns: 1fr; gap: 30px; }
+            .gallery-item { height: 500px; cursor: default; }
+            .story-overlay { opacity: 1; padding: 30px; }
+            .story-text { font-size: 13px; }
+            .private-hero { padding-top: 140px; }
         }
     </style>
 </head>
 <body class="dark">
 
 <div id="loading-overlay">
-    <div style="font-family: 'Cinzel'; letter-spacing: 0.5em; font-size: 11px; opacity: 0.5;">VAULT ACCESS</div>
-    <div id="status-text" style="font-family: 'Playfair Display'; font-size: 22px; margin-top: 10px;">Verifying Session...</div>
+    <div style="font-family: 'Cinzel'; letter-spacing: 0.6em; font-size: 12px;">DILLU CAPTURES</div>
+    <div class="loader-bar"></div>
 </div>
 
-<header class="glass">
+<header>
     <h1>DILLU CAPTURES</h1>
     <div class="header-controls">
         <div class="theme-toggle" id="themeBtn">
@@ -151,34 +191,37 @@
 
 <main>
     <section class="private-hero">
-        <p class="reveal" style="font-size: 11px; letter-spacing: 0.3em; opacity: 0.5; margin-bottom: 10px;">PREMIUM ARCHIVE</p>
-        <h2 class="reveal">The Stories Behind</h2>
+        <span class="reveal">Private Collection</span>
+        <h2 class="reveal">Moments of Stillness</h2>
     </section>
 
     <section class="gallery-container">
         <div class="gallery-grid">
             
+            <!-- Image 1 -->
             <div class="gallery-item reveal">
-                <img src="Images/Kids/20240813111900_IMG_0814.webp" alt="Childhood Innocence">
+                <img src="Images/Kids/20240813111900_IMG_0814.webp" alt="Innocence Portrait">
                 <div class="story-overlay">
-                    <h3 class="story-title">Whispers of Innocence</h3>
-                    <p class="story-text">This portrait was captured in the soft morning glow. We waited for forty minutes just to catch that specific look of quiet curiosity—a reminder that the best moments are never forced, only found.</p>
+                    <h3 class="story-title">A Silent Gaze</h3>
+                    <p class="story-text">This piece explores the raw honesty of childhood. Captured in natural, directional window light, we wanted to preserve the texture of the moment without the distraction of artificial posing.</p>
                 </div>
             </div>
 
+            <!-- Image 2 -->
             <div class="gallery-item reveal">
-                <img src="Images/Kids/IMG_1902.webp" alt="Joyful Moment">
+                <img src="Images/Kids/IMG_1902.webp" alt="Golden Hour">
                 <div class="story-overlay">
                     <h3 class="story-title">Golden Hour Giggles</h3>
-                    <p class="story-text">Laughter is the shortest distance between two people. In this shoot, we focused on the motion of joy, letting the background blur into a dreamlike haze of summer warmth.</p>
+                    <p class="story-text">Laughter is best captured when unscripted. During this outdoor session, the sunset provided a natural rim light that turned a simple run across the field into a cinematic memory.</p>
                 </div>
             </div>
 
+            <!-- Image 3 -->
             <div class="gallery-item reveal">
-                <img src="Images/Maternity Shoot/IMG_4216.webp" alt="Maternity Story">
+                <img src="Images/Maternity Shoot/IMG_4216.webp" alt="Maternity Silhouette">
                 <div class="story-overlay">
-                    <h3 class="story-title">The Inner Light</h3>
-                    <p class="story-text">Maternity is a sacred transition. For this frame, we chose a high-contrast lighting style to emphasize the strength and grace of the expectant mother, turning a simple pose into a work of art.</p>
+                    <h3 class="story-title">Grace in Transition</h3>
+                    <p class="story-text">A study in silhouettes and shadows. Maternity photography is about the quiet strength of creation; here we focused on the curvature and the soft interplay of light against darkness.</p>
                 </div>
             </div>
 
@@ -186,10 +229,12 @@
     </section>
 </main>
 
-<footer style="padding: 80px 5%; text-align: center; font-size: 10px; opacity: 0.3; letter-spacing: 0.4em;">
-    SECURE STUDIO ACCESS • © 2026 DILLU CAPTURES
+<footer style="padding: 100px 5% 50px; text-align: center; border-top: 1px solid var(--glass-border);">
+    <div style="font-family: 'Cinzel'; font-size: 12px; letter-spacing: 0.5em; opacity: 0.6;">EXHIBITION CLOSED</div>
+    <p style="font-size: 9px; margin-top: 20px; opacity: 0.3; letter-spacing: 0.2em;">© 2026 DILLU CAPTURES STUDIO. ALL RIGHTS RESERVED.</p>
 </footer>
 
+<!-- Lenis for smooth scrolling -->
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
 <script type="module">
@@ -205,74 +250,60 @@
         appId: "1:710377587336:web:9a8abc278a28bc2f9d953d"
     };
 
-    initializeApp(firebaseConfig);
-    const auth = getAuth();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-    // --- HAPTIC ENGINE (HIGH COMPATIBILITY) ---
-    let canVibrate = false;
-
-    // This "unlocks" vibration on the first tap/click
-    const unlockHaptics = () => {
-        if ('vibrate' in navigator) {
-            navigator.vibrate(20); // Quick test pulse
-            canVibrate = true;
-        }
-        window.removeEventListener('touchstart', unlockHaptics);
-        window.removeEventListener('mousedown', unlockHaptics);
-    };
-
-    window.addEventListener('touchstart', unlockHaptics);
-    window.addEventListener('mousedown', unlockHaptics);
-
-    const triggerHaptic = (pattern = 15) => {
-        if (canVibrate && 'vibrate' in navigator) {
-            navigator.vibrate(pattern);
-        }
-    };
-
-    // --- AUTH ---
+    // --- Authentication Guard ---
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            document.getElementById('status-text').textContent = "Access Granted";
             setTimeout(() => {
                 const overlay = document.getElementById('loading-overlay');
                 overlay.style.opacity = '0';
-                setTimeout(() => overlay.style.display = 'none', 800);
-            }, 800);
+                setTimeout(() => overlay.style.display = 'none', 1000);
+            }, 1000);
         } else {
             window.location.href = "index.html#studio";
         }
     });
 
+    // --- Theme Control ---
+    const themeBtn = document.getElementById('themeBtn');
+    themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle("dark");
+        document.getElementById('theme-icon').textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
+    });
+
+    // --- Logout ---
     document.getElementById('logoutBtn').addEventListener('click', () => {
-        triggerHaptic(40);
         signOut(auth).then(() => window.location.href = "index.html");
     });
 
-    // --- THEME ---
-    document.getElementById('themeBtn').addEventListener('click', () => {
-        document.body.classList.toggle("dark");
-        document.getElementById('theme-icon').textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
-        triggerHaptic([20, 10, 20]); // Double tap haptic for theme change
+    // --- Smooth Scroll (Lenis) ---
+    const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
     });
-
-    // --- SMOOTH SCROLL ---
-    const lenis = new Lenis();
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
 
-    // --- REVEAL WITH SCROLL HAPTICS ---
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { 
-            if (entry.isIntersecting && !entry.target.classList.contains('active')) {
-                entry.target.classList.add('active');
-                // Trigger a soft haptic pulse when an image reveals
-                triggerHaptic(10); 
-            } 
-        });
-    }, { threshold: 0.15 });
+    // --- Intersection Observer for Scroll Reveals ---
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                // Add a small delay based on index for a staggered entrance
+                setTimeout(() => {
+                    entry.target.classList.add('active');
+                }, index * 100);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 </script>
 
 </body>
