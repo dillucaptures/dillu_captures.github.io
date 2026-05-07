@@ -3,40 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Studio Gallery | Dillu Captures</title>
-    <link rel="stylesheet" href="style.css"> <!-- Use your existing CSS -->
+    <meta name="color-scheme" content="light dark">
+    <title>Dillu Captures | Luxury Photography & Studio</title>
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@100;300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        .private-header { padding: 100px 5% 20px; text-align: center; }
-        .logout-btn { background: #ff3b30; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 20px; }
-        #loading-overlay { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; font-family: 'Cinzel'; }
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --glass-rgb: 255, 255, 255;
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --accent: #0071e3;
+            --ios-blur: blur(30px) saturate(200%) brightness(1.1);
+        }
+
+        body.dark {
+            --bg: #000000;
+            --text: #ffffff;
+            --glass-rgb: 28, 28, 30;
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --ios-blur: blur(30px) saturate(180%) brightness(0.8);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.5s ease;
+        }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .glass {
+            backdrop-filter: var(--ios-blur);
+            -webkit-backdrop-filter: var(--ios-blur);
+            background: rgba(var(--glass-rgb), 0.6);
+            border: 1px solid var(--glass-border);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        .intro { position: fixed; inset: 0; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 10000; }
+        .intro-text { font-family: 'Cinzel'; font-size: clamp(2rem, 8vw, 4rem); font-weight: 700; opacity: 0; animation: introFade 2.4s forwards ease-in-out; letter-spacing: 0.1em; }
+        @keyframes introFade {
+            0% { opacity: 0; filter: blur(15px); transform: scale(0.9); }
+            40% { opacity: 1; filter: blur(0px); transform: scale(1); }
+            100% { opacity: 0; filter: blur(15px); transform: scale(1.1); }
+        }
+        .intro.hide { display: none; }
+
+        header { position: fixed; top: 0; width: 100%; height: 75px; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; z-index: 1000; border-bottom: 0.5px solid var(--glass-border); }
+        header h1 { font-family: 'Cinzel', serif; font-size: 18px; letter-spacing: 0.25em; }
+        
+        nav { display: flex; align-items: center; gap: 30px; }
+        nav a { text-decoration: none; color: var(--text); font-size: 12px; font-weight: 500; opacity: 0.6; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.05em; }
+        nav a:hover { opacity: 1; }
+
+        .menu-toggle { display: none; cursor: pointer; font-size: 12px; font-weight: 600; text-transform: uppercase; z-index: 6000; }
+
+        .theme-toggle { width: 44px; height: 24px; border-radius: 20px; cursor: pointer; position: relative; background: rgba(var(--glass-rgb), 0.8); border: 1px solid var(--glass-border); }
+        .toggle-circle { width: 18px; height: 18px; background: var(--text); border-radius: 50%; position: absolute; top: 2px; left: 3px; transition: 0.5s; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+        body.dark .toggle-circle { left: 21px; background: #fff; color: #000; }
+
+        .hero { height: 100vh; display: flex; align-items: center; padding: 0 5%; position: relative; }
+        .hero-content h2 { font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 8rem); line-height: 0.85; letter-spacing: -0.06em; margin-bottom: 30px; }
+        .hero-content p { font-size: 1.1rem; font-weight: 300; opacity: 0.6; max-width: 500px; }
+
+        #studio { position: relative; padding: 150px 5%; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, rgba(0,113,227,0.05) 0%, transparent 70%); overflow: hidden; }
+        .ambient-light { position: absolute; width: 600px; height: 600px; background: var(--accent); filter: blur(180px); opacity: 0.1; z-index: 0; border-radius: 50%; animation: drift 25s infinite alternate; }
+        @keyframes drift { from { transform: translate(-10%, -10%); } to { transform: translate(10%, 10%); } }
+
+        .login-card { position: relative; z-index: 1; width: 100%; max-width: 450px; padding: 60px 50px; border-radius: 45px; transition: 0.5s ease; }
+        .brand-login { text-align: center; margin-bottom: 45px; }
+        .brand-login h1 { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.4em; opacity: 0.6; margin-bottom: 12px; }
+        .brand-login h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; transition: 0.3s; }
+
+        .input-group { position: relative; margin-bottom: 25px; text-align: left; }
+        .input-group label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin-bottom: 10px; margin-left: 5px; }
+        .input-group input { width: 100%; padding: 18px 25px; border-radius: 18px; background: rgba(var(--glass-rgb), 0.05); border: 1px solid var(--glass-border); color: var(--text); font-size: 15px; outline: none; transition: 0.3s; }
+        .input-group input:focus { border-color: var(--accent); background: rgba(var(--glass-rgb), 0.1); }
+
+        .btn-login { width: 100%; padding: 20px; border-radius: 18px; border: none; background: var(--text); color: var(--bg); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: 0.4s; }
+        .btn-login:hover { background: var(--accent); color: white; transform: scale(1.02); }
+
+        section { padding: 120px 5%; }
+        .section-title { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 6vw, 4.5rem); margin-bottom: 80px; text-align: center; }
+
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 30px; }
+        .gallery-item { position: relative; border-radius: 30px; overflow: hidden; background: #1c1c1e; height: 580px; cursor: pointer; }
+        .gallery img { width: 100%; height: 100%; object-fit: cover; transition: 1.2s cubic-bezier(0.2, 1, 0.3, 1); }
+        .gallery-item:hover img { transform: scale(1.08); }
+
+        .btn { display: inline-block; padding: 18px 40px; border-radius: 50px; background: var(--text); color: var(--bg); text-decoration: none; font-weight: 600; font-size: 13px; transition: 0.5s; text-transform: uppercase; letter-spacing: 0.1em; }
+
+        .toggle-auth { color: var(--accent); cursor: pointer; font-weight: 600; text-decoration: underline; }
+
+        @media(max-width: 1000px){
+            header h1 { font-size: 14px; }
+            .menu-toggle { display: block; }
+            nav { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: rgba(var(--glass-rgb), 0.98); backdrop-filter: blur(25px); flex-direction: column; justify-content: center; gap: 40px; transition: 0.6s; }
+            nav.active { right: 0; }
+            nav a { font-size: 24px; font-family: 'Cinzel'; }
+            .gallery { grid-template-columns: 1fr; }
+            .login-card { padding: 40px 25px; }
+        }
     </style>
 </head>
+
 <body>
 
-<div id="loading-overlay">AUTHENTICATING...</div>
+<div class="intro" id="intro"><div class="intro-text">DILLU CAPTURES</div></div>
 
-<header style="position:fixed; width:100%; height:70px; background:rgba(255,255,255,0.9); display:flex; justify-content:space-between; align-items:center; padding:0 5%; z-index:100;">
-    <h1 style="font-family:'Cinzel'; font-size:14px;">DILLU CAPTURES</h1>
-    <button class="logout-btn" id="logoutBtn">Logout</button>
+<header class="glass">
+    <h1>DILLU CAPTURES</h1>
+    <div class="menu-toggle" id="menuToggle">Menu</div>
+    <nav id="mainNav">
+        <a href="#home">Home</a>
+        <a href="#about">The Artist</a>
+        <a href="#gallery">Works</a>
+        <a href="#studio">Studio</a>
+        <a href="#contact">Book</a>
+        <div class="theme-toggle" id="themeBtn"><span class="toggle-circle"><span id="icon">☀️</span></span></div>
+    </nav>
 </header>
 
-<section class="private-header">
-    <h2 style="font-family:'Playfair Display'; font-size: 3rem;">Your Private Gallery</h2>
-    <p>Welcome back! Here are your exclusive captures.</p>
-</section>
+<main>
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2 class="reveal">The Art of <br>Perspective.</h2>
+            <p class="reveal">Luxury lifestyle photography for those who believe that every moment is a masterpiece waiting to be framed.</p>
+            <div class="reveal" style="margin-top: 40px;">
+                <a href="#gallery" class="btn">View Collection</a>
+            </div>
+        </div>
+    </section>
 
-<!-- Private Gallery Grid -->
-<section style="padding: 50px 5%;">
-    <div class="gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
-        <!-- Add your private images here -->
-        <img src="Images/Private/client-1.jpg" style="width:100%; border-radius:15px;">
-        <img src="Images/Private/client-2.jpg" style="width:100%; border-radius:15px;">
-    </div>
-</section>
+    <!-- Studio Access Portal with Registration -->
+    <section id="studio">
+        <div class="ambient-light"></div>
+        <div class="login-card glass reveal">
+            <div class="brand-login">
+                <h1>DILLU CAPTURES</h1>
+                <h2 id="authTitle">Studio Access</h2>
+            </div>
+
+            <form id="authForm">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="artist@dillucaptures.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-login" id="authBtn">Sign In</button>
+            </form>
+
+            <div style="margin-top: 30px; text-align: center; font-size: 12px; opacity: 0.6;">
+                <p id="toggleText">New to the studio? <span class="toggle-auth" id="switchAuth">Register Here</span></p>
+                <p style="margin-top: 15px;"><a href="#" style="color:var(--text); text-decoration:none; opacity: 0.5;">Forgot password?</a></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <h2 class="section-title reveal">Curated Works</h2>
+        <div class="gallery">
+            <div class="gallery-item reveal"><img src="Images/Kids/20240813111900_IMG_0814.webp" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="Images/Maternity Shoot/IMG_4216.webp" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="Images/Temples & Culture/IMG_3234.webp" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="Images/Kids/IMG_5197 (1).webp" loading="lazy"></div>
+        </div>
+    </section>
+
+    <section id="contact" style="text-align:center; background: rgba(var(--glass-rgb), 0.1);">
+        <h2 class="section-title reveal">Reserve a Session</h2>
+        <div style="margin-bottom: 60px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;" class="reveal">
+            <a class="btn" style="background:#25D366; color:white; border:none;" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
+            <a class="btn" style="background: linear-gradient(45deg, #f09433, #bc1888); color:white; border:none;" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
+        </div>
+    </section>
+</main>
+
+<footer style="padding: 60px 5% 100px; text-align: center; font-size: 10px; opacity: 0.4; letter-spacing: 0.3em;">
+    © 2026 DILLU CAPTURES | CINEMATIC EXCELLENCE
+</footer>
+
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
 <script type="module">
+    // 1. FIREBASE SETUP
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA7_qvAe4C3lqikSgbLKSwrw3xvCh8XOx4",
@@ -50,24 +218,82 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // AUTH GUARD: Check if user is logged in
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // User is signed in, remove the loading screen
-            document.getElementById('loading-overlay').style.display = 'none';
-            console.log("Logged in as:", user.email);
-        } else {
-            // No user is signed in, redirect to login page
-            window.location.href = "index.html#studio";
+    // 2. AUTH UI LOGIC
+    let isLoginMode = true;
+    const authForm = document.getElementById('authForm');
+    const authBtn = document.getElementById('authBtn');
+    const authTitle = document.getElementById('authTitle');
+    const switchAuth = document.getElementById('switchAuth');
+    const toggleText = document.getElementById('toggleText');
+
+    switchAuth.addEventListener('click', () => {
+        isLoginMode = !isLoginMode;
+        authTitle.textContent = isLoginMode ? "Studio Access" : "Join the Studio";
+        authBtn.textContent = isLoginMode ? "Sign In" : "Create Account";
+        toggleText.innerHTML = isLoginMode ? 
+            'New to the studio? <span class="toggle-auth" id="switchAuth">Register Here</span>' : 
+            'Already have access? <span class="toggle-auth" id="switchAuth">Login Here</span>';
+        
+        // Re-attach listener because innerHTML wipes it
+        document.getElementById('switchAuth').addEventListener('click', () => switchAuth.click());
+    });
+
+    authForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        authBtn.textContent = "Processing...";
+        authBtn.disabled = true;
+
+        try {
+            if (isLoginMode) {
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("Welcome back!");
+            } else {
+                await createUserWithEmailAndPassword(auth, email, password);
+                alert("Account created! Welcome to the studio.");
+            }
+            window.location.href = "private-gallery.html"; 
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            authBtn.textContent = isLoginMode ? "Sign In" : "Create Account";
+            authBtn.disabled = false;
         }
     });
 
-    // Logout Function
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        signOut(auth).then(() => {
-            window.location.href = "index.html";
-        });
+    // 3. UI ANIMATIONS (LENIS, THEME, REVEAL)
+    const lenis = new Lenis();
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+
+    document.getElementById('themeBtn').addEventListener('click', () => {
+        document.body.classList.toggle("dark");
+        document.getElementById("icon").textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
     });
+
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.getElementById('mainNav');
+    menuToggle.addEventListener('click', () => {
+        if (window.innerWidth <= 1000) {
+            mainNav.classList.toggle('active');
+            menuToggle.textContent = mainNav.classList.contains('active') ? 'Close' : 'Menu';
+        }
+    });
+
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById("intro").style.opacity = "0";
+            setTimeout(() => document.getElementById("intro").classList.add("hide"), 800);
+        }, 2400);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
+
 </body>
 </html>
