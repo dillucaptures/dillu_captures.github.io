@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Studio Gallery | Dillu Captures</title>
+    <link rel="stylesheet" href="style.css"> <!-- Use your existing CSS -->
+    <style>
+        .private-header { padding: 100px 5% 20px; text-align: center; }
+        .logout-btn { background: #ff3b30; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 20px; }
+        #loading-overlay { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; font-family: 'Cinzel'; }
+    </style>
+</head>
+<body>
+
+<div id="loading-overlay">AUTHENTICATING...</div>
+
+<header style="position:fixed; width:100%; height:70px; background:rgba(255,255,255,0.9); display:flex; justify-content:space-between; align-items:center; padding:0 5%; z-index:100;">
+    <h1 style="font-family:'Cinzel'; font-size:14px;">DILLU CAPTURES</h1>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+</header>
+
+<section class="private-header">
+    <h2 style="font-family:'Playfair Display'; font-size: 3rem;">Your Private Gallery</h2>
+    <p>Welcome back! Here are your exclusive captures.</p>
+</section>
+
+<!-- Private Gallery Grid -->
+<section style="padding: 50px 5%;">
+    <div class="gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <!-- Add your private images here -->
+        <img src="Images/Private/client-1.jpg" style="width:100%; border-radius:15px;">
+        <img src="Images/Private/client-2.jpg" style="width:100%; border-radius:15px;">
+    </div>
+</section>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyA7_qvAe4C3lqikSgbLKSwrw3xvCh8XOx4",
+        authDomain: "dillu-captures07.firebaseapp.com",
+        projectId: "dillu-captures07",
+        storageBucket: "dillu-captures07.firebasestorage.app",
+        messagingSenderId: "710377587336",
+        appId: "1:710377587336:web:9a8abc278a28bc2f9d953d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // AUTH GUARD: Check if user is logged in
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in, remove the loading screen
+            document.getElementById('loading-overlay').style.display = 'none';
+            console.log("Logged in as:", user.email);
+        } else {
+            // No user is signed in, redirect to login page
+            window.location.href = "index.html#studio";
+        }
+    });
+
+    // Logout Function
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        signOut(auth).then(() => {
+            window.location.href = "index.html";
+        });
+    });
+</script>
+</body>
+</html>
