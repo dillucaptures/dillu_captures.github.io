@@ -415,9 +415,8 @@
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
 <script type="module">
-    // 1. FIREBASE AUTHENTICATION
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA7_qvAe4C3lqikSgbLKSwrw3xvCh8XOx4",
@@ -435,10 +434,9 @@
     const authForm = document.getElementById('authForm');
     const authBtn = document.getElementById('authBtn');
     const authTitle = document.getElementById('authTitle');
-    const switchAuth = document.getElementById('switchAuth');
     const toggleText = document.getElementById('toggleText');
 
-    // Toggle between Login and Register
+    // Authentication UI Logic
     function setupAuthToggle() {
         const switchBtn = document.getElementById('switchAuth');
         if (switchBtn) {
@@ -449,12 +447,13 @@
                 toggleText.innerHTML = isLoginMode ? 
                     'New to the studio? <span class="toggle-auth" id="switchAuth">Register Here</span>' : 
                     'Already have access? <span class="toggle-auth" id="switchAuth">Login Here</span>';
-                setupAuthToggle(); // Rebind listener
+                setupAuthToggle(); 
             };
         }
     }
     setupAuthToggle();
 
+    // Redirection Fix: Only redirect if explicitly signing in
     authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value;
@@ -466,11 +465,10 @@
         try {
             if (isLoginMode) {
                 await signInWithEmailAndPassword(auth, email, password);
-                alert("Welcome back!");
             } else {
                 await createUserWithEmailAndPassword(auth, email, password);
-                alert("Account created! Welcome to the studio.");
             }
+            // After successful login/signup, go to gallery
             window.location.href = "private-gallery.html"; 
         } catch (error) {
             alert(error.message);
@@ -479,10 +477,19 @@
             authBtn.disabled = false;
         }
     });
+
+    // Check if user is already logged in
+    onAuthStateChanged(auth, (user) => {
+        if (user && window.location.hash === "#studio") {
+             // User is already signed in, maybe show a "Go to Gallery" button instead of form?
+             authTitle.textContent = "Studio Active";
+             authBtn.textContent = "Enter Gallery";
+        }
+    });
 </script>
 
 <script>
-// UI & NAVIGATION LOGIC
+/* UI & NAVIGATION LOGIC */
 function toggleMenu() {
     if (window.innerWidth <= 1000) {
         const nav = document.getElementById('mainNav');
@@ -539,7 +546,7 @@ function toggleTheme(){
     }
 }
 
-// CALENDAR LOGIC
+/* CALENDAR LOGIC */
 let currentDate = new Date();
 let selectedDate = null;
 
