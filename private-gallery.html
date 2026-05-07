@@ -69,11 +69,11 @@
         .toggle-circle { width: 18px; height: 18px; background: var(--text); border-radius: 50%; position: absolute; top: 2px; left: 3px; transition: 0.5s; display: flex; align-items: center; justify-content: center; font-size: 10px; }
         body.dark .toggle-circle { left: 21px; background: #fff; color: #000; }
 
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        .private-hero { padding: 160px 5% 80px; text-align: center; }
-        .private-hero h2 { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1; margin-bottom: 15px; }
+        .private-hero { padding: 160px 5% 60px; text-align: center; }
+        .private-hero h2 { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; margin-bottom: 15px; }
 
         .gallery-container { padding: 0 5% 100px; }
         .gallery-grid { 
@@ -87,36 +87,34 @@
             border-radius: 24px; 
             overflow: hidden; 
             height: 650px; 
-            cursor: pointer;
+            background: #111;
         }
 
         .gallery-item img { 
             width: 100%; height: 100%; 
             object-fit: cover; 
-            transition: 2s cubic-bezier(0.2, 1, 0.3, 1); 
+            transition: 1.5s cubic-bezier(0.2, 1, 0.3, 1); 
+            opacity: 0.9;
         }
 
-        /* Narrative Overlay */
         .story-overlay {
             position: absolute;
-            bottom: 0; left: 0; right: 0;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
             padding: 40px;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
             color: white;
-            transform: translateY(20px);
             opacity: 0;
-            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: 0.5s ease;
         }
 
-        .gallery-item:hover .story-overlay {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .gallery-item:hover .story-overlay { opacity: 1; }
+        .gallery-item:hover img { transform: scale(1.05); opacity: 1; }
 
-        .gallery-item:hover img { transform: scale(1.1); filter: brightness(0.7); }
-
-        .story-title { font-family: 'Playfair Display'; font-size: 24px; margin-bottom: 8px; }
-        .story-text { font-size: 14px; line-height: 1.6; font-weight: 300; opacity: 0.8; max-width: 80%; }
+        .story-title { font-family: 'Playfair Display'; font-size: 28px; margin-bottom: 12px; }
+        .story-text { font-size: 15px; line-height: 1.6; font-weight: 300; opacity: 0.9; max-width: 90%; }
 
         .btn-logout { 
             padding: 10px 22px; border-radius: 50px; 
@@ -129,9 +127,8 @@
         @media(max-width: 768px) {
             .gallery-grid { grid-template-columns: 1fr; }
             .gallery-item { height: 500px; }
-            .story-overlay { opacity: 1; transform: translateY(0); padding: 20px; }
-            .story-title { font-size: 18px; }
-            .story-text { font-size: 12px; max-width: 100%; }
+            .story-overlay { opacity: 1; padding: 25px; }
+            .story-title { font-size: 22px; }
         }
     </style>
 </head>
@@ -154,37 +151,34 @@
 
 <main>
     <section class="private-hero">
-        <p class="reveal" style="font-size: 11px; letter-spacing: 0.3em; opacity: 0.5; margin-bottom: 10px;">CURATED COLLECTION</p>
-        <h2 class="reveal">Visual Stories</h2>
+        <p class="reveal" style="font-size: 11px; letter-spacing: 0.3em; opacity: 0.5; margin-bottom: 10px;">PREMIUM ARCHIVE</p>
+        <h2 class="reveal">The Stories Behind</h2>
     </section>
 
     <section class="gallery-container">
-        <div class="gallery-grid" id="mainGrid">
+        <div class="gallery-grid">
             
-            <!-- Image 1 -->
             <div class="gallery-item reveal">
-                <img src="Images/Kids/20240813111900_IMG_0814.webp" alt="Innocence">
+                <img src="Images/Kids/20240813111900_IMG_0814.webp" alt="Childhood Innocence">
                 <div class="story-overlay">
-                    <h3 class="story-title">Unfiltered Wonder</h3>
-                    <p class="story-text">Capturing the exact moment curiosity takes root. A study in natural light and the quiet intensity of a child's gaze.</p>
+                    <h3 class="story-title">Whispers of Innocence</h3>
+                    <p class="story-text">This portrait was captured in the soft morning glow. We waited for forty minutes just to catch that specific look of quiet curiosity—a reminder that the best moments are never forced, only found.</p>
                 </div>
             </div>
 
-            <!-- Image 2 -->
             <div class="gallery-item reveal">
-                <img src="Images/Kids/IMG_1902.webp" alt="Joy">
+                <img src="Images/Kids/IMG_1902.webp" alt="Joyful Moment">
                 <div class="story-overlay">
-                    <h3 class="story-title">Golden Childhood</h3>
-                    <p class="story-text">The fleeting warmth of a summer afternoon, preserved forever through a lens that values laughter over poses.</p>
+                    <h3 class="story-title">Golden Hour Giggles</h3>
+                    <p class="story-text">Laughter is the shortest distance between two people. In this shoot, we focused on the motion of joy, letting the background blur into a dreamlike haze of summer warmth.</p>
                 </div>
             </div>
 
-            <!-- Image 3 -->
             <div class="gallery-item reveal">
-                <img src="Images/Maternity Shoot/IMG_4216.webp" alt="Maternity">
+                <img src="Images/Maternity Shoot/IMG_4216.webp" alt="Maternity Story">
                 <div class="story-overlay">
-                    <h3 class="story-title">The First Bond</h3>
-                    <p class="story-text">A cinematic tribute to new beginnings. We focused on the silhouette and the soft textures to highlight the elegance of motherhood.</p>
+                    <h3 class="story-title">The Inner Light</h3>
+                    <p class="story-text">Maternity is a sacred transition. For this frame, we chose a high-contrast lighting style to emphasize the strength and grace of the expectant mother, turning a simple pose into a work of art.</p>
                 </div>
             </div>
 
@@ -211,32 +205,32 @@
         appId: "1:710377587336:web:9a8abc278a28bc2f9d953d"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    initializeApp(firebaseConfig);
+    const auth = getAuth();
 
-    // HAPTIC ENGINE FIX
-    let hapticsEnabled = false;
-    
-    // Most browsers require a user gesture to enable vibration
-    const enableHaptics = () => {
-        if (!hapticsEnabled && 'vibrate' in navigator) {
-            navigator.vibrate(10); // Initial kickstart pulse
-            hapticsEnabled = true;
-            console.log("Haptics Initialized");
-        }
-    };
+    // --- HAPTIC ENGINE (HIGH COMPATIBILITY) ---
+    let canVibrate = false;
 
-    window.addEventListener('touchstart', enableHaptics, { once: true });
-    window.addEventListener('click', enableHaptics, { once: true });
-
-    const triggerHaptic = () => {
+    // This "unlocks" vibration on the first tap/click
+    const unlockHaptics = () => {
         if ('vibrate' in navigator) {
-            // A double pulse pattern is more physically noticeable [vibrate, pause, vibrate]
-            navigator.vibrate([15, 30, 15]); 
+            navigator.vibrate(20); // Quick test pulse
+            canVibrate = true;
+        }
+        window.removeEventListener('touchstart', unlockHaptics);
+        window.removeEventListener('mousedown', unlockHaptics);
+    };
+
+    window.addEventListener('touchstart', unlockHaptics);
+    window.addEventListener('mousedown', unlockHaptics);
+
+    const triggerHaptic = (pattern = 15) => {
+        if (canVibrate && 'vibrate' in navigator) {
+            navigator.vibrate(pattern);
         }
     };
 
-    // 1. AUTH GUARD
+    // --- AUTH ---
     onAuthStateChanged(auth, (user) => {
         if (user) {
             document.getElementById('status-text').textContent = "Access Granted";
@@ -250,33 +244,33 @@
         }
     });
 
-    // 2. LOGOUT
     document.getElementById('logoutBtn').addEventListener('click', () => {
+        triggerHaptic(40);
         signOut(auth).then(() => window.location.href = "index.html");
     });
 
-    // 3. THEME TOGGLE
-    const themeBtn = document.getElementById('themeBtn');
-    themeBtn.addEventListener('click', () => {
+    // --- THEME ---
+    document.getElementById('themeBtn').addEventListener('click', () => {
         document.body.classList.toggle("dark");
         document.getElementById('theme-icon').textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
-        triggerHaptic();
+        triggerHaptic([20, 10, 20]); // Double tap haptic for theme change
     });
 
-    // 4. SMOOTH SCROLL
+    // --- SMOOTH SCROLL ---
     const lenis = new Lenis();
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
 
-    // 5. REVEAL OBSERVER WITH HAPTICS
+    // --- REVEAL WITH SCROLL HAPTICS ---
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => { 
             if (entry.isIntersecting && !entry.target.classList.contains('active')) {
                 entry.target.classList.add('active');
-                triggerHaptic(); // Vibrate when a story enters the viewport
+                // Trigger a soft haptic pulse when an image reveals
+                triggerHaptic(10); 
             } 
         });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.15 });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
