@@ -3,231 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <title>Dillu Captures | Luxury Photography</title>
-
-    <!-- Typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@100;300;400;500;600;700&display=swap" rel="stylesheet">
-
+    <title>Private Studio Gallery | Dillu Captures</title>
+    <link rel="stylesheet" href="style.css"> <!-- Use your existing CSS -->
     <style>
-        :root {
-            --bg: #ffffff;
-            --text: #000000;
-            --glass-rgb: 255, 255, 255;
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --accent: #0071e3;
-            --ios-blur: blur(30px) saturate(200%) brightness(1.1);
-        }
-
-        body.dark {
-            --bg: #000000;
-            --text: #ffffff;
-            --glass-rgb: 28, 28, 30;
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --ios-blur: blur(30px) saturate(180%) brightness(0.8);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            transition: background-color 0.5s ease;
-        }
-
-        /* REVEAL ANIMATION */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .glass {
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            background: rgba(var(--glass-rgb), 0.6);
-            border: 1px solid var(--glass-border);
-        }
-
-        /* INTRO */
-        .intro {
-            position: fixed; inset: 0; background: var(--bg);
-            display: flex; justify-content: center; align-items: center; z-index: 10000;
-        }
-        .intro-text {
-            font-family: 'Cinzel'; font-size: clamp(2rem, 8vw, 4rem);
-            font-weight: 700; opacity: 0; animation: introFade 2.4s forwards ease-in-out;
-            letter-spacing: 0.1em;
-        }
-        @keyframes introFade {
-            0% { opacity: 0; filter: blur(15px); transform: scale(0.9); }
-            40% { opacity: 1; filter: blur(0px); transform: scale(1); }
-            100% { opacity: 0; filter: blur(15px); transform: scale(1.1); }
-        }
-        .intro.hide { display: none; }
-
-        header {
-            position: fixed; top: 0; width: 100%; height: 75px;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5%; z-index: 1000; border-bottom: 0.5px solid var(--glass-border);
-        }
-        header h1 { font-family: 'Cinzel', serif; font-size: 18px; letter-spacing: 0.25em; }
-        
-        nav { display: flex; align-items: center; gap: 30px; }
-        nav a { text-decoration: none; color: var(--text); font-size: 12px; font-weight: 500; opacity: 0.6; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer;}
-        nav a:hover { opacity: 1; }
-
-        .theme-toggle {
-            width: 44px; height: 24px; border-radius: 20px; cursor: pointer;
-            position: relative; background: rgba(var(--glass-rgb), 0.8); border: 1px solid var(--glass-border);
-        }
-        .toggle-circle {
-            width: 18px; height: 18px; background: var(--text); border-radius: 50%;
-            position: absolute; top: 2px; left: 3px; transition: 0.5s;
-            display: flex; align-items: center; justify-content: center; font-size: 10px;
-        }
-        body.dark .toggle-circle { left: 21px; background: #fff; color: #000; }
-
-        /* STUDIO LOGIN CARD SECTION */
-        .studio-access-section {
-            padding: 100px 5%;
-            text-align: center;
-        }
-        .login-card {
-            max-width: 450px; margin: 0 auto; padding: 50px 40px;
-            border-radius: 40px; text-align: center;
-        }
-        .login-card h2 { font-family: 'Playfair Display'; font-size: 32px; margin-bottom: 10px; }
-        .login-input {
-            width: 100%; padding: 16px 20px; margin-bottom: 15px; border-radius: 15px;
-            border: 1px solid var(--glass-border); background: rgba(var(--glass-rgb), 0.4);
-            color: var(--text); font-family: 'Inter'; outline: none; transition: 0.3s;
-        }
-        .login-input:focus { border-color: var(--accent); }
-        .login-btn { width: 100%; border: none; cursor: pointer; margin-top: 10px; }
-
-        /* HERO */
-        .hero { height: 100vh; display: flex; align-items: center; padding: 0 5%; }
-        .hero-content h2 { font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 8rem); line-height: 0.85; margin-bottom: 30px; letter-spacing: -0.06em; }
-        .hero-content p { font-size: 1.1rem; opacity: 0.6; max-width: 500px; font-weight: 300; }
-
-        /* GALLERY */
-        section { padding: 120px 5%; }
-        .section-title { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 60px; text-align: center; }
-        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 30px; }
-        .gallery-item { position: relative; border-radius: 30px; overflow: hidden; height: 580px; cursor: pointer; background: #1c1c1e; }
-        .gallery img { width: 100%; height: 100%; object-fit: cover; transition: 1.2s cubic-bezier(0.2, 1, 0.3, 1); }
-        .gallery-item:hover img { transform: scale(1.08); }
-
-        /* CALENDAR */
-        .calendar-card { max-width: 500px; margin: 40px auto; padding: 40px; border-radius: 40px; }
-        .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 14px; cursor: pointer; transition: 0.3s; }
-        .day:hover:not(.disabled) { background: var(--text); color: var(--bg); }
-        .day.selected { background: var(--accent); color: #fff; font-weight: 700; }
-        .day.disabled { opacity: 0.2; cursor: default; }
-
-        .btn {
-            display: inline-block; padding: 18px 40px; border-radius: 50px;
-            background: var(--text); color: var(--bg); text-decoration: none;
-            font-weight: 600; font-size: 12px; transition: 0.4s;
-            text-transform: uppercase; letter-spacing: 0.1em; border: none;
-        }
-
-        /* LIGHTBOX */
-        #lightbox {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-            z-index: 2000; display: none; justify-content: center; align-items: center;
-            backdrop-filter: blur(10px);
-        }
-        #lightbox.active { display: flex; }
-        #lightbox img { max-width: 90%; max-height: 85vh; border-radius: 10px; }
-
-        @media(max-width: 768px) {
-            header h1 { font-size: 14px; }
-            nav { display: none; } /* Simplified for mobile */
-            .gallery { grid-template-columns: 1fr; }
-            .gallery-item { height: 450px; }
-        }
+        .private-header { padding: 100px 5% 20px; text-align: center; }
+        .logout-btn { background: #ff3b30; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 20px; }
+        #loading-overlay { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; font-family: 'Cinzel'; }
     </style>
 </head>
-<body class="dark">
+<body>
 
-<div class="intro" id="intro"><div class="intro-text">DILLU CAPTURES</div></div>
+<div id="loading-overlay">AUTHENTICATING...</div>
 
-<header class="glass">
-    <h1>DILLU CAPTURES</h1>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#gallery">Works</a>
-        <a href="#studio">Studio</a>
-        <div class="theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="icon">🌙</span></span></div>
-    </nav>
+<header style="position:fixed; width:100%; height:70px; background:rgba(255,255,255,0.9); display:flex; justify-content:space-between; align-items:center; padding:0 5%; z-index:100;">
+    <h1 style="font-family:'Cinzel'; font-size:14px;">DILLU CAPTURES</h1>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
 </header>
 
-<main>
-    <section class="hero">
-        <div class="hero-content">
-            <h2 class="reveal">The Art of <br>Perspective.</h2>
-            <p class="reveal">Luxury lifestyle photography for those who believe that every moment is a masterpiece waiting to be framed.</p>
-        </div>
-    </section>
+<section class="private-header">
+    <h2 style="font-family:'Playfair Display'; font-size: 3rem;">Your Private Gallery</h2>
+    <p>Welcome back! Here are your exclusive captures.</p>
+</section>
 
-    <section id="gallery">
-        <h2 class="section-title reveal">Curated Works</h2>
-        <div class="gallery">
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/20240813111900_IMG_0814.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4216.webp" loading="lazy"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/20230609184601_IMG_7346.webp" loading="lazy"></div>
-        </div>
-    </section>
-
-    <!-- STUDIO LOGIN SECTION (Replacing the Overlay from previous code) -->
-    <section class="studio-access-section" id="studio">
-        <div class="login-card glass reveal">
-            <p style="font-size: 10px; letter-spacing: 0.3em; opacity: 0.5; margin-bottom: 15px; text-transform: uppercase;">Private Client Vault</p>
-            <h2>Studio Access</h2>
-            <p style="font-size: 14px; opacity: 0.6; margin-bottom: 30px;">Enter your credentials to view your private gallery.</p>
-            
-            <input type="email" id="email" placeholder="Client Email" class="login-input">
-            <input type="password" id="password" placeholder="Access Key" class="login-input">
-            <button class="btn login-btn" id="loginBtn">Unlock Vault</button>
-            
-            <p id="error-msg" style="color: #ff453a; font-size: 12px; margin-top: 15px; display: none;">Invalid credentials.</p>
-        </div>
-    </section>
-
-    <section id="contact" style="text-align:center;">
-        <h2 class="section-title reveal">Reserve a Session</h2>
-        <div class="calendar-card glass reveal">
-            <div id="monthYear" style="font-family:'Playfair Display'; margin-bottom: 20px; font-size: 20px;"></div>
-            <div class="days" id="days" style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px;"></div>
-        </div>
-    </section>
-</main>
-
-<div id="lightbox" onclick="this.classList.remove('active')">
-    <img id="lightbox-img" src="">
-</div>
-
-<footer style="padding: 60px 5%; text-align: center; font-size: 10px; opacity: 0.4; letter-spacing: 0.3em;">
-    © 2026 DILLU CAPTURES | CINEMATIC EXCELLENCE
-</footer>
-
-<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+<!-- Private Gallery Grid -->
+<section style="padding: 50px 5%;">
+    <div class="gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <!-- Add your private images here -->
+        <img src="Images/Private/client-1.jpg" style="width:100%; border-radius:15px;">
+        <img src="Images/Private/client-2.jpg" style="width:100%; border-radius:15px;">
+    </div>
+</section>
 
 <script type="module">
-    // FIREBASE INTEGRATION
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA7_qvAe4C3lqikSgbLKSwrw3xvCh8XOx4",
@@ -241,76 +50,24 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Login Method
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const errorMsg = document.getElementById('error-msg');
-
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            window.location.href = "studio.html"; // Redirect to your private page
-        } catch (error) {
-            errorMsg.style.display = 'block';
-            errorMsg.textContent = "Access Denied: Please check your credentials.";
-        }
-    });
-
-    // Auto-redirect if already logged in
+    // AUTH GUARD: Check if user is logged in
     onAuthStateChanged(auth, (user) => {
-        if (user && window.location.hash === "#studio") {
-            window.location.href = "studio.html";
+        if (user) {
+            // User is signed in, remove the loading screen
+            document.getElementById('loading-overlay').style.display = 'none';
+            console.log("Logged in as:", user.email);
+        } else {
+            // No user is signed in, redirect to login page
+            window.location.href = "index.html#studio";
         }
     });
-</script>
 
-<script>
-    // THEME & UI LOGIC
-    function toggleTheme(){
-        document.body.classList.toggle("dark");
-        document.getElementById("icon").textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
-    }
-
-    function openLightbox(el) {
-        document.getElementById('lightbox-img').src = el.querySelector('img').src;
-        document.getElementById('lightbox').classList.add('active');
-    }
-
-    // Scroll Reveal
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('active');
+    // Logout Function
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        signOut(auth).then(() => {
+            window.location.href = "index.html";
         });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // Smooth Scroll
-    const lenis = new Lenis();
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-
-    // Intro Timeout
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            document.getElementById("intro").style.opacity = "0";
-            setTimeout(() => document.getElementById("intro").style.display = "none", 800);
-        }, 2400);
     });
-
-    // Simple Calendar Render
-    function renderCal() {
-        const d = new Date();
-        document.getElementById('monthYear').innerText = d.toLocaleString('default', { month: 'long' }) + " " + d.getFullYear();
-        const days = document.getElementById('days');
-        for(let i=1; i<=30; i++) {
-            const div = document.createElement('div');
-            div.className = 'day';
-            div.innerText = i;
-            days.appendChild(div);
-        }
-    }
-    renderCal();
 </script>
-
 </body>
 </html>
