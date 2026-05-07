@@ -31,7 +31,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Optimization: Smoother rendering */
+        /* Optimization: Initial behavior is required for Lenis to control everything */
         html { scroll-behavior: initial; }
 
         body {
@@ -146,7 +146,7 @@
             gap: 80px; 
             align-items: center;
             background: rgba(var(--glass-rgb), 0.03);
-            content-visibility: auto; /* Optimization for off-screen rendering */
+            content-visibility: auto; 
         }
         .artist-image-container {
             position: relative;
@@ -263,21 +263,21 @@
     <div class="mobile-theme-toggle theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="mobile-icon">☀️</span></span></div>
     <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">Menu</div>
     <nav id="mainNav">
-        <a href="#" onclick="toggleMenu()">Home</a>
-        <a href="#about" onclick="toggleMenu()">The Artist</a>
-        <a href="#gallery" onclick="toggleMenu()">Works</a>
-        <a href="#contact" onclick="toggleMenu()">Book</a>
+        <a href="#">Home</a>
+        <a href="#about">The Artist</a>
+        <a href="#gallery">Works</a>
+        <a href="#contact">Book</a>
         <div class="theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="icon">☀️</span></span></div>
     </nav>
 </header>
 
 <div id="lightbox" onclick="closeLightbox()">
     <span class="close-lightbox">&times;</span>
-    <img id="lightbox-img" src="" alt="Enlarged View" decoding="async">
+    <img id="lightbox-img" src="" alt="Enlarged View">
 </div>
 
 <main>
-    <section class="hero">
+    <section class="hero" id="home">
         <div class="hero-content">
             <h2 class="reveal">The Art of <br>Perspective.</h2>
             <p class="reveal">Luxury lifestyle photography for those who believe that every moment is a masterpiece waiting to be framed.</p>
@@ -289,8 +289,7 @@
 
     <section id="about">
         <div class="artist-image-container reveal">
-            <!-- Fetchpriority High for Hero Image -->
-            <img src="Images/1776695215852.webp" alt="Dillu - The Artist" fetchpriority="high" decoding="async">
+            <img src="Images/1776695215852.webp" alt="Dillu - The Artist" fetchpriority="high">
         </div>
         <div class="artist-text">
             <h3 class="reveal">The Visionary Behind the Lens</h3>
@@ -310,23 +309,22 @@
     <section id="gallery">
         <h2 class="section-title reveal">Curated Works</h2>
         <div class="gallery">
-            <!-- Added decoding="async" for faster, non-blocking image loads -->
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/20240813111900_IMG_0814.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_1902.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_5197 (1).webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_5332.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4216.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4265.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4363.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/20230609184601_IMG_7346.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/20231001121437_IMG_8556.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_20251225_093551493.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3234.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3390.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3037.webp" loading="lazy" decoding="async"></div>
-            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_20251225_195802010.webp" loading="lazy" decoding="async"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/20240813111900_IMG_0814.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_1902.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_5197 (1).webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_5332.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/20240719132714_IMG_0511.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4216.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4265.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Maternity Shoot/IMG_4363.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/20230609184601_IMG_7346.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/20231001121437_IMG_8556.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_20251225_093551493.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/WhatsApp Image 2025-06-24 at 11.30.48 AM (1).webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3234.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3390.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_3037.webp" loading="lazy"></div>
+            <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Temples & Culture/IMG_20251225_195802010.webp" loading="lazy"></div>
         </div>
     </section>
 
@@ -356,10 +354,62 @@
     © 2026 DILLU CAPTURES | CINEMATIC EXCELLENCE
 </footer>
 
-<!-- Latest Lenis for ultra-smooth scroll -->
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
 <script>
+/* 1. LENIS INITIALIZATION */
+const lenis = new Lenis({
+    duration: 1.4, // Slightly longer for more "luxury" feel
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smoothWheel: true,
+    wheelMultiplier: 1,
+    touchMultiplier: 2,
+    infinite: false,
+})
+
+function raf(time) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+}
+requestAnimationFrame(raf);
+
+/* 2. EXTRA SMOOTH ANCHOR SCROLLING ENGINE */
+// This replaces the browser's default "jump" with a Lenis-powered smooth slide
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        // Close mobile menu if open
+        if (window.innerWidth <= 1000) {
+            const nav = document.getElementById('mainNav');
+            const toggle = document.getElementById('menuToggle');
+            if(nav.classList.contains('active')) {
+                nav.classList.remove('active');
+                toggle.textContent = 'Menu';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') {
+            lenis.scrollTo(0); // Scroll to top
+        } else {
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Scroll to element with an offset for the fixed header (75px)
+                lenis.scrollTo(targetElement, {
+                    offset: -75,
+                    duration: 1.5,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                });
+            }
+        }
+    });
+});
+
+/* 3. MENU TOGGLE (Logic simplified for smoothness) */
 function toggleMenu() {
     if (window.innerWidth <= 1000) {
         const nav = document.getElementById('mainNav');
@@ -370,6 +420,7 @@ function toggleMenu() {
     }
 }
 
+/* 4. LIGHTBOX */
 function openLightbox(element) {
     const src = element.querySelector('img').src;
     const lb = document.getElementById('lightbox');
@@ -384,24 +435,7 @@ function closeLightbox() {
     document.body.style.overflow = 'auto'; 
 }
 
-/* OPTIMIZED LENIS CONFIG */
-const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-    direction: 'vertical',
-    gestureDirection: 'vertical',
-    smoothWheel: true,
-    wheelMultiplier: 1, // Normalized speed
-    touchMultiplier: 2,
-    infinite: false,
-})
-
-function raf(time) {
-    lenis.raf(time)
-    requestAnimationFrame(raf)
-}
-requestAnimationFrame(raf);
-
+/* 5. INTRO ANIMATION */
 window.addEventListener('load', () => {
     setTimeout(() => {
         document.getElementById("intro").style.opacity = "0";
@@ -409,7 +443,7 @@ window.addEventListener('load', () => {
     }, 2400);
 });
 
-/* OPTIMIZED OBSERVER */
+/* 6. REVEAL OBSERVER */
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -426,6 +460,7 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+/* 7. THEME TOGGLE */
 function toggleTheme(){
     document.body.classList.toggle("dark");
     const isDark = document.body.classList.contains("dark");
@@ -437,6 +472,7 @@ function toggleTheme(){
     }
 }
 
+/* 8. CALENDAR LOGIC */
 let currentDate = new Date();
 let selectedDate = null;
 
