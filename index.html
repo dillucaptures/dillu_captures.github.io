@@ -31,39 +31,39 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        /* Smooth Scrolling Base */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             transition: background-color 0.5s ease;
         }
 
-        /* HARDWARE ACCELERATION */
-        .reveal, .gallery img, .glass, .artist-image-container {
+        /* Performance Optimizations */
+        .reveal, .gallery-item, .artist-image-container, .glass {
             will-change: transform, opacity;
             backface-visibility: hidden;
+            transform: translateZ(0);
         }
 
-        /* REVEAL ANIMATION */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* REVEAL INITIAL STATE (Handled by GSAP) */
+        .reveal { opacity: 0; }
 
-        /* iOS 26 GLASS UI */
+        /* iOS GLASS UI */
         .glass {
             backdrop-filter: var(--ios-blur);
             -webkit-backdrop-filter: var(--ios-blur);
             background: rgba(var(--glass-rgb), 0.6);
             border: 1px solid var(--glass-border);
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
         }
 
         /* INTRO */
@@ -73,17 +73,10 @@
         }
         .intro-text {
             font-family: 'Cinzel'; font-size: clamp(2rem, 8vw, 4rem);
-            font-weight: 700; opacity: 0; animation: introFade 2.4s forwards ease-in-out;
-            letter-spacing: 0.1em;
+            font-weight: 700; letter-spacing: 0.1em;
         }
-        @keyframes introFade {
-            0% { opacity: 0; filter: blur(15px); transform: scale(0.9); }
-            40% { opacity: 1; filter: blur(0px); transform: scale(1); }
-            100% { opacity: 0; filter: blur(15px); transform: scale(1.1); }
-        }
-        .intro.hide { display: none; }
 
-        /* NAV & STYLISH LOGO */
+        /* NAV */
         header {
             position: fixed; top: 0; width: 100%; height: 75px;
             display: flex; justify-content: space-between; align-items: center;
@@ -91,16 +84,13 @@
         }
         
         header h1 { 
-            font-family: 'Cinzel', serif;
-            font-size: 18px; 
-            font-weight: 700; 
-            letter-spacing: 0.25em; 
-            text-transform: uppercase;
+            font-family: 'Cinzel', serif; font-size: 18px; 
+            font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
         }
         
         nav { display: flex; align-items: center; gap: 30px; }
-        nav a { text-decoration: none; color: var(--text); font-size: 12px; font-weight: 500; opacity: 0.6; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.05em; }
-        nav a:hover { opacity: 1; }
+        nav a { text-decoration: none; color: var(--text); font-size: 11px; font-weight: 600; opacity: 0.6; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-transform: uppercase; letter-spacing: 0.1em; }
+        nav a:hover { opacity: 1; transform: translateY(-1px); }
 
         .menu-toggle { display: none; cursor: pointer; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; z-index: 6000; }
 
@@ -109,26 +99,21 @@
             position: relative; background: rgba(var(--glass-rgb), 0.8); border: 1px solid var(--glass-border);
         }
         
-        .mobile-theme-toggle {
-            display: none; /* Hidden on desktop so it doesn't affect the layout */
-        }
-        
         .toggle-circle {
             width: 18px; height: 18px; background: var(--text); border-radius: 50%;
-            position: absolute; top: 2px; left: 3px; transition: 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+            position: absolute; top: 2px; left: 3px; transition: 0.5s cubic-bezier(0.65, 0, 0.35, 1);
             display: flex; align-items: center; justify-content: center; font-size: 10px;
         }
-        body.dark .toggle-circle { left: 21px; background: #fff; color: #000; }
+        body.dark .toggle-circle { left: 21px; background: #fff; }
 
         /* HERO */
         .hero {
             height: 100vh; display: flex; align-items: center;
-            padding: 0 5%; position: relative; gap: 5vw;
+            padding: 0 5%; position: relative;
         }
-        .hero-content { flex: 1.2; }
         .hero-content h2 {
-            font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 8rem);
-            line-height: 0.85; font-weight: 700; letter-spacing: -0.06em; margin-bottom: 30px;
+            font-family: 'Playfair Display'; font-size: clamp(3.5rem, 12vw, 9rem);
+            line-height: 0.82; font-weight: 700; letter-spacing: -0.05em; margin-bottom: 30px;
         }
         .hero-content p { font-size: 1.1rem; font-weight: 300; opacity: 0.6; max-width: 500px; line-height: 1.6; }
 
@@ -142,186 +127,108 @@
             background: rgba(var(--glass-rgb), 0.03);
         }
         .artist-image-container {
-            position: relative;
-            border-radius: 40px;
-            overflow: hidden;
-            aspect-ratio: 4/5;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.15);
+            position: relative; border-radius: 40px; overflow: hidden;
+            aspect-ratio: 4/5; box-shadow: 0 40px 80px rgba(0,0,0,0.1);
         }
-        .artist-image-container img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-        .artist-text h3 {
-            font-family: 'Playfair Display'; font-size: 18px; font-style: italic; color: var(--accent); margin-bottom: 15px;
-        }
-        .artist-text h2 {
-            font-family: 'Playfair Display'; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 30px;
-        }
-        .artist-text p {
-            font-size: 1.1rem; line-height: 1.8; opacity: 0.7; margin-bottom: 25px; font-weight: 300;
-        }
+        .artist-image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 2s ease; }
+        .artist-image-container:hover img { transform: scale(1.05); }
+
+        .artist-text h3 { font-family: 'Playfair Display'; font-size: 18px; font-style: italic; color: var(--accent); margin-bottom: 15px; }
+        .artist-text h2 { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 30px; }
+        .artist-text p { font-size: 1.1rem; line-height: 1.8; opacity: 0.7; margin-bottom: 25px; font-weight: 300; }
+
         .fancy-quote {
-            font-family: 'Playfair Display'; font-size: 1.5rem; border-left: 3px solid var(--accent); padding-left: 25px; margin-top: 40px; font-style: italic; opacity: 0.9;
+            font-family: 'Playfair Display'; font-size: 1.5rem; border-left: 3px solid var(--accent); padding-left: 25px; margin-top: 40px; font-style: italic;
         }
 
         /* GALLERY */
         section { padding: 120px 5%; }
-        .section-title { font-family: 'Playfair Display'; font-size: 56px; margin-bottom: 80px; text-align: center; letter-spacing: -0.03em; }
+        .section-title { font-family: 'Playfair Display'; font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 80px; text-align: center; letter-spacing: -0.02em; }
 
         .gallery {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 30px;
+            gap: 40px;
         }
         .gallery-item {
             position: relative; border-radius: 30px; overflow: hidden;
-            background: #1c1c1e; height: 580px; cursor: pointer;
+            background: #1c1c1e; height: 600px; cursor: pointer;
         }
         .gallery img {
             width: 100%; height: 100%; object-fit: cover;
-            transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .gallery-item:hover img { transform: scale(1.08); }
+        .gallery-item:hover img { transform: scale(1.1); }
 
         /* LIGHTBOX */
         #lightbox {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
             z-index: 2000; display: none; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.4s ease; backdrop-filter: blur(10px);
+            opacity: 0; transition: opacity 0.5s ease; backdrop-filter: blur(15px);
         }
         #lightbox.active { display: flex; opacity: 1; }
-        #lightbox img { 
-            max-width: 90%; max-height: 85vh; border-radius: 10px; 
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        #lightbox img { max-width: 90%; max-height: 85vh; border-radius: 10px; transform: scale(0.9); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         #lightbox.active img { transform: scale(1); }
-        .close-lightbox {
-            position: absolute; top: 30px; right: 40px; color: white;
-            font-size: 40px; cursor: pointer; font-family: 'Inter'; font-weight: 200;
+
+        /* BUTTONS */
+        .btn {
+            display: inline-block; padding: 18px 40px; border-radius: 50px;
+            background: var(--text); color: var(--bg); text-decoration: none;
+            font-weight: 600; font-size: 12px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            text-transform: uppercase; letter-spacing: 0.1em; border: none; cursor: pointer;
         }
+        .btn:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
 
         /* CALENDAR */
-        .calendar-card {
-            max-width: 500px; margin: 40px auto; padding: 45px;
-            border-radius: 40px;
-        }
-        .day {
-            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-            border-radius: 14px; font-size: 14px; cursor: pointer; transition: 0.3s;
-        }
+        .calendar-card { max-width: 500px; margin: 40px auto; padding: 45px; border-radius: 40px; }
+        .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 14px; font-size: 14px; cursor: pointer; transition: 0.3s; }
         .day:hover:not(.disabled) { background: var(--text); color: var(--bg); }
         .day.selected { background: var(--accent); color: #fff; font-weight: 700; transform: scale(1.1); }
         .day.today { border: 2px solid var(--accent); }
 
-        .btn {
-            display: inline-block; padding: 18px 40px; border-radius: 50px;
-            background: var(--text); color: var(--bg); text-decoration: none;
-            font-weight: 600; font-size: 13px; transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            text-transform: uppercase; letter-spacing: 0.1em;
-        }
-        .btn:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
-
-        /* MOBILE FIXES */
+        /* MOBILE STYLES */
         @media(max-width: 1000px){
-            body { width: 100vw; overflow-x: hidden; }
-            
-            #about { 
-                grid-template-columns: 1fr; 
-                text-align: center; 
-                padding: 80px 5%; 
-                width: 100%;
-            }
-            
-            .artist-text h3 { justify-content: center; }
-            .fancy-quote { border-left: none; border-top: 1px solid var(--accent); padding: 25px 0 0; }
-            
-            .hero { 
-                flex-direction: column; 
-                justify-content: center; 
-                text-align: center; 
-                padding: 120px 5% 40px; 
-                height: auto;
-                min-height: 80vh;
-            }
-            .hero-content { width: 100%; }
-            .hero-content h2 { font-size: 3.2rem; margin-bottom: 20px; }
+            #about { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .hero { text-align: center; padding-top: 100px; }
             .hero-content p { margin: 0 auto; }
-
-            header h1 { font-size: 14px; }
+            .gallery { grid-template-columns: 1fr; }
+            .gallery-item { height: 450px; }
             .menu-toggle { display: block; }
-
-            /* Fix Theme toggle for mobile headers */
-            nav .theme-toggle { 
-                display: none; /* Hide the one inside the hidden menu */
+            nav {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: rgba(var(--glass-rgb), 0.98); backdrop-filter: blur(25px);
+                flex-direction: column; justify-content: center; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             }
-            .mobile-theme-toggle {
-                display: block;
-                position: absolute;
-                right: calc(5% + 65px); /* Positioned cleanly beside the "Menu" button */
-                top: 50%;
-                transform: translateY(-50%);
-            }
-
-            nav { 
-                position: fixed;
-                top: 0; right: -100%;
-                width: 100%; height: 100vh;
-                background: rgba(var(--glass-rgb), 0.98);
-                backdrop-filter: blur(25px);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 40px;
-                transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-                z-index: 5500;
-            }
-
             nav.active { right: 0; }
-            nav a { font-size: 24px; font-family: 'Cinzel'; opacity: 1; }
-
-            /* GALLERY MOBILE FIX */
-            .gallery { 
-                grid-template-columns: 1fr; 
-                width: 100%;
-                padding: 0;
-            }
-            .gallery-item { height: 450px; width: 100%; }
-
-            /* CALENDAR MOBILE FIX */
-            .calendar-card { 
-                width: 100%; 
-                padding: 25px 15px; 
-                margin: 20px 0;
-            }
-            .section-title { font-size: 36px; margin-bottom: 40px; }
-            
-            section { padding: 60px 5%; }
+            nav a { font-size: 24px; font-family: 'Cinzel'; }
+            .mobile-theme-toggle { display: block; position: absolute; right: 85px; top: 25px; }
         }
     </style>
 </head>
 
 <body>
 
-<div class="intro" id="intro"><div class="intro-text">DILLU CAPTURES</div></div>
+<div class="intro" id="intro">
+    <div class="intro-text">DILLU CAPTURES</div>
+</div>
 
 <header class="glass">
     <h1>DILLU CAPTURES</h1>
-    
-    <!-- Added a specific theme toggle for mobile view, placed outside the hidden nav -->
-    <div class="mobile-theme-toggle theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="mobile-icon">☀️</span></span></div>
-    
+    <div class="mobile-theme-toggle theme-toggle" onclick="toggleTheme()">
+        <span class="toggle-circle"><span id="mobile-icon">☀️</span></span>
+    </div>
     <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">Menu</div>
     <nav id="mainNav">
         <a href="#" onclick="toggleMenu()">Home</a>
         <a href="#about" onclick="toggleMenu()">The Artist</a>
         <a href="#gallery" onclick="toggleMenu()">Works</a>
         <a href="#contact" onclick="toggleMenu()">Book</a>
-        <div class="theme-toggle" onclick="toggleTheme()"><span class="toggle-circle"><span id="icon">☀️</span></span></div>
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <span class="toggle-circle"><span id="icon">☀️</span></span>
+        </div>
     </nav>
 </header>
 
 <div id="lightbox" onclick="closeLightbox()">
-    <span class="close-lightbox">&times;</span>
     <img id="lightbox-img" src="" alt="Enlarged View">
 </div>
 
@@ -343,20 +250,16 @@
         <div class="artist-text">
             <h3 class="reveal">The Visionary Behind the Lens</h3>
             <h2 class="reveal">Crafting Legacies, <br>One Frame at a Time.</h2>
-            <p class="reveal">
-                To me, photography isn't just about clicking a button—it’s about the silent rhythm of a moment, the way light dances on a surface, and the raw, unscripted emotions that make us human.
-            </p>
-            <p class="reveal">
-                Based in Secunderabad, I specialize in high-end cinematic storytelling. My work is defined by a relentless pursuit of aesthetic perfection.
-            </p>
-            <div class="fancy-quote reveal">
-                "I don't just take photographs; I capture the soul of the story you're living."
-            </div>
+            <p class="reveal">To me, photography isn't just about clicking a button—it’s about the silent rhythm of a moment, the way light dances on a surface, and the raw, unscripted emotions.</p>
+            <p class="reveal">Based in Secunderabad, I specialize in high-end cinematic storytelling. My work is defined by a relentless pursuit of aesthetic perfection.</p>
+            <div class="fancy-quote reveal">"I don't just take photographs; I capture the soul of the story you're living."</div>
         </div>
     </section>
 
-    <section id="gallery">
+   <section id="gallery">
+
         <h2 class="section-title reveal">Curated Works</h2>
+
         <div class="gallery">
             <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/20240813111900_IMG_0814.webp" loading="lazy"></div>
             <div class="gallery-item reveal" onclick="openLightbox(this)"><img src="Images/Kids/IMG_1902.webp" loading="lazy"></div>
@@ -379,9 +282,9 @@
 
     <section id="contact" style="text-align:center; background: rgba(var(--glass-rgb), 0.1);">
         <h2 class="section-title reveal">Reserve a Session</h2>
-        <div style="margin-bottom: 60px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;" class="reveal">
-            <a class="btn" style="background:#25D366; color:white; border:none;" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
-            <a class="btn" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color:white; border:none;" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
+        <div style="margin-bottom: 60px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;" class="reveal">
+            <a class="btn" style="background:#25D366; color:white;" href="https://wa.me/919700034138" target="_blank">WhatsApp</a>
+            <a class="btn" style="background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color:white;" href="https://www.instagram.com/dillu_captures/" target="_blank">Instagram</a>
         </div>
 
         <div class="calendar-card glass reveal">
@@ -399,132 +302,196 @@
     </section>
 </main>
 
-<footer style="padding: 60px 5% 120px; text-align: center; font-size: 10px; opacity: 0.4; letter-spacing: 0.3em;">
+<footer style="padding: 80px 5% 120px; text-align: center; font-size: 10px; opacity: 0.4; letter-spacing: 0.3em;">
     © 2026 DILLU CAPTURES | CINEMATIC EXCELLENCE
 </footer>
 
+<!-- Animation Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
 <script>
-function toggleMenu() {
-    if (window.innerWidth <= 1000) {
-        const nav = document.getElementById('mainNav');
-        const toggle = document.getElementById('menuToggle');
-        nav.classList.toggle('active');
-        toggle.textContent = nav.classList.contains('active') ? 'Close' : 'Menu';
-        document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : 'auto';
+    // Initialize Lenis Smooth Scroll with "Buttery" settings
+    const lenis = new Lenis({
+        duration: 1.4,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+    });
+
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
     }
-}
+    requestAnimationFrame(raf);
 
-function openLightbox(element) {
-    const src = element.querySelector('img').src;
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lightbox-img');
-    lbImg.src = src;
-    lb.classList.add('active');
-    document.body.style.overflow = 'hidden'; 
-}
+    // Integrate GSAP with Lenis
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time)=>{
+        lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
 
-function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('active');
-    document.body.style.overflow = 'auto'; 
-}
+    // Page Load Animation
+    window.addEventListener('load', () => {
+        const tl = gsap.timeline();
+        
+        tl.to(".intro-text", {
+            duration: 1.5,
+            y: 0,
+            autoAlpha: 1,
+            ease: "expo.out",
+            filter: "blur(0px)"
+        })
+        .to(".intro", {
+            duration: 1,
+            yPercent: -100,
+            ease: "expo.inOut",
+            delay: 0.5
+        }, "+=0.5")
+        .from(".hero-content > *", {
+            duration: 1.2,
+            y: 50,
+            autoAlpha: 0,
+            stagger: 0.2,
+            ease: "power4.out"
+        }, "-=0.3");
+    });
 
-const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true })
-function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-requestAnimationFrame(raf);
+    // Buttery Reveal Animations using GSAP ScrollTrigger
+    gsap.utils.toArray('.reveal').forEach((el) => {
+        gsap.fromTo(el, 
+            { autoAlpha: 0, y: 40 },
+            { 
+                duration: 1, 
+                autoAlpha: 1, 
+                y: 0, 
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                }
+            }
+        );
+    });
 
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        document.getElementById("intro").style.opacity = "0";
-        setTimeout(() => document.getElementById("intro").classList.add("hide"), 800);
-    }, 2400);
-});
+    // Gallery Parallax Effect
+    gsap.utils.toArray('.gallery-item img').forEach((img) => {
+        gsap.fromTo(img, 
+            { y: -20 },
+            { 
+                y: 20, 
+                ease: "none",
+                scrollTrigger: {
+                    trigger: img.parentElement,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            }
+        );
+    });
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-            observer.unobserve(entry.target);
+    // Theme & UI Logic
+    function toggleMenu() {
+        if (window.innerWidth <= 1000) {
+            const nav = document.getElementById('mainNav');
+            const toggle = document.getElementById('menuToggle');
+            nav.classList.toggle('active');
+            toggle.textContent = nav.classList.contains('active') ? 'Close' : 'Menu';
+            if(nav.classList.contains('active')) lenis.stop();
+            else lenis.start();
         }
-    });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// Updated JavaScript to target both Theme toggles
-function toggleTheme(){
-    document.body.classList.toggle("dark");
-    const isDark = document.body.classList.contains("dark");
-    const newIcon = isDark ? "🌙" : "☀️";
-    
-    document.getElementById("icon").textContent = newIcon;
-    if(document.getElementById("mobile-icon")) {
-        document.getElementById("mobile-icon").textContent = newIcon;
     }
-}
 
-let currentDate = new Date();
-let selectedDate = null;
-
-function renderCalendar(){
-    const daysEl = document.getElementById("days");
-    const monthYear = document.getElementById("monthYear");
-    daysEl.innerHTML="";
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    monthYear.innerText = currentDate.toLocaleString("default",{month:"long"})+" "+year;
-    
-    const firstDay = new Date(year,month,1).getDay();
-    const lastDate = new Date(year,month+1,0).getDate();
-    const today = new Date();
-
-    for(let i=0; i<firstDay; i++) daysEl.innerHTML+="<div></div>";
-
-    for(let d=1; d<=lastDate; d++){
-        const date = new Date(year,month,d);
-        const div = document.createElement("div");
-        div.className="day";
-        div.innerText=d;
-        if(date < new Date(today.setHours(0,0,0,0))) div.classList.add("disabled");
-        if(d===today.getDate() && month===today.getMonth()) div.classList.add("today");
-        div.onclick=()=>selectDate(d,div);
-        daysEl.appendChild(div);
+    function toggleTheme(){
+        document.body.classList.toggle("dark");
+        const isDark = document.body.classList.contains("dark");
+        const icon = isDark ? "🌙" : "☀️";
+        document.getElementById("icon").textContent = icon;
+        if(document.getElementById("mobile-icon")) document.getElementById("mobile-icon").textContent = icon;
     }
-}
 
-function selectDate(day,el){
-    if(el.classList.contains("disabled")) return;
-    document.querySelectorAll(".day").forEach(d=>d.classList.remove("selected"));
-    el.classList.add("selected");
-    selectedDate = `${day} ${currentDate.toLocaleString("default",{month:"long"})}`;
-    showSlots();
-}
+    function openLightbox(element) {
+        const src = element.querySelector('img').src;
+        const lb = document.getElementById('lightbox');
+        document.getElementById('lightbox-img').src = src;
+        lb.style.display = 'flex';
+        setTimeout(() => lb.classList.add('active'), 10);
+        lenis.stop();
+    }
 
-function showSlots(){
-    const slots = document.getElementById("slots");
-    slots.innerHTML="";
-    ["Morning", "Afternoon", "Golden Hour"].forEach(time => {
-        const s = document.createElement("div");
-        s.className = "btn";
-        s.style.fontSize = "10px";
-        s.style.padding = "10px 20px";
-        s.style.cursor = "pointer";
-        s.innerText = time;
-        s.onclick = (e) => {
-            e.stopPropagation();
-            const msg = `Hi Dillu, I'd like to inquire about a ${time} session on ${selectedDate}.`;
-            window.open(`https://wa.me/919700034138?text=${encodeURIComponent(msg)}`);
-        };
-        slots.appendChild(s);
-    });
-}
+    function closeLightbox() {
+        const lb = document.getElementById('lightbox');
+        lb.classList.remove('active');
+        setTimeout(() => { lb.style.display = 'none'; lenis.start(); }, 500);
+    }
 
-function prevMonth(){ currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); }
-function nextMonth(){ currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); }
-renderCalendar();
+    // Calendar logic
+    let currentDate = new Date();
+    let selectedDate = null;
+
+    function renderCalendar(){
+        const daysEl = document.getElementById("days");
+        const monthYear = document.getElementById("monthYear");
+        daysEl.innerHTML="";
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        monthYear.innerText = currentDate.toLocaleString("default",{month:"long"})+" "+year;
+        
+        const firstDay = new Date(year,month,1).getDay();
+        const lastDate = new Date(year,month+1,0).getDate();
+        const today = new Date();
+
+        for(let i=0; i<firstDay; i++) daysEl.innerHTML+="<div></div>";
+        for(let d=1; d<=lastDate; d++){
+            const div = document.createElement("div");
+            div.className="day";
+            div.innerText=d;
+            if(new Date(year,month,d) < new Date().setHours(0,0,0,0)) div.classList.add("disabled");
+            if(d===today.getDate() && month===today.getMonth()) div.classList.add("today");
+            div.onclick=()=>selectDate(d,div);
+            daysEl.appendChild(div);
+        }
+    }
+
+    function selectDate(day,el){
+        if(el.classList.contains("disabled")) return;
+        document.querySelectorAll(".day").forEach(d=>d.classList.remove("selected"));
+        el.classList.add("selected");
+        selectedDate = `${day} ${currentDate.toLocaleString("default",{month:"long"})}`;
+        showSlots();
+    }
+
+    function showSlots(){
+        const slots = document.getElementById("slots");
+        slots.innerHTML="";
+        ["Morning", "Afternoon", "Golden Hour"].forEach(time => {
+            const s = document.createElement("div");
+            s.className = "btn";
+            s.style.fontSize = "10px";
+            s.style.padding = "10px 20px";
+            s.innerText = time;
+            s.onclick = () => {
+                const msg = `Hi Dillu, I'd like to inquire about a ${time} session on ${selectedDate}.`;
+                window.open(`https://wa.me/919700034138?text=${encodeURIComponent(msg)}`);
+            };
+            slots.appendChild(s);
+            gsap.from(s, { scale: 0.8, opacity: 0, duration: 0.4, ease: "back.out(1.7)" });
+        });
+    }
+
+    function prevMonth(){ currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); }
+    function nextMonth(){ currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); }
+    renderCalendar();
 </script>
 
 </body>
 </html>
-
-
